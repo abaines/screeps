@@ -94,7 +94,7 @@ var roleHarvester =
 			}
 
 			var targets = findStructuresThatNeedEnergy(creep.room, STRUCTURE_SPAWN);
-			if (targets.length > 0 && _getHarvesters().length < 9)
+			if (targets.length > 0 && _getHarvesters().length < 12)
 			{
 				return transfer(creep, targets[0]);
 			}
