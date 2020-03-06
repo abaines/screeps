@@ -48,6 +48,32 @@ var roleHarvester =
 		{
 			return;
 		}
+
+		if (creep.store.getUsedCapacity() == 0 && creep.ticksToLive < 1500 / 9)
+		{
+			var flags = creep.room.find(FIND_FLAGS);
+			var flags = Game.flags;
+			if (Object.keys(flags).length > 0)
+			{
+				var flag = flags[Object.keys(flags)[0]];
+				var range = creep.pos.getRangeTo(flag);
+				if (range > 1)
+				{
+					var moveReturn = creep.moveTo(flag,
+						{
+							visualizePathStyle:
+							{
+								stroke: '#ffaa00'
+							}
+						}
+						);
+				}
+				// TODO: make harvest-source a function
+				creep.say(creep.pos.x + '  ' + creep.pos.y + '  ' + range);
+			}
+			return;
+		}
+
 		if (creep.store.getUsedCapacity() == 0 && creep.memory.mode == null)
 		{
 			var sources = creep.room.find(FIND_SOURCES_ACTIVE);
