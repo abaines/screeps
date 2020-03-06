@@ -43,7 +43,7 @@ var spawnSpawning =
 
 		if (harvesters.length < 10 && energyAvailable >= 1200)
 		{
-			spawnHarvester(Game.spawns['Spawn1'], [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]);
+			spawnHarvester(Game.spawns['Spawn1'], [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]);
 		}
 		else if (harvesters.length < 10 && energyAvailable >= 800 && energyCapacityAvailable < 1200)
 		{

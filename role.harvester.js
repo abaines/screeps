@@ -23,7 +23,7 @@ function transfer(creep, target)
 
 function findStructuresThatNeedEnergy(room, structureType)
 {
-	var targets = room.find(FIND_STRUCTURES,
+	var targets = room.find(FIND_MY_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
@@ -74,6 +74,10 @@ var roleHarvester =
 			}
 			else if (h == OK || h == ERR_BUSY)
 			{}
+			else if (h == ERR_NOT_ENOUGH_RESOURCES)
+			{
+				console.log("The target does not contain any harvestable energy or mineral.");
+			}
 			else
 			{
 				console.log("harvest return:", h)

@@ -2,12 +2,14 @@
 
 var roleHarvester = require('role.harvester');
 var spawnSpawning = require('spawn.spawning');
+var towers = require('towers');
 
 module.exports.loop = function ()
 {
 	var ph = Memory.previousHarvesters || 0;
 	var harvesters = roleHarvester.getHarvesters();
 
+	towers.run();
 	spawnSpawning.run(Game.spawns);
 
 	for (var name in Game.creeps)
