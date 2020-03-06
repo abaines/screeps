@@ -1,5 +1,7 @@
 // Kizrak
 
+'use strict';
+
 function _getHarvesters()
 {
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');

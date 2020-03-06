@@ -1,5 +1,6 @@
 // Kizrak
 
+'use strict';
 
 function run_tower(tower)
 {

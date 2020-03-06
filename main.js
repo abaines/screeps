@@ -1,5 +1,7 @@
 // Kizrak
 
+'use strict';
+
 var roleHarvester = require('role.harvester');
 var spawnSpawning = require('spawn.spawning');
 var towers = require('towers');

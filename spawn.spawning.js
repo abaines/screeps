@@ -1,5 +1,7 @@
 // Kizrak
 
+'use strict';
+
 var roleHarvester = require('role.harvester');
 
 function spawnHarvester(spawn, body)
