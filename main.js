@@ -4,6 +4,26 @@ var roleHarvester = require('role.harvester');
 var spawnSpawning = require('spawn.spawning');
 var towers = require('towers');
 
+function log(msgType, msg)
+{
+	msg = msg || msgType;
+	Memory.logs = Memory.logs || {}
+	if (msgType in Memory.logs)
+	{
+		var time = Memory.logs[msgType];
+		if (Game.time - time > 150)
+		{
+			console.log(msg);
+			Memory.logs[msgType] = Game.time;
+		}
+	}
+	else
+	{
+		console.log(msg);
+		Memory.logs[msgType] = Game.time;
+	}
+}
+
 module.exports.loop = function ()
 {
 	var pph = Memory.previousPreviousHarvesters || 0;
@@ -14,8 +34,6 @@ module.exports.loop = function ()
 	towers.run();
 	spawnSpawning.run(Game.spawns);
 
-	var hasLogged = {};
-
 	for (var name in Game.creeps)
 	{
 		var creep = Game.creeps[name];
@@ -25,13 +43,7 @@ module.exports.loop = function ()
 
 			if (harvestResult && harvestResult.log)
 			{
-				var log = harvestResult.log;
-
-				if (!(log in hasLogged))
-				{
-					console.log(harvestResult.log);
-					hasLogged[log] = true;
-				}
+				log(harvestResult.log);
 			}
 		}
 		else
@@ -40,11 +52,9 @@ module.exports.loop = function ()
 		}
 	}
 
-	//console.log(Object.keys(Game.creeps).length);
-
-	if (Math.abs(harvesterCount - ph) > 1 || Math.abs(harvesterCount - pph) > 1 || Math.abs(pph - ph) > 1)
+	if (Math.abs(harvesterCount - ph) > 0 || Math.abs(harvesterCount - pph) > 0 || Math.abs(pph - ph) > 0)
 	{
-		console.log('Harvesters: ' + ph + ' --> ' + harvesterCount);
+		log('harvesterCount', 'Harvesters: ' + harvesterCount);
 	}
 	Memory.previousPreviousHarvesters = Memory.previousHarvesters;
 	Memory.previousHarvesters = harvesterCount;
@@ -54,7 +64,6 @@ module.exports.loop = function ()
 		if (!Game.creeps[name])
 		{
 			delete Memory.creeps[name];
-			//console.log('Clearing non-existing creep memory:', name);
 		}
 	}
 }
