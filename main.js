@@ -12,6 +12,8 @@ module.exports.loop = function ()
 	towers.run();
 	spawnSpawning.run(Game.spawns);
 
+	var hasLogged = {};
+
 	for (var name in Game.creeps)
 	{
 		var creep = Game.creeps[name];
@@ -21,7 +23,13 @@ module.exports.loop = function ()
 
 			if (harvestResult && harvestResult.log)
 			{
-				console.log(harvestResult.log);
+				var log = harvestResult.log;
+
+				if (!(log in hasLogged))
+				{
+					console.log(harvestResult.log);
+					hasLogged[log] = true;
+				}
 			}
 		}
 		else

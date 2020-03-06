@@ -72,15 +72,31 @@ var roleHarvester =
 				}
 				);
 			}
-			else if (h == OK || h == ERR_BUSY)
+			else if (h == OK)
 			{}
+			else if (h == ERR_BUSY)
+			{
+				var ret =
+				{
+					log: "The creep is still being spawned."
+				};
+				return ret;
+			}
 			else if (h == ERR_NOT_ENOUGH_RESOURCES)
 			{
-				console.log("The target does not contain any harvestable energy or mineral.");
+				var ret =
+				{
+					log: "The target does not contain any harvestable energy or mineral."
+				};
+				return ret;
 			}
 			else if (h == ERR_NO_BODYPART)
 			{
-				console.log("There are no WORK body parts in this creep’s body.");
+				var ret =
+				{
+					log: "There are no WORK body parts in this creep’s body."
+				};
+				return ret;
 			}
 			else
 			{
