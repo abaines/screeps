@@ -11,7 +11,7 @@ function log(msgType, msg)
 	if (msgType in Memory.logs)
 	{
 		var time = Memory.logs[msgType];
-		if (Game.time - time > 150)
+		if (Game.time - time > 300) // ~1 minute
 		{
 			console.log(msg);
 			Memory.logs[msgType] = Game.time;
@@ -54,7 +54,7 @@ module.exports.loop = function ()
 
 	if (Math.abs(harvesterCount - ph) > 0 || Math.abs(harvesterCount - pph) > 0 || Math.abs(pph - ph) > 0)
 	{
-		log('harvesterCount', 'Harvesters: ' + harvesterCount);
+		log('harvesterCount', 'Harvesters: ' + ph + ' --> ' + harvesterCount);
 	}
 	Memory.previousPreviousHarvesters = Memory.previousHarvesters;
 	Memory.previousHarvesters = harvesterCount;

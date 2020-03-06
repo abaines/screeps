@@ -25,7 +25,7 @@ function spawnHarvester(spawn, body)
 	}
 	else if (OK == spawnReturn)
 	{
-		console.log('Spawning new harvester:', newName, body);
+		console.log('Spawning:', newName, body);
 	}
 	else
 	{
