@@ -78,6 +78,10 @@ var roleHarvester =
 			{
 				console.log("The target does not contain any harvestable energy or mineral.");
 			}
+			else if (h == ERR_NO_BODYPART)
+			{
+				console.log("There are no WORK body parts in this creep’s body.");
+			}
 			else
 			{
 				console.log("harvest return:", h)
