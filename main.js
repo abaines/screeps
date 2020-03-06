@@ -6,8 +6,10 @@ var towers = require('towers');
 
 module.exports.loop = function ()
 {
+	var pph = Memory.previousPreviousHarvesters || 0;
 	var ph = Memory.previousHarvesters || 0;
 	var harvesters = roleHarvester.getHarvesters();
+	var harvesterCount = harvesters.length;
 
 	towers.run();
 	spawnSpawning.run(Game.spawns);
@@ -40,11 +42,12 @@ module.exports.loop = function ()
 
 	//console.log(Object.keys(Game.creeps).length);
 
-	if (harvesters.length != ph)
+	if (Math.abs(harvesterCount - ph) > 1 || Math.abs(harvesterCount - pph) > 1 || Math.abs(pph - ph) > 1)
 	{
-		console.log('Harvesters: ' + ph + ' --> ' + harvesters.length);
+		console.log('Harvesters: ' + ph + ' --> ' + harvesterCount);
 	}
-	Memory.previousHarvesters = harvesters.length;
+	Memory.previousPreviousHarvesters = Memory.previousHarvesters;
+	Memory.previousHarvesters = harvesterCount;
 
 	for (var name in Memory.creeps)
 	{
