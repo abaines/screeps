@@ -19,15 +19,19 @@ function run_tower(tower, injuredStructure)
 		return;
 	}
 
-	var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
-		{
-			filter: (structure) => structure.hitsMax - structure.hits > 1000
-		}
-		);
-
-	if (closestDamagedStructure)
+	if (tower.store.getFreeCapacity(RESOURCE_ENERGY) == 0)
 	{
-		tower.repair(closestDamagedStructure);
+		var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
+			{
+				filter: (structure) => structure.hitsMax - structure.hits > 1000
+			}
+			);
+
+		if (closestDamagedStructure)
+		{
+			var repairResult = tower.repair(closestDamagedStructure);
+			console.log(closestDamagedStructure);
+		}
 	}
 }
 
