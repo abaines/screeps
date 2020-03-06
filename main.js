@@ -17,7 +17,12 @@ module.exports.loop = function ()
 		var creep = Game.creeps[name];
 		if (creep.memory.role == 'harvester')
 		{
-			roleHarvester.run(creep);
+			var harvestResult = roleHarvester.run(creep);
+
+			if (harvestResult && harvestResult.log)
+			{
+				console.log(harvestResult.log);
+			}
 		}
 		else
 		{

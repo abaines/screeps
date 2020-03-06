@@ -84,7 +84,11 @@ var roleHarvester =
 			}
 			else
 			{
-				console.log("harvest return:", h)
+				var ret =
+				{
+					"log": ("creep.harvest = " + h)
+				};
+				return ret;
 			}
 		}
 		else //if (creep.memory.mode == 2)
