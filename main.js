@@ -3,6 +3,7 @@
 'use strict';
 
 var roleHarvester = require('role.harvester');
+var roleClaimer = require('role.claim');
 var spawnSpawning = require('spawn.spawning');
 var towers = require('towers');
 
@@ -50,7 +51,7 @@ module.exports.loop = function ()
 		}
 		else if (creep.memory.role == 'claimer')
 		{
-			// TODO: Claim
+			roleClaimer.run(creep);
 		}
 		else
 		{
