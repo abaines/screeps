@@ -8,7 +8,7 @@ function _getHarvesters()
 	return harvesters;
 }
 
-function transfer(creep, target)
+function smartTransfer(creep, target)
 {
 	if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
 	{
@@ -23,18 +23,98 @@ function transfer(creep, target)
 	}
 }
 
-function findStructuresThatNeedEnergy(room, structureType)
+function findStructuresThatNeedEnergy(creep, structureType)
 {
-	var targets = room.find(FIND_MY_STRUCTURES,
+	var room = creep.room;
+
+	var target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
-				return (structure.structureType == structureType) &&
-				structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+				return (structure.structureType == structureType) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
 			}
 		}
 		);
-	return targets;
+
+	return target;
+}
+
+function smartHarvest(creep, source)
+{
+	var harvestResult = creep.harvest(source);
+
+	if (harvestResult == ERR_NOT_IN_RANGE)
+	{
+		creep.moveTo(source,
+		{
+			visualizePathStyle:
+			{
+				stroke: '#ffaa00'
+			}
+		}
+		);
+	}
+	else if (harvestResult == OK)
+	{}
+	else if (harvestResult == ERR_BUSY)
+	{
+		var ret =
+		{
+			log: "The creep is still being spawned."
+		};
+		return ret;
+	}
+	else if (harvestResult == ERR_NOT_ENOUGH_RESOURCES)
+	{
+		var ret =
+		{
+			log: "The target does not contain any harvestable energy or mineral."
+		};
+		return ret;
+	}
+	else if (harvestResult == ERR_NO_BODYPART)
+	{
+		var ret =
+		{
+			log: "There are no WORK body parts in this creep’s body."
+		};
+		return ret;
+	}
+	else
+	{
+		var ret =
+		{
+			"log": ("creep.harvest = " + harvestResult)
+		};
+		return ret;
+	}
+}
+
+function gotoFlag(creep, flag)
+{
+	var range = creep.pos.getRangeTo(flag);
+	if (range > 1)
+	{
+		var moveReturn = creep.moveTo(flag,
+			{
+				visualizePathStyle:
+				{
+					stroke: '#ffaa00'
+				}
+			}
+			);
+		creep.say(creep.pos.x + '  ' + creep.pos.y + '  ' + range);
+	}
+}
+
+function findAndGotoFlag(creep)
+{
+	var flags = Game.flags;
+	if (Object.keys(flags).length > 0)
+	{
+		var flag = flags[Object.keys(flags)[0]];
+		gotoFlag(creep, flag);
+	}
 }
 
 var roleHarvester =
@@ -49,35 +129,17 @@ var roleHarvester =
 			return;
 		}
 
-		if (creep.store.getUsedCapacity() == 0 && creep.ticksToLive < 1500 / 9)
-		{
-			var flags = creep.room.find(FIND_FLAGS);
-			var flags = Game.flags;
-			if (Object.keys(flags).length > 0)
-			{
-				var flag = flags[Object.keys(flags)[0]];
-				var range = creep.pos.getRangeTo(flag);
-				if (range > 1)
-				{
-					var moveReturn = creep.moveTo(flag,
-						{
-							visualizePathStyle:
-							{
-								stroke: '#ffaa00'
-							}
-						}
-						);
-				}
-				// TODO: make harvest-source a function
-				creep.say(creep.pos.x + '  ' + creep.pos.y + '  ' + range);
-			}
-			return;
-		}
-
 		if (creep.store.getUsedCapacity() == 0 && creep.memory.mode == null)
 		{
 			var sources = creep.room.find(FIND_SOURCES_ACTIVE);
 			var item = sources[Math.floor(Math.random() * sources.length)];
+
+			if (item == null)
+			{
+				findAndGotoFlag(creep);
+				return;
+			}
+
 			creep.memory.mode = item.id;
 		}
 		if (creep.store.getFreeCapacity() == 0)
@@ -88,71 +150,26 @@ var roleHarvester =
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
-			var h = creep.harvest(source);
-			if (h == ERR_NOT_IN_RANGE)
-			{
-				creep.moveTo(source,
-				{
-					visualizePathStyle:
-					{
-						stroke: '#ffaa00'
-					}
-				}
-				);
-			}
-			else if (h == OK)
-			{}
-			else if (h == ERR_BUSY)
-			{
-				var ret =
-				{
-					log: "The creep is still being spawned."
-				};
-				return ret;
-			}
-			else if (h == ERR_NOT_ENOUGH_RESOURCES)
-			{
-				var ret =
-				{
-					log: "The target does not contain any harvestable energy or mineral."
-				};
-				return ret;
-			}
-			else if (h == ERR_NO_BODYPART)
-			{
-				var ret =
-				{
-					log: "There are no WORK body parts in this creep’s body."
-				};
-				return ret;
-			}
-			else
-			{
-				var ret =
-				{
-					"log": ("creep.harvest = " + h)
-				};
-				return ret;
-			}
+			smartHarvest(creep, source);
 		}
-		else //if (creep.memory.mode == 2)
+		else // if (creep.memory.mode == null)
 		{
-			var targets = findStructuresThatNeedEnergy(creep.room, STRUCTURE_TOWER);
-			if (targets.length > 0)
+			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_TOWER);
+			if (target != null)
 			{
-				return transfer(creep, targets[0]);
+				return smartTransfer(creep, target);
 			}
 
-			var targets = findStructuresThatNeedEnergy(creep.room, STRUCTURE_EXTENSION);
-			if (targets.length > 0)
+			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
+			if (target != null)
 			{
-				return transfer(creep, targets[0]);
+				return smartTransfer(creep, target);
 			}
 
-			var targets = findStructuresThatNeedEnergy(creep.room, STRUCTURE_SPAWN);
-			if (targets.length > 0 && _getHarvesters().length < 12)
+			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
+			if (target != null)
 			{
-				return transfer(creep, targets[0]);
+				return smartTransfer(creep, target);
 			}
 
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
