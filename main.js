@@ -7,6 +7,16 @@ var roleClaimer = require('role.claim');
 var roleTower = require('role.tower');
 var spawnSpawning = require('spawn.spawning');
 
+if (typeof script_init !== 'undefined')
+{
+	// the variable is defined
+}
+else
+{
+	console.log("================================================================================");
+	var script_init = true;
+}
+
 function log(msgType, msg)
 {
 	msg = msg || msgType;
