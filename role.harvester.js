@@ -216,11 +216,23 @@ var roleHarvester =
 			return;
 		}
 
+		var controlRoomCreepCount = {};
+
 		Object.keys(Game.structures).forEach(function (id)
 		{
-			console.log(id, Game.structures[id], Game.structures[id].structureType);
+			var structure = Game.structures[id];
+			var structureType = structure.structureType;
+
+			console.log(id, structure, structureType);
+
+			if ("controller" == structureType)
+			{
+				controlRoomCreepCount[structure] = structure.room.find(FIND_MY_CREEPS);
+			}
 		}
 		);
+
+		console.log(JSON.stringify(controlRoomCreepCount));
 
 		if (true)
 		{
