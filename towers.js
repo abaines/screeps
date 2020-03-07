@@ -30,7 +30,7 @@ function run_tower(tower, injuredStructure)
 		if (closestDamagedStructure)
 		{
 			var repairResult = tower.repair(closestDamagedStructure);
-			console.log(closestDamagedStructure);
+			console.log('closestDamagedStructure', closestDamagedStructure);
 		}
 	}
 }
@@ -47,7 +47,7 @@ function getInjuredStructure()
 
 		if (hits < hitsMax)
 		{
-			console.log(structure);
+			console.log('getInjuredStructure', structure);
 			return structure;
 		}
 	}

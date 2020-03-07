@@ -48,9 +48,13 @@ module.exports.loop = function ()
 				log(harvestResult.log);
 			}
 		}
+		else if (creep.memory.role == 'claimer')
+		{
+			// TODO: Claim
+		}
 		else
 		{
-			console.log(creep.name);
+			console.log("unknown role", creep.name, creep.memory.role);
 		}
 	}
 
@@ -82,6 +86,6 @@ function killOld()
 			old = creep;
 		}
 	}
-	console.log(old.name, old.ticksToLive);
+	console.log('killOld', old.name, old.ticksToLive);
 	old.suicide();
 }
