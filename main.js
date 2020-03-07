@@ -37,12 +37,14 @@ module.exports.loop = function ()
 	roleTower.run();
 	spawnSpawning.run(Game.spawns);
 
+	var harvesterTickData = {};
+
 	for (var name in Game.creeps)
 	{
 		var creep = Game.creeps[name];
 		if (creep.memory.role == 'harvester')
 		{
-			var harvestResult = roleHarvester.run(creep);
+			var harvestResult = roleHarvester.run(creep, harvesterTickData);
 
 			if (harvestResult && harvestResult.log)
 			{

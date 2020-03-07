@@ -123,12 +123,14 @@ var roleHarvester =
 	findAndGotoFlag: _findAndGotoFlag,
 
 	/** @param {Creep} creep **/
-	run: function (creep)
+	run: function (creep, harvesterTickData)
 	{
 		if (creep.spawning)
 		{
 			return;
 		}
+
+		harvesterTickData.count = 1 + (harvesterTickData.count || 0);
 
 		// planning phase
 		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
@@ -140,10 +142,9 @@ var roleHarvester =
 			{
 				creep.memory.mode = item.id;
 			}
-			else if (creep.room.find(FIND_CONSTRUCTION_SITES).length == 0)
+			else
 			{
-				_findAndGotoFlag(creep);
-				return;
+				creep.memory.mode = null;
 			}
 		}
 		if (creep.store.getFreeCapacity() == 0)
@@ -156,8 +157,10 @@ var roleHarvester =
 		{
 			var source = Game.getObjectById(creep.memory.mode);
 			smartHarvest(creep, source);
+			return;
 		}
-		else if (creep.store.getUsedCapacity() > 0)
+
+		if (creep.store.getUsedCapacity() > 0)
 		{
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_TOWER);
 			if (target != null)
@@ -210,8 +213,16 @@ var roleHarvester =
 				}
 				);
 			}
+			return;
 		}
-		else
+
+		Object.keys(Game.structures).forEach(function (id)
+		{
+			console.log(id, Game.structures[id], Game.structures[id].structureType);
+		}
+		);
+
+		if (true)
 		{
 			console.log("Creep doesn't have anything to do.");
 		}
