@@ -27,7 +27,7 @@ function spawnHarvester(spawn, body)
 	}
 	else if (OK == spawnReturn)
 	{
-		console.log('Spawning:', newName, body);
+		console.log('Spawning:', newName, body, spawn.room.energyCapacityAvailable);
 	}
 	else
 	{
@@ -43,11 +43,11 @@ var spawnSpawning =
 		var energyCapacityAvailable = Game.spawns['Spawn1'].room.energyCapacityAvailable;
 		var energyAvailable = Game.spawns['Spawn1'].room.energyAvailable;
 
-		if (harvesters.length < 10 && energyAvailable >= 1250)
+		if (harvesters.length < 11 && energyAvailable >= 1200)
 		{
-			spawnHarvester(Game.spawns['Spawn1'], [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]);
+			spawnHarvester(Game.spawns['Spawn1'], [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]);
 		}
-		else if (harvesters.length < 10 && energyAvailable >= 800 && energyCapacityAvailable < 1250)
+		else if (harvesters.length < 10 && energyAvailable >= 800 && energyCapacityAvailable < 1200)
 		{
 			spawnHarvester(Game.spawns['Spawn1'], [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]);
 		}
