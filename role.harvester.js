@@ -107,7 +107,7 @@ function gotoFlag(creep, flag)
 	}
 }
 
-function findAndGotoFlag(creep)
+function _findAndGotoFlag(creep)
 {
 	var flags = Game.flags;
 	if (Object.keys(flags).length > 0)
@@ -120,6 +120,7 @@ function findAndGotoFlag(creep)
 var roleHarvester =
 {
 	getHarvesters: _getHarvesters,
+	findAndGotoFlag: _findAndGotoFlag,
 
 	/** @param {Creep} creep **/
 	run: function (creep)
@@ -136,7 +137,7 @@ var roleHarvester =
 
 			if (item == null)
 			{
-				findAndGotoFlag(creep);
+				_findAndGotoFlag(creep);
 				return;
 			}
 
