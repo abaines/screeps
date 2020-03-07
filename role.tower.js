@@ -2,6 +2,24 @@
 
 'use strict';
 
+function repairRoomStructureType(tower, structureType, percent)
+{
+	var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				return (structure.hits / structure.hitsMax < percent) && (structureType == structure.structureType);
+			}
+		}
+		);
+
+	if (closestDamagedStructure)
+	{
+		var repairResult = tower.repair(closestDamagedStructure);
+		console.log('repairRoomStructureType', closestDamagedStructure, repairResult);
+	}
+}
+
 function run_tower(tower, injuredStructure)
 {
 	var hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
@@ -21,17 +39,9 @@ function run_tower(tower, injuredStructure)
 
 	if (tower.store.getFreeCapacity(RESOURCE_ENERGY) == 0)
 	{
-		var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
-			{
-				filter: (structure) => structure.hitsMax - structure.hits > 1000
-			}
-			);
-
-		if (closestDamagedStructure)
-		{
-			var repairResult = tower.repair(closestDamagedStructure);
-			console.log('closestDamagedStructure', closestDamagedStructure);
-		}
+		repairRoomStructureType(tower, "road", 0.5);
+		repairRoomStructureType(tower, "constructedWall", 0.0001);
+		repairRoomStructureType(tower, "rampart", 0.001);
 	}
 }
 
@@ -45,9 +55,9 @@ function getInjuredStructure()
 		var hits = structure.hits;
 		var hitsMax = structure.hitsMax;
 
-		if (hits < hitsMax)
+		if (hits < hitsMax && structureType != "rampart")
 		{
-			console.log('getInjuredStructure', structure);
+			console.log('getInjuredStructure', structure, structureType);
 			return structure;
 		}
 	}

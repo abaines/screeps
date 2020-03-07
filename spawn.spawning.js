@@ -21,6 +21,10 @@ function spawnCreep(spawn, role, body)
 	{
 		console.log("ERR_NOT_ENOUGH_ENERGY", spawnReturn);
 	}
+	else if (ERR_BUSY == spawnReturn && spawn.spawning)
+	{
+		// ignore
+	}
 	else if (ERR_BUSY == spawnReturn)
 	{
 		console.log('The spawn is already in process of spawning another creep.', role);
