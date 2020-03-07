@@ -130,7 +130,8 @@ var roleHarvester =
 			return;
 		}
 
-		if (creep.store.getUsedCapacity() == 0 && creep.memory.mode == null)
+		// planning phase
+		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
 		{
 			var sources = creep.room.find(FIND_SOURCES_ACTIVE);
 			var item = sources[Math.floor(Math.random() * sources.length)];
@@ -150,6 +151,7 @@ var roleHarvester =
 			creep.memory.mode = null
 		}
 
+		// action phase
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
