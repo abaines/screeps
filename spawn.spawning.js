@@ -60,7 +60,7 @@ var spawnSpawning =
 		var energyCapacityAvailable = Game.spawns['Spawn1'].room.energyCapacityAvailable;
 		var energyAvailable = Game.spawns['Spawn1'].room.energyAvailable;
 
-		if (harvesters.length < 15 && energyAvailable >= 2300 && energyCapacityAvailable < Infinity)
+		if (harvesters.length < 3 * 6 && energyAvailable >= 2300 && energyCapacityAvailable < Infinity)
 		{
 			spawnCreep(Game.spawns['Spawn1'], 'harvester',
 				[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
