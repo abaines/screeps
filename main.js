@@ -73,7 +73,7 @@ module.exports.loop = function ()
 
 	if (harvesterTickData.bored)
 	{
-		console.log('harvesterTickData.bored', "harvesterTickData.bored: " + harvesterTickData.bored);
+		log("harvesterTickData.bored: " + harvesterTickData.bored);
 	}
 
 	if (Math.abs(harvesterCount - ph) > 0 || Math.abs(harvesterCount - pph) > 0 || Math.abs(pph - ph) > 0)
