@@ -135,13 +135,15 @@ var roleHarvester =
 			var sources = creep.room.find(FIND_SOURCES_ACTIVE);
 			var item = sources[Math.floor(Math.random() * sources.length)];
 
-			if (item == null)
+			if (item != null)
+			{
+				creep.memory.mode = item.id;
+			}
+			else if (creep.room.find(FIND_CONSTRUCTION_SITES).length == 0)
 			{
 				_findAndGotoFlag(creep);
 				return;
 			}
-
-			creep.memory.mode = item.id;
 		}
 		if (creep.store.getFreeCapacity() == 0)
 		{
@@ -156,19 +158,19 @@ var roleHarvester =
 		else // if (creep.memory.mode == null)
 		{
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_TOWER);
-			if (target != null)
+			if (target != null && creep.store.getUsedCapacity() > 0)
 			{
 				return smartTransfer(creep, target);
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
-			if (target != null)
+			if (target != null && creep.store.getUsedCapacity() > 0)
 			{
 				return smartTransfer(creep, target);
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
-			if (target != null)
+			if (target != null && creep.store.getUsedCapacity() > 0)
 			{
 				return smartTransfer(creep, target);
 			}
