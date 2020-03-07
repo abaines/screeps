@@ -88,18 +88,21 @@ var spawnSpawning =
 			spawnCreep(Game.spawns['Spawn1'], 'harvester', [WORK, CARRY, MOVE]);
 		}
 
-		var claimers = 0;
-		for (var name in Game.creeps)
+		if (false)
 		{
-			var creep = Game.creeps[name];
-			if (bodyScan(creep, "claim"))
+			var claimers = 0;
+			for (var name in Game.creeps)
 			{
-				claimers = 1 + claimers
+				var creep = Game.creeps[name];
+				if (bodyScan(creep, "claim"))
+				{
+					claimers = 1 + claimers
+				}
 			}
-		}
-		if (claimers == 0 && energyAvailable >= 900 && energyCapacityAvailable < Infinity)
-		{
-			spawnCreep(Game.spawns['Spawn1'], 'claimer', [CLAIM, WORK, CARRY, MOVE, MOVE, MOVE]);
+			if (claimers == 0 && energyAvailable >= 900 && energyCapacityAvailable < Infinity)
+			{
+				spawnCreep(Game.spawns['Spawn1'], 'claimer', [CLAIM, WORK, CARRY, MOVE, MOVE, MOVE]);
+			}
 		}
 
 		if (Game.spawns['Spawn1'].spawning)
