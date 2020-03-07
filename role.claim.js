@@ -10,19 +10,24 @@ var claimCreep =
 	{
 		if (creep.room.controller)
 		{
+			creep.say("c.r.c");
 			var controller = creep.room.controller;
-			if (controller.level == 0 && controller.my == false)
+			if (controller.level == 0 && !controller.my)
 			{
-				if (creep.claimController(controller) == ERR_NOT_IN_RANGE)
+				creep.say("!my");
+				var claimResult = creep.claimController(controller);
+				creep.say('c' + claimResult);
+				if (claimResult == ERR_NOT_IN_RANGE)
 				{
-					creep.moveTo(controller,
-					{
-						visualizePathStyle:
+					var moveResult = creep.moveTo(controller,
 						{
-							stroke: '#ffffff'
+							visualizePathStyle:
+							{
+								stroke: '#ffffff'
+							}
 						}
-					}
-					);
+						);
+					creep.say('m' + moveResult);
 				}
 			}
 		}
@@ -33,10 +38,12 @@ var claimCreep =
 			var flag = flags[Object.keys(flags)[0]];
 			if (flag.room != creep.room)
 			{
+				creep.say("flag");
 				roleHarvester.findAndGotoFlag(creep);
 			}
 			else
 			{
+				creep.say("roleHarvester");
 				roleHarvester.run(creep);
 			}
 		}
