@@ -23,7 +23,7 @@ function spawnCreep(spawn, role, body)
 	}
 	else if (ERR_BUSY == spawnReturn)
 	{
-		console.log("ERR_BUSY", spawnReturn);
+		console.log('The spawn is already in process of spawning another creep.', role);
 	}
 	else if (OK == spawnReturn)
 	{
