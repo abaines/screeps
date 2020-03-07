@@ -155,22 +155,10 @@ var roleHarvester =
 			var source = Game.getObjectById(creep.memory.mode);
 			smartHarvest(creep, source);
 		}
-		else // if (creep.memory.mode == null)
+		else if (creep.store.getUsedCapacity() > 0)
 		{
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_TOWER);
-			if (target != null && creep.store.getUsedCapacity() > 0)
-			{
-				return smartTransfer(creep, target);
-			}
-
-			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
-			if (target != null && creep.store.getUsedCapacity() > 0)
-			{
-				return smartTransfer(creep, target);
-			}
-
-			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
-			if (target != null && creep.store.getUsedCapacity() > 0)
+			if (target != null)
 			{
 				return smartTransfer(creep, target);
 			}
@@ -178,7 +166,8 @@ var roleHarvester =
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if (targets.length)
 			{
-				if (creep.build(targets[0]) == ERR_NOT_IN_RANGE)
+				var buildResult = creep.build(targets[0]);
+				if (buildResult == ERR_NOT_IN_RANGE)
 				{
 					creep.moveTo(targets[0],
 					{
@@ -189,7 +178,23 @@ var roleHarvester =
 					}
 					);
 				}
+				else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
+				{
+					console.log('The creep does not have any carried energy.');
+				}
 				return;
+			}
+
+			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
+			if (target != null)
+			{
+				return smartTransfer(creep, target);
+			}
+
+			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
+			if (target != null)
+			{
+				return smartTransfer(creep, target);
 			}
 
 			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
@@ -203,7 +208,10 @@ var roleHarvester =
 				}
 				);
 			}
-
+		}
+		else
+		{
+			console.log("Creep doesn't have anything to do.");
 		}
 	},
 
