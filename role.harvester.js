@@ -130,8 +130,6 @@ var roleHarvester =
 			return;
 		}
 
-		harvesterTickData.count = 1 + (harvesterTickData.count || 0);
-
 		// planning phase
 		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
 		{
@@ -217,27 +215,57 @@ var roleHarvester =
 		}
 
 		var controlRoomCreepCount = {};
+		var leastRoom =
+		{
+			length: Infinity
+		};
 
 		Object.keys(Game.structures).forEach(function (id)
 		{
 			var structure = Game.structures[id];
 			var structureType = structure.structureType;
-
-			console.log(id, structure, structureType);
+			var room = structure.room;
+			var length = room.find(FIND_MY_CREEPS).length;
 
 			if ("controller" == structureType)
 			{
-				controlRoomCreepCount[structure] = structure.room.find(FIND_MY_CREEPS);
+				controlRoomCreepCount[structure.room] =
+				{
+					length: length,
+					controller: structure
+				};
+
+				if (length < leastRoom.length)
+				{
+					leastRoom = controlRoomCreepCount[structure.room];
+				}
 			}
 		}
 		);
 
-		console.log(JSON.stringify(controlRoomCreepCount));
-
-		if (true)
+		var creepRoomCount = creep.room.find(FIND_MY_CREEPS).length;
+		if (creepRoomCount > leastRoom.length)
 		{
-			console.log("Creep doesn't have anything to do.");
+			var moveResult = creep.moveTo(leastRoom.controller,
+				{
+					visualizePathStyle:
+					{
+						stroke: '#ffaa00'
+					}
+				}
+				);
+			if (OK == moveResult || ERR_TIRED == moveResult)
+			{
+				creep.say(creepRoomCount + " > " + leastRoom.length);
+			}
+			else
+			{
+				console.log("creep room transfer", moveResult);
+			}
+			return;
 		}
+
+		harvesterTickData.bored = (harvesterTickData.bored || 0) + 1;
 	},
 
 };
