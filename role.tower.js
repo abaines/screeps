@@ -39,8 +39,8 @@ function run_tower(tower, injuredStructure)
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
 		repairRoomStructureType(tower, "road", 0.5);
-		repairRoomStructureType(tower, "constructedWall", 0.00001);
 		repairRoomStructureType(tower, "rampart", 0.001);
+		repairRoomStructureType(tower, "constructedWall", 0.0001);
 	}
 }
 
