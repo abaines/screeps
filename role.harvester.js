@@ -165,23 +165,44 @@ var roleHarvester =
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if (targets.length)
 			{
-				var buildResult = creep.build(targets[0]);
-				if (buildResult == ERR_NOT_IN_RANGE)
-				{
-					creep.moveTo(targets[0],
+				var constructionCreeps = creep.room.find(FIND_MY_CREEPS,
 					{
-						visualizePathStyle:
+						filter: (creepFind) =>
 						{
-							stroke: '#ffffff'
+							return creepFind.memory.construction;
 						}
 					}
 					);
-				}
-				else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
+
+				if (constructionCreeps.length > 1)
 				{
-					console.log('The creep does not have any carried energy.');
+					console.log('constructionCreeps.length', constructionCreeps.length);
+					creep.memory.construction = false;
+					return;
 				}
-				return;
+
+				if (creep.memory.construction || constructionCreeps.length == 0)
+				{
+					var buildResult = creep.build(targets[0]);
+					if (buildResult == ERR_NOT_IN_RANGE)
+					{
+						creep.moveTo(targets[0],
+						{
+							visualizePathStyle:
+							{
+								stroke: '#ffffff'
+							}
+						}
+						);
+					}
+					else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
+					{
+						console.log('The creep does not have any carried energy.');
+					}
+					creep.memory.construction = true;
+					creep.say("🚧");
+					return;
+				}
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
