@@ -26,7 +26,7 @@ function repairRoomStructureType(tower, structureType, percent)
 		for (var idx in damagedStructures)
 		{
 			var damaged = damagedStructures[idx];
-			console.log(JSON.stringify(damaged));
+
 			if (damaged.hits < weakest.hits)
 			{
 				weakest = damaged;
@@ -57,8 +57,8 @@ function run_tower(tower, injuredStructure)
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
 		repairRoomStructureType(tower, "road", 0.5);
-		repairRoomStructureType(tower, "rampart", 0.01);
 		repairRoomStructureType(tower, "constructedWall", 0.001);
+		repairRoomStructureType(tower, "rampart", 0.01);
 	}
 }
 
