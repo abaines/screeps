@@ -127,7 +127,11 @@ var spawnSpawning =
 	{
 		var harvesters = roleHarvester.getHarvesters();
 
-		spawnLogic(Game.spawns['Spawn1'], harvesters);
+		for (var hash in Game.spawns)
+		{
+			var spawn = Game.spawns[hash];
+			spawnLogic(spawn, harvesters);
+		}
 	}
 }
 
