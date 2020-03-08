@@ -93,6 +93,17 @@ module.exports.loop = function ()
 	}
 	);
 
+	for (var idx in Game.rooms)
+	{
+		var room = Game.rooms[idx];
+		var energyAvailable = room.energyAvailable;
+		room.visual.text(energyAvailable, 0, 49,
+		{
+			align: 'left'
+		}
+		);
+	}
+
 	for (var name in Memory.creeps)
 	{
 		if (!Game.creeps[name])
