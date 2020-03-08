@@ -2,6 +2,8 @@
 
 'use strict';
 
+var roleHarvester = require('role.harvester');
+
 function repairRoomStructureType(tower, structureType, percent)
 {
 	var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
@@ -62,6 +64,22 @@ function getInjuredStructure()
 	}
 }
 
+function getEnergyFromCreeps(tower)
+{
+	var creep = tower.pos.findClosestByRange(FIND_MY_CREEPS,
+		{
+			filter: (creep) =>
+			{
+				return (creep.store.getUsedCapacity() > 0);
+			}
+		}
+		);
+	if (creep)
+	{
+		roleHarvester.smartTransfer(creep, tower);
+	}
+}
+
 var towerLogic =
 {
 	run: function ()
@@ -77,6 +95,20 @@ var towerLogic =
 			if ("tower" == structureType)
 			{
 				run_tower(structure, injuredStructure);
+			}
+		}
+	},
+	creepTransfer: function ()
+	{
+		for (var name in Game.structures)
+		{
+			var structure = Game.structures[name];
+
+			var structureType = structure.structureType;
+
+			if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0)
+			{
+				getEnergyFromCreeps(structure);
 			}
 		}
 	},

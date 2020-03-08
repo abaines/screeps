@@ -8,7 +8,7 @@ function _getHarvesters()
 	return harvesters;
 }
 
-function smartTransfer(creep, target)
+function _smartTransfer(creep, target)
 {
 	if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
 	{
@@ -39,7 +39,7 @@ function findStructuresThatNeedEnergy(creep, structureType)
 	return target;
 }
 
-function smartHarvest(creep, source)
+function _smartHarvest(creep, source)
 {
 	var harvestResult = creep.harvest(source);
 
@@ -121,6 +121,8 @@ var roleHarvester =
 {
 	getHarvesters: _getHarvesters,
 	findAndGotoFlag: _findAndGotoFlag,
+	smartHarvest: _smartHarvest,
+	smartTransfer: _smartTransfer,
 
 	/** @param {Creep} creep **/
 	run: function (creep, harvesterTickData)
@@ -154,18 +156,12 @@ var roleHarvester =
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
-			smartHarvest(creep, source);
+			_smartHarvest(creep, source);
 			return;
 		}
 
 		if (creep.store.getUsedCapacity() > 0)
 		{
-			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_TOWER);
-			if (target != null)
-			{
-				return smartTransfer(creep, target);
-			}
-
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			if (targets.length)
 			{
@@ -191,13 +187,13 @@ var roleHarvester =
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
 			if (target != null)
 			{
-				return smartTransfer(creep, target);
+				return _smartTransfer(creep, target);
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
 			if (target != null)
 			{
-				return smartTransfer(creep, target);
+				return _smartTransfer(creep, target);
 			}
 
 			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)

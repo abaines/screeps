@@ -71,6 +71,8 @@ module.exports.loop = function ()
 		}
 	}
 
+	roleTower.creepTransfer();
+
 	if (harvesterTickData.bored)
 	{
 		log("harvesterTickData.bored: " + harvesterTickData.bored);
