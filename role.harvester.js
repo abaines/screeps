@@ -140,6 +140,46 @@ function _findAndGotoFlag(creep)
 	}
 }
 
+function sourceMostEnergy(room)
+{
+	var sources = room.find(FIND_SOURCES_ACTIVE);
+
+	var most =
+	{
+		energy: -1
+	};
+
+	for (var idx in sources)
+	{
+		var source = sources[idx];
+		if (source.energy > most.energy)
+		{
+			most = source;
+		}
+	}
+
+	if (most.energy > 0)
+	{
+		return most;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+function pickSource(creep)
+{
+	var sourceBestOptions = []
+
+	sourceBestOptions.push(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+	sourceBestOptions.push(sourceMostEnergy(creep.room));
+
+	var source = sourceBestOptions[Math.floor(Math.random() * sourceBestOptions.length)];
+
+	return source;
+}
+
 var roleHarvester =
 {
 	getHarvesters: _getHarvesters,
@@ -158,12 +198,11 @@ var roleHarvester =
 		// planning phase
 		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
 		{
-			var sources = creep.room.find(FIND_SOURCES_ACTIVE);
-			var item = sources[Math.floor(Math.random() * sources.length)];
+			var source = pickSource(creep);
 
-			if (item != null)
+			if (source != null)
 			{
-				creep.memory.mode = item.id;
+				creep.memory.mode = source.id;
 			}
 			else
 			{
