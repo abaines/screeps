@@ -6,7 +6,7 @@ var roleHarvester = require('role.harvester');
 
 function repairRoomStructureType(tower, structureType, percent)
 {
-	var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES,
+	var damagedStructures = tower.room.find(FIND_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
@@ -15,9 +15,25 @@ function repairRoomStructureType(tower, structureType, percent)
 		}
 		);
 
-	if (closestDamagedStructure)
+	if (damagedStructures.length > 0)
 	{
-		var repairResult = tower.repair(closestDamagedStructure);
+
+		var weakest =
+		{
+			hits: Infinity
+		};
+
+		for (var idx in damagedStructures)
+		{
+			var damaged = damagedStructures[idx];
+			console.log(JSON.stringify(damaged));
+			if (damaged.hits < weakest.hits)
+			{
+				weakest = damaged;
+			}
+		}
+
+		var repairResult = tower.repair(weakest);
 	}
 }
 
@@ -73,8 +89,6 @@ function getEnergyFromCreeps(tower)
 				var isCreepFull = (creep.store.getFreeCapacity(RESOURCE_ENERGY) == 0);
 				var creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
 				var towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
-
-				console.log(isCreepFull, creepAvailable, towerNeed);
 
 				return isCreepFull && creepAvailable < towerNeed;
 			}
