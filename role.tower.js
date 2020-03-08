@@ -10,7 +10,18 @@ function repairRoomStructureType(tower, structureType, hits)
 		{
 			filter: (structure) =>
 			{
-				return (structure.hits < hits) && (structureType == structure.structureType);
+				if (structureType != structure.structureType)
+				{
+					return false;
+				}
+				else if (hits < 0)
+				{
+					return structure.hits < structure.hitsMax + hits;
+				}
+				else
+				{
+					return (structure.hits < hits);
+				}
 			}
 		}
 		);
@@ -56,7 +67,7 @@ function run_tower(tower, injuredStructure)
 
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
-		repairRoomStructureType(tower, "road", 5000 - (2 * 800));
+		repairRoomStructureType(tower, "road", -3 * 800);
 		repairRoomStructureType(tower, "constructedWall", 100_000);
 		repairRoomStructureType(tower, "rampart", 100_000);
 	}
