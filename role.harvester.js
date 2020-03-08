@@ -257,7 +257,8 @@ var roleHarvester =
 
 				if (creep.memory.construction || constructionCreeps.length == 0)
 				{
-					smartBuild(creep, targets[0]);
+					var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+					smartBuild(creep, target);
 					creep.memory.construction = true;
 					creep.say("👷");
 					return;
