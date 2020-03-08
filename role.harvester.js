@@ -90,6 +90,29 @@ function _smartHarvest(creep, source)
 	}
 }
 
+function smartBuild(creep, structure)
+{
+	var buildResult = creep.build(structure);
+
+	if (buildResult == ERR_NOT_IN_RANGE)
+	{
+		creep.moveTo(structure,
+		{
+			visualizePathStyle:
+			{
+				stroke: '#ffffff'
+			}
+		}
+		);
+	}
+	else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
+	{
+		console.log('The creep does not have any carried energy.');
+		return false;
+	}
+	return true;
+}
+
 function gotoFlag(creep, flag)
 {
 	var range = creep.pos.getRangeTo(flag);
@@ -163,6 +186,18 @@ var roleHarvester =
 		if (creep.store.getUsedCapacity() > 0)
 		{
 			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+
+			for (var idx in targets)
+			{
+				var structure = targets[idx];
+				if (structure.structureType == STRUCTURE_SPAWN)
+				{
+					smartBuild(creep, structure);
+					creep.say("🚧");
+					return;
+				}
+			}
+
 			if (targets.length)
 			{
 				var constructionCreeps = creep.room.find(FIND_MY_CREEPS,
@@ -183,24 +218,9 @@ var roleHarvester =
 
 				if (creep.memory.construction || constructionCreeps.length == 0)
 				{
-					var buildResult = creep.build(targets[0]);
-					if (buildResult == ERR_NOT_IN_RANGE)
-					{
-						creep.moveTo(targets[0],
-						{
-							visualizePathStyle:
-							{
-								stroke: '#ffffff'
-							}
-						}
-						);
-					}
-					else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
-					{
-						console.log('The creep does not have any carried energy.');
-					}
+					smartBuild(creep, targets[0]);
 					creep.memory.construction = true;
-					creep.say("🚧");
+					creep.say("👷");
 					return;
 				}
 			}
@@ -215,6 +235,28 @@ var roleHarvester =
 			if (target != null)
 			{
 				return _smartTransfer(creep, target);
+			}
+
+			for (var idx in targets)
+			{
+				var structure = targets[idx];
+				if (structure.structureType == STRUCTURE_RAMPART)
+				{
+					smartBuild(creep, structure);
+					creep.say("🚧");
+					return;
+				}
+			}
+
+			for (var idx in targets)
+			{
+				var structure = targets[idx];
+				if (structure.structureType == STRUCTURE_EXTENSION)
+				{
+					smartBuild(creep, structure);
+					creep.say("🚧");
+					return;
+				}
 			}
 
 			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
