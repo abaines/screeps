@@ -65,7 +65,15 @@ function spawnLogic(spawn, harvesters)
 				MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]// 10
 		);
 	}
-	else if (harvesters.length < 11 && energyAvailable >= 1200 && energyCapacityAvailable < 2300)
+	else if (harvesters.length < 3 * 6 && energyAvailable >= 2000 && energyCapacityAvailable < 2300)
+	{
+		spawnCreep(spawn, 'harvester',
+			[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 10
+				CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 10
+				MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]// 10
+		);
+	}
+	else if (harvesters.length < 11 && energyAvailable >= 1200 && energyCapacityAvailable < 2000)
 	{
 		spawnCreep(spawn, 'harvester',
 			[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]);
