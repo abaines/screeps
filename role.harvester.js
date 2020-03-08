@@ -260,8 +260,17 @@ var roleHarvester =
 		}
 		);
 
-		var creepRoomCount = creep.room.find(FIND_MY_CREEPS).length;
-		if (creepRoomCount > leastRoom.length)
+		var roomCreeps = creep.room.find(FIND_MY_CREEPS);
+		var youngest = true;
+		for (var idx in roomCreeps)
+		{
+			var otherCreep = roomCreeps[idx];
+			if (otherCreep.ticksToLive > creep.ticksToLive)
+			{
+				youngest = false;
+			}
+		}
+		if (youngest && roomCreeps.length > leastRoom.length)
 		{
 			var moveResult = creep.moveTo(leastRoom.controller,
 				{
@@ -273,7 +282,7 @@ var roleHarvester =
 				);
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
-				creep.say(creepRoomCount + " > " + leastRoom.length);
+				creep.say(roomCreeps.length + " > " + leastRoom.length);
 			}
 			else
 			{
@@ -281,6 +290,21 @@ var roleHarvester =
 			}
 			return;
 		}
+
+		var sources = creep.room.find(FIND_SOURCES);
+		var nextSource =
+		{
+			ticksToRegeneration: Infinity
+		};
+		for (var idx in sources)
+		{
+			var source = sources[idx];
+			if (source.ticksToRegeneration < nextSource.ticksToRegeneration)
+			{
+				nextSource = source;
+			}
+		}
+		var moveResult = creep.moveTo(nextSource);
 
 		harvesterTickData.bored = (harvesterTickData.bored || 0) + 1;
 	},
