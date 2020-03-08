@@ -27,7 +27,7 @@ function findStructuresThatNeedEnergy(creep, structureType)
 {
 	var room = creep.room;
 
-	var target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,
+	var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
 		{
 			filter: (structure) =>
 			{

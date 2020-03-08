@@ -93,7 +93,7 @@ function getInjuredStructure()
 
 function getEnergyFromCreeps(tower)
 {
-	var creep = tower.pos.findClosestByRange(FIND_MY_CREEPS,
+	var creep = tower.pos.findClosestByPath(FIND_MY_CREEPS,
 		{
 			filter: (creep) =>
 			{
