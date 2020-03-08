@@ -4,13 +4,13 @@
 
 var roleHarvester = require('role.harvester');
 
-function repairRoomStructureType(tower, structureType, percent)
+function repairRoomStructureType(tower, structureType, hits)
 {
 	var damagedStructures = tower.room.find(FIND_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
-				return (structure.hits / structure.hitsMax < percent) && (structureType == structure.structureType);
+				return (structure.hits < hits) && (structureType == structure.structureType);
 			}
 		}
 		);
@@ -56,9 +56,9 @@ function run_tower(tower, injuredStructure)
 
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
-		repairRoomStructureType(tower, "road", 0.5);
-		repairRoomStructureType(tower, "constructedWall", 0.001);
-		repairRoomStructureType(tower, "rampart", 0.01);
+		repairRoomStructureType(tower, "road", 5000 - (2 * 800));
+		repairRoomStructureType(tower, "constructedWall", 100_000);
+		repairRoomStructureType(tower, "rampart", 100_000);
 	}
 }
 
