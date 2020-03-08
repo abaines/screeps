@@ -70,13 +70,38 @@ function getEnergyFromCreeps(tower)
 		{
 			filter: (creep) =>
 			{
-				return (creep.store.getUsedCapacity() > 0);
+				var isCreepFull = (creep.store.getFreeCapacity(RESOURCE_ENERGY) == 0);
+				var creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
+				var towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
+
+				console.log(isCreepFull, creepAvailable, towerNeed);
+
+				return isCreepFull && creepAvailable < towerNeed;
 			}
 		}
 		);
 	if (creep)
 	{
 		roleHarvester.smartTransfer(creep, tower);
+		return true;
+	}
+}
+
+function perRoomEnergySteal(room)
+{
+	var structures = room.find(FIND_MY_STRUCTURES);
+	for (var idx in structures)
+	{
+		var structure = structures[idx];
+		var structureType = structure.structureType;
+
+		if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0)
+		{
+			if (getEnergyFromCreeps(structure))
+			{
+				return true;
+			}
+		}
 	}
 }
 
@@ -100,16 +125,9 @@ var towerLogic =
 	},
 	creepTransfer: function ()
 	{
-		for (var name in Game.structures)
+		for (var room in Game.rooms)
 		{
-			var structure = Game.structures[name];
-
-			var structureType = structure.structureType;
-
-			if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0)
-			{
-				getEnergyFromCreeps(structure);
-			}
+			perRoomEnergySteal(Game.rooms[room]);
 		}
 	},
 };
