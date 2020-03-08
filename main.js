@@ -80,10 +80,18 @@ module.exports.loop = function ()
 
 	if (Math.abs(harvesterCount - ph) > 0 || Math.abs(harvesterCount - pph) > 0 || Math.abs(pph - ph) > 0)
 	{
-		log('harvesterCount', 'Harvesters: ' + ph + ' --> ' + harvesterCount);
+		//log('harvesterCount', 'Harvesters: ' + ph + ' --> ' + harvesterCount);
 	}
 	Memory.previousPreviousHarvesters = Memory.previousHarvesters;
 	Memory.previousHarvesters = harvesterCount;
+
+	var gclPercent = Game.gcl.progress / Game.gcl.progressTotal;
+	var vis = '' + harvesterCount + '  ' + gclPercent;
+	new RoomVisual().text(vis, 0, 0,
+	{
+		align: 'left'
+	}
+	);
 
 	for (var name in Memory.creeps)
 	{
