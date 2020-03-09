@@ -40,8 +40,6 @@ function log(msgType, msg)
 
 module.exports.loop = function ()
 {
-	var pph = Memory.previousPreviousHarvesters || 0;
-	var ph = Memory.previousHarvesters || 0;
 	var harvesters = roleHarvester.getHarvesters();
 	var harvesterCount = harvesters.length;
 
@@ -68,27 +66,16 @@ module.exports.loop = function ()
 		}
 		else
 		{
-			console.log("unknown role", creep.name, creep.memory.role);
+			console.log("unknown_role", creep.name, creep.memory.role, creep.room.name);
+			creep.say("😵");
 		}
 	}
 
 	roleTower.creepTransfer();
 	roleTombstone.run();
 
-	if (harvesterTickData.bored)
-	{
-		log("harvesterTickData.bored: " + harvesterTickData.bored);
-	}
-
-	if (Math.abs(harvesterCount - ph) > 0 || Math.abs(harvesterCount - pph) > 0 || Math.abs(pph - ph) > 0)
-	{
-		//log('harvesterCount', 'Harvesters: ' + ph + ' --> ' + harvesterCount);
-	}
-	Memory.previousPreviousHarvesters = Memory.previousHarvesters;
-	Memory.previousHarvesters = harvesterCount;
-
 	var gclPercent = Game.gcl.progress / Game.gcl.progressTotal;
-	var vis = '' + harvesterCount + '  ' + gclPercent;
+	var vis = '' + harvesterCount + '  ' + gclPercent + '  ' + (harvesterTickData.bored || 0);
 	new RoomVisual().text(vis, 0, 0,
 	{
 		align: 'left'
