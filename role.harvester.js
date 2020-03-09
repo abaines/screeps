@@ -218,7 +218,7 @@ var roleHarvester =
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
-			_smartHarvest(creep, source);
+			this.smartHarvest(creep, source);
 			return;
 		}
 
