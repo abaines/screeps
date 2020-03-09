@@ -48,6 +48,11 @@ var tombstoneLogic =
 	},
 	perRoom: function (room)
 	{
+		if (room.find(FIND_HOSTILE_CREEPS))
+		{
+			return;
+		}
+
 		// FIND_TOMBSTONES
 		// FIND_DROPPED_RESOURCES
 		var tombstones = room.find(FIND_TOMBSTONES,
