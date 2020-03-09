@@ -5,6 +5,7 @@
 var roleHarvester = require('role.harvester');
 var roleClaimer = require('role.claim');
 var roleTower = require('role.tower');
+var roleTombstone = require('role.tombstone');
 var spawnSpawning = require('spawn.spawning');
 
 if (typeof script_init !== 'undefined')
@@ -72,6 +73,7 @@ module.exports.loop = function ()
 	}
 
 	roleTower.creepTransfer();
+	roleTombstone.run();
 
 	if (harvesterTickData.bored)
 	{
