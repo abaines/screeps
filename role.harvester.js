@@ -366,9 +366,13 @@ var roleHarvester =
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
 			}
+			else if (ERR_NO_PATH == moveResult)
+			{
+				creep.say('No path to the target could be found.', creep.name, creep.room.name);
+			}
 			else
 			{
-				console.log("creep room transfer", moveResult);
+				console.log("creep-room-transfer", 'moveResult', moveResult);
 			}
 			return;
 		}
