@@ -6,7 +6,7 @@ var roleHarvester = require('role.harvester');
 
 function spawnCreep(spawn, role, body)
 {
-	var newName = role + Game.time;
+	var newName = role + '-' + (Game.time % 10_000) + '-' + spawn.room.name;
 
 	var spawnReturn = spawn.spawnCreep(body, newName,
 		{
@@ -31,7 +31,7 @@ function spawnCreep(spawn, role, body)
 	}
 	else if (OK == spawnReturn)
 	{
-		console.log('Spawning:', newName, body, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable);
+		console.log('Spawning:', newName, spawn.name, body, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable);
 	}
 	else
 	{
