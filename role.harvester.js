@@ -332,6 +332,10 @@ var roleHarvester =
 		{
 			length: Infinity
 		};
+		var mostRoom =
+		{
+			length: -1
+		};
 
 		Object.keys(Game.structures).forEach(function (id)
 		{
@@ -352,6 +356,10 @@ var roleHarvester =
 				{
 					leastRoom = controlRoomCreepCount[structure.room];
 				}
+				if (length > mostRoom.length)
+				{
+					mostRoom = controlRoomCreepCount[structure.room];
+				}
 			}
 		}
 		);
@@ -366,7 +374,7 @@ var roleHarvester =
 				youngest = false;
 			}
 		}
-		if (youngest && roomCreeps.length > leastRoom.length)
+		if (youngest && roomCreeps.length >= mostRoom.length)
 		{
 			var controller = leastRoom.controller;
 			var moveResult = creep.moveTo(controller,
