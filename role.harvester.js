@@ -195,6 +195,8 @@ var roleHarvester =
 			return;
 		}
 
+		var creepCount = creep.room.find(FIND_MY_CREEPS).length;
+
 		// planning phase
 		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
 		{
@@ -247,15 +249,16 @@ var roleHarvester =
 						}
 					}
 					);
+				var constructionCreepsCount = constructionCreeps.length;
 
-				if (constructionCreeps.length > 1)
+				if (constructionCreepsCount > 1 && constructionCreepsCount >= (creepCount / 2.0))
 				{
-					console.log('constructionCreeps.length', constructionCreeps.length);
+					console.log('constructionCreepsCount', constructionCreepsCount);
 					creep.memory.construction = false;
 					return;
 				}
 
-				if (creep.memory.construction || constructionCreeps.length == 0)
+				if (creep.memory.construction || constructionCreepsCount == 0)
 				{
 					var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 					smartBuild(creep, target);
