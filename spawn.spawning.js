@@ -69,7 +69,7 @@ function spawnLogic(spawn, harvesters)
 	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 	var energyAvailable = spawn.room.energyAvailable;
 
-	if ((roomHarvesterCount < 3 || harvesters.length < 3 * 5) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
+	if ((roomHarvesterCount < 3 || harvesters.length < 4 * 4) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
 	{
 		spawnCreep(spawn, 'harvester',
 			[
