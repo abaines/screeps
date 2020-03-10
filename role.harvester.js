@@ -291,6 +291,17 @@ var roleHarvester =
 			for (var idx in targets)
 			{
 				var structure = targets[idx];
+				if (structure.structureType == STRUCTURE_WALL)
+				{
+					smartBuild(creep, structure);
+					creep.say("🚧");
+					return;
+				}
+			}
+
+			for (var idx in targets)
+			{
+				var structure = targets[idx];
 				if (structure.structureType == STRUCTURE_EXTENSION)
 				{
 					smartBuild(creep, structure);

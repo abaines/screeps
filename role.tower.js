@@ -101,14 +101,16 @@ function getEnergyFromCreeps(tower)
 				var isCreepFull = (creep.store.getFreeCapacity(RESOURCE_ENERGY) == 0);
 				var creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
 				var towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
+				var isConstruction = creep.memory.construction;
 
-				return isCreepFull && creepAvailable < towerNeed;
+				return !isConstruction && isCreepFull && creepAvailable < towerNeed;
 			}
 		}
 		);
 	if (creep)
 	{
 		roleHarvester.smartTransfer(creep, tower);
+		creep.say("🗼");
 		return true;
 	}
 }
