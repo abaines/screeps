@@ -77,17 +77,30 @@ module.exports.loop = function ()
 
 	var gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
 
-	var sb = [];
+	var controllerLevelsList = [];
+	var creepCountList = [];
 	var rooms = Game.rooms;
 	for (var idx in rooms)
 	{
-		var controller = rooms[idx].controller;
+		var room = rooms[idx];
+
+		var controller = room.controller;
 		var level = controller.level + controller.progress / controller.progressTotal;
-		sb.push(level.toFixedNumber(3));
+		controllerLevelsList.push(level.toFixedNumber(3));
+
+		var roomCreepCount = room.find(FIND_MY_CREEPS).length;
+		creepCountList.push(roomCreepCount);
 	}
 
-	var vis = '' + harvesterCount + '  ' + gclPercent.toFixed(6) + '  ' + JSON.stringify(sb) + '  ' + (harvesterTickData.bored || 0);
-	new RoomVisual().text(vis, 0, 0,
+	var vis1 = '' + harvesterCount + '  ' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
+	new RoomVisual().text(vis1, 0, 0,
+	{
+		align: 'left'
+	}
+	);
+
+	var vis2 = '' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
+	new RoomVisual().text(vis2, 0, 1,
 	{
 		align: 'left'
 	}
@@ -97,13 +110,13 @@ module.exports.loop = function ()
 	{
 		var room = Game.rooms[idx];
 		var energyAvailable = room.energyAvailable;
-		var sb = [];
+		var sourceEnergyList = [];
 		var sources = room.find(FIND_SOURCES);
 		for (var idx in sources)
 		{
-			sb.push(sources[idx].energy);
+			sourceEnergyList.push(sources[idx].energy);
 		}
-		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sb), 0, 49,
+		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sourceEnergyList), 0, 49,
 		{
 			align: 'left'
 		}
