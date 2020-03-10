@@ -2,6 +2,7 @@
 
 'use strict';
 
+var extensions = require('extensions');
 var roleHarvester = require('role.harvester');
 var roleClaimer = require('role.claim');
 var roleTower = require('role.tower');
@@ -74,8 +75,18 @@ module.exports.loop = function ()
 	roleTower.creepTransfer();
 	roleTombstone.run();
 
-	var gclPercent = Game.gcl.progress / Game.gcl.progressTotal;
-	var vis = '' + harvesterCount + '  ' + gclPercent + '  ' + (harvesterTickData.bored || 0);
+	var gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
+
+	var sb = [];
+	var rooms = Game.rooms;
+	for (var idx in rooms)
+	{
+		var controller = rooms[idx].controller;
+		var level = controller.level + controller.progress / controller.progressTotal;
+		sb.push(level.toFixedNumber(3));
+	}
+
+	var vis = '' + harvesterCount + '  ' + gclPercent.toFixed(6) + '  ' + JSON.stringify(sb) + '  ' + (harvesterTickData.bored || 0);
 	new RoomVisual().text(vis, 0, 0,
 	{
 		align: 'left'
@@ -86,7 +97,13 @@ module.exports.loop = function ()
 	{
 		var room = Game.rooms[idx];
 		var energyAvailable = room.energyAvailable;
-		room.visual.text(energyAvailable, 0, 49,
+		var sb = [];
+		var sources = room.find(FIND_SOURCES);
+		for (var idx in sources)
+		{
+			sb.push(sources[idx].energy);
+		}
+		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sb), 0, 49,
 		{
 			align: 'left'
 		}
