@@ -8,6 +8,17 @@ function spawnCreep(spawn, role, body)
 {
 	var newName = role + '-' + (Game.time % 10_000) + '-' + spawn.room.name;
 
+	var bodyMap = {}
+	for (var idx in body)
+	{
+		var part = body[idx];
+		if (!(part in bodyMap))
+		{
+			bodyMap[part] = 0;
+		}
+		bodyMap[part] = 1 + bodyMap[part];
+	}
+
 	var spawnReturn = spawn.spawnCreep(body, newName,
 		{
 			memory:
@@ -31,7 +42,7 @@ function spawnCreep(spawn, role, body)
 	}
 	else if (OK == spawnReturn)
 	{
-		console.log('Spawning:', newName, spawn.name, body, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable);
+		console.log('Spawning:', newName, spawn.name, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable, JSON.stringify(bodyMap));
 	}
 	else
 	{
@@ -57,7 +68,16 @@ function spawnLogic(spawn, harvesters)
 	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 	var energyAvailable = spawn.room.energyAvailable;
 
-	if (harvesters.length < 3 * 5 && energyAvailable >= 2300 && energyCapacityAvailable < Infinity)
+	if (harvesters.length < 3 * 5 && energyAvailable >= 4300 && energyCapacityAvailable < Infinity)
+	{
+		spawnCreep(spawn, 'harvester',
+			[
+				WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
+				CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 14
+				MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 22
+			]);
+	}
+	else if (harvesters.length < 3 * 5 && energyAvailable >= 2300 && energyCapacityAvailable < 4300)
 	{
 		spawnCreep(spawn, 'harvester',
 			[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
