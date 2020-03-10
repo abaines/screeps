@@ -65,10 +65,11 @@ function bodyScan(creep, scan_type)
 
 function spawnLogic(spawn, harvesters)
 {
+	var roomHarvesterCount = spawn.room.find(FIND_MY_CREEPS).length;
 	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 	var energyAvailable = spawn.room.energyAvailable;
 
-	if (harvesters.length < 3 * 5 && energyAvailable >= 4300 && energyCapacityAvailable < Infinity)
+	if ((roomHarvesterCount < 5 || harvesters.length < 5 * 5) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
 	{
 		spawnCreep(spawn, 'harvester',
 			[
@@ -115,6 +116,13 @@ function spawnLogic(spawn, harvesters)
 	else if (harvesters.length < 3 && energyAvailable >= 200)
 	{
 		spawnCreep(spawn, 'harvester', [WORK, CARRY, MOVE]);
+	}
+	else if (roomHarvesterCount < 4 && energyAvailable >= 300 && energyCapacityAvailable <= 300)
+	{
+		spawnCreep(spawn, 'harvester',
+			[
+				WORK, WORK, CARRY, MOVE,
+			]);
 	}
 
 	if (false)
