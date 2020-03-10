@@ -68,8 +68,8 @@ function run_tower(tower, injuredStructure)
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
 		repairRoomStructureType(tower, "road", -3 * 800); // 2600
-		repairRoomStructureType(tower, "constructedWall", 200_000);
-		repairRoomStructureType(tower, "rampart", 200_000);
+		repairRoomStructureType(tower, "constructedWall", 250_000);
+		repairRoomStructureType(tower, "rampart", 250_000);
 		repairRoomStructureType(tower, "road", -5 * 800); // 1000
 	}
 }
@@ -112,7 +112,7 @@ function getEnergyFromCreeps(tower)
 				{
 					return true;
 				}
-				return (towerNeed - 200) >= (creepAvailable * 2);
+				return creep.memory.mode == null;
 			}
 		}
 		);
