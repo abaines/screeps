@@ -92,14 +92,14 @@ module.exports.loop = function ()
 		creepCountList.push(roomCreepCount);
 	}
 
-	var vis1 = '' + harvesterCount + '  ' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
+	var vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
 	new RoomVisual().text(vis1, 0, 0,
 	{
 		align: 'left'
 	}
 	);
 
-	var vis2 = '' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
+	var vis2 = '' + harvesterCount + '  ' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
 	new RoomVisual().text(vis2, 0, 1,
 	{
 		align: 'left'
