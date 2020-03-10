@@ -48,7 +48,7 @@ var tombstoneLogic =
 	},
 	perRoom: function (room)
 	{
-		if (room.find(FIND_HOSTILE_CREEPS))
+		if (room.find(FIND_HOSTILE_CREEPS).length)
 		{
 			return;
 		}

@@ -57,7 +57,7 @@ function spawnLogic(spawn, harvesters)
 	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 	var energyAvailable = spawn.room.energyAvailable;
 
-	if (harvesters.length < 3 * 6 && energyAvailable >= 2300 && energyCapacityAvailable < Infinity)
+	if (harvesters.length < 3 * 5 && energyAvailable >= 2300 && energyCapacityAvailable < Infinity)
 	{
 		spawnCreep(spawn, 'harvester',
 			[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
@@ -65,7 +65,7 @@ function spawnLogic(spawn, harvesters)
 				MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]// 10
 		);
 	}
-	else if (harvesters.length < 3 * 5 && energyAvailable >= 2000 && energyCapacityAvailable < 2300)
+	else if (harvesters.length < 3 * 4 && energyAvailable >= 2000 && energyCapacityAvailable < 2300)
 	{
 		spawnCreep(spawn, 'harvester',
 			[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 10
