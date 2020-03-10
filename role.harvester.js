@@ -374,7 +374,8 @@ var roleHarvester =
 				youngest = false;
 			}
 		}
-		if (youngest && roomCreeps.length >= mostRoom.length)
+
+		if (youngest && roomCreeps.length >= mostRoom.length && roomCreeps.length > leastRoom.length + 1)
 		{
 			var controller = leastRoom.controller;
 			var moveResult = creep.moveTo(controller,
