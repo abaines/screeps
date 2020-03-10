@@ -368,7 +368,8 @@ var roleHarvester =
 		}
 		if (youngest && roomCreeps.length > leastRoom.length)
 		{
-			var moveResult = creep.moveTo(leastRoom.controller,
+			var controller = leastRoom.controller;
+			var moveResult = creep.moveTo(controller,
 				{
 					visualizePathStyle:
 					{
@@ -382,7 +383,8 @@ var roleHarvester =
 			}
 			else if (ERR_NO_PATH == moveResult)
 			{
-				creep.say('No path to the target could be found.', creep.name, creep.room.name);
+				creep.say('🛑');
+				console.log('No path to the target could be found.', creep.name, creep.room.name, controller.room.name);
 			}
 			else
 			{
