@@ -98,12 +98,21 @@ function getEnergyFromCreeps(tower)
 		{
 			filter: (creep) =>
 			{
-				var isCreepFull = (creep.store.getFreeCapacity(RESOURCE_ENERGY) == 0);
+				var capacity = creep.store.getCapacity(RESOURCE_ENERGY);
 				var creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
+				var isCreepFull = creep.store.getFreeCapacity(RESOURCE_ENERGY) < 50 && creepAvailable >= 50;
 				var towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
 				var isConstruction = creep.memory.construction;
 
-				return !isConstruction && isCreepFull && creepAvailable < towerNeed;
+				if (isConstruction || capacity < 50 || creepAvailable < 50)
+				{
+					return false;
+				}
+				if (isCreepFull || creepAvailable >= 500)
+				{
+					return true;
+				}
+				return (towerNeed - 200) >= (creepAvailable * 2);
 			}
 		}
 		);
@@ -111,7 +120,6 @@ function getEnergyFromCreeps(tower)
 	{
 		roleHarvester.smartTransfer(creep, tower);
 		creep.say("🗼");
-		return true;
 	}
 }
 
@@ -123,12 +131,9 @@ function perRoomEnergySteal(room)
 		var structure = structures[idx];
 		var structureType = structure.structureType;
 
-		if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0)
+		if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 200)
 		{
-			if (getEnergyFromCreeps(structure))
-			{
-				return true;
-			}
+			getEnergyFromCreeps(structure);
 		}
 	}
 }
