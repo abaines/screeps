@@ -337,16 +337,12 @@ var roleHarvester =
 				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
 				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
+					creep.say("🔋");
 					_smartTransfer(creep, nearbyLink);
-					creep.say("!");
 				}
 				else if (linkGoal == "fountain" && nearbyLink.store[RESOURCE_ENERGY] >= 50)
 				{
 					creep.moveAndWithdraw(nearbyLink);
-				}
-				else
-				{
-					creep.say(linkGoal);
 				}
 			}
 
