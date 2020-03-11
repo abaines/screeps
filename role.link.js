@@ -4,17 +4,29 @@
 
 var linkLogic =
 {
+	determineBehaviorOfLink: function (structureLink)
+	{
+		if (Memory.links[structureLink.id])
+		{
+			return;
+		}
+
+		var source = structureLink.pos.findClosestByRange(FIND_SOURCES);
+		var sourceDistance = structureLink.pos.distanceToStructure(source);
+		var controllerDistance = structureLink.pos.distanceToStructure(structureLink.room.controller);
+
+		console.log(structureLink, sourceDistance, controllerDistance);
+	},
 	determineBehavior: function ()
 	{
-		for (const[key, value]of Object.entries(Game.structures))
+		for (const[key, structure]of Object.entries(Game.structures))
 		{
-			if (STRUCTURE_LINK == value.structureType)
+			if (STRUCTURE_LINK == structure.structureType)
 			{
-				console.log('Object.entries', key, value);
+				this.determineBehaviorOfLink(structure);
 			}
 		}
 	},
 };
 
 module.exports = linkLogic;
-
