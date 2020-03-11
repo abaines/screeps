@@ -78,6 +78,7 @@ module.exports.loop = function ()
 
 	roleTower.creepTransfer();
 	roleTombstone.run();
+	roleLink.run();
 
 	var gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
 

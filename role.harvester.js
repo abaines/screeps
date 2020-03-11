@@ -334,7 +334,7 @@ var roleHarvester =
 				);
 			if (nearbyLink && creep.pos.distanceToStructure(nearbyLink) < 5)
 			{
-				var linkGoal = Memory.links[nearbyLink.id].goal;
+				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
 				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
 					_smartTransfer(creep, nearbyLink);

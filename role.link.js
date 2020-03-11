@@ -6,7 +6,13 @@ var linkLogic =
 {
 	determineBehaviorOfLink: function (structureLink)
 	{
-		if (Memory.links[structureLink.id] && Memory.links[structureLink.id].goal)
+		var roomName = structureLink.room.name;
+		if (!(roomName in Memory.links))
+		{
+			Memory.links[roomName] = {};
+		}
+
+		if (Memory.links[roomName][structureLink.id] && Memory.links[roomName][structureLink.id].goal)
 		{
 			return;
 		}
@@ -21,7 +27,7 @@ var linkLogic =
 
 		if (sourceDistance < 5 && controllerDistance > 20)
 		{
-			Memory.links[structureLink.id] =
+			Memory.links[roomName][structureLink.id] =
 			{
 				goal: "sink",
 				source: source.id,
@@ -30,7 +36,7 @@ var linkLogic =
 		}
 		else if (controllerDistance < 5 && sourceDistance > 20)
 		{
-			Memory.links[structureLink.id] =
+			Memory.links[roomName][structureLink.id] =
 			{
 				goal: "fountain",
 				controller: controller.id,
@@ -50,6 +56,35 @@ var linkLogic =
 			{
 				this.determineBehaviorOfLink(structure);
 			}
+		}
+	},
+	runPerRoom: function (roomName, roomData)
+	{
+		var sinks = [];
+		var fountains = [];
+		for (const[linkId, linkData]of Object.entries(roomData))
+		{
+			var goal = linkData.goal;
+			if (goal == "sink")
+			{
+				sinks.push(linkId);
+			}
+			else if (goal == "fountain")
+			{
+				fountains.push(linkId);
+			}
+			else
+			{
+				console.log(linkId, goal, JSON.stringify(linkData));
+			}
+		}
+		console.log(JSON.stringify(sinks), JSON.stringify(fountains));
+	},
+	run: function ()
+	{
+		for (const[roomName, roomData]of Object.entries(Memory.links))
+		{
+			this.runPerRoom(roomName, roomData);
 		}
 	},
 };
