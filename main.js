@@ -18,6 +18,7 @@ else
 {
 	console.log("================================================================================");
 	var script_init = true;
+	Memory.links = {};
 }
 
 function log(msgType, msg)
