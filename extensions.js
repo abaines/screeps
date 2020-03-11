@@ -29,3 +29,48 @@ RoomPosition.prototype.distanceToStructure = function (structure)
 {
 	return this.distanceToPos(structure.pos);
 }
+
+Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENERGY)
+{
+	var withdrawResult = this.withdraw(target, resourceType);
+
+	if (ERR_NOT_IN_RANGE == withdrawResult)
+	{
+		var moveResult = this.moveAndLog(target);
+
+	}
+
+	this.say("W" + withdrawResult);
+	return withdrawResult
+}
+
+Creep.prototype.moveAndLog = function (target, opts)
+{
+	opts = opts ||
+	{
+		visualizePathStyle:
+		{
+			stroke: '#ffaa00'
+		}
+	};
+
+	var moveResult = this.moveTo(target, opts);
+
+	if (OK == moveResult || ERR_TIRED == moveResult)
+	{
+		// acceptable
+		return OK;
+	}
+	else if (ERR_NO_PATH == moveResult)
+	{
+		creep.say('🚫');
+		console.log('Creep.prototype.moveAndLog', 'No path to the target could be found.', this.name, target);
+	}
+	else
+	{
+		creep.say('🛑');
+		console.log('Creep.prototype.moveAndLog', this.name, target, moveResult);
+	}
+
+	return moveResult;
+}

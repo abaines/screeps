@@ -340,6 +340,10 @@ var roleHarvester =
 					_smartTransfer(creep, nearbyLink);
 					creep.say("!");
 				}
+				else if (linkGoal == "fountain" && nearbyLink.store[RESOURCE_ENERGY] >= 50)
+				{
+					creep.moveAndWithdraw(nearbyLink);
+				}
 				else
 				{
 					creep.say(linkGoal);
