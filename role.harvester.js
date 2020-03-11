@@ -10,7 +10,8 @@ function _getHarvesters()
 
 function _smartTransfer(creep, target)
 {
-	if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+	var transferResult = creep.transfer(target, RESOURCE_ENERGY);
+	if (ERR_NOT_IN_RANGE == transferResult)
 	{
 		creep.moveTo(target,
 		{
@@ -20,6 +21,16 @@ function _smartTransfer(creep, target)
 			}
 		}
 		);
+	}
+	else if (OK == transferResult)
+	{}
+	else if (ERR_INVALID_TARGET == transferResult)
+	{
+		console.log('transferResult', target);
+	}
+	else
+	{
+		console.log('transferResult', transferResult);
 	}
 }
 
@@ -310,6 +321,28 @@ var roleHarvester =
 					smartBuild(creep, structure);
 					creep.say("🚧");
 					return;
+				}
+			}
+
+			const nearbyLink = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,
+				{
+					filter:
+					{
+						structureType: STRUCTURE_LINK
+					}
+				}
+				);
+			if (nearbyLink && creep.pos.distanceToStructure(nearbyLink) < 5)
+			{
+				var linkGoal = Memory.links[nearbyLink.id].goal;
+				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
+				{
+					_smartTransfer(creep, nearbyLink);
+					creep.say("!");
+				}
+				else
+				{
+					creep.say(linkGoal);
 				}
 			}
 
