@@ -36,11 +36,19 @@ Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENER
 
 	if (ERR_NOT_IN_RANGE == withdrawResult)
 	{
+		this.say("⚡");
 		var moveResult = this.moveAndLog(target);
-
+	}
+	else if (OK == withdrawResult)
+	{
+		// acceptable
+		this.say("⚡");
+	}
+	else
+	{
+		this.say("💫" + withdrawResult);
 	}
 
-	this.say("W" + withdrawResult);
 	return withdrawResult
 }
 
