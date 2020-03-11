@@ -8,7 +8,7 @@ var roleClaimer = require('role.claim');
 var roleTower = require('role.tower');
 var roleTombstone = require('role.tombstone');
 var roleLink = require('role.link');
-var spawnSpawning = require('spawn.spawning');
+var roleSpawning = require('role.spawning');
 
 if (typeof script_init !== 'undefined')
 {
@@ -48,7 +48,7 @@ module.exports.loop = function ()
 	roleLink.determineBehavior();
 
 	roleTower.run();
-	spawnSpawning.run(Game.spawns);
+	roleSpawning.run(Game.spawns);
 
 	var harvesterTickData = {};
 
