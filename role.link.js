@@ -98,7 +98,10 @@ var linkLogic =
 
 		sinks.forEach(sink =>
 		{
-			this.runPerSink(sink, fountains);
+			if (sink.store[RESOURCE_ENERGY] >= 50)
+			{
+				this.runPerSink(sink, fountains);
+			}
 		}
 		);
 	},
