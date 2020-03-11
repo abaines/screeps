@@ -48,6 +48,7 @@ var linkLogic =
 			console.log("Unable to classify link:", structureLink);
 		}
 	},
+
 	determineBehavior: function ()
 	{
 		for (const[key, structure]of Object.entries(Game.structures))
@@ -58,28 +59,50 @@ var linkLogic =
 			}
 		}
 	},
+
+	runPerSink: function (sink, fountains)
+	{
+		fountains.forEach(fountain =>
+		{
+			if (fountain.store.getFreeCapacity(RESOURCE_ENERGY) >= 50)
+			{
+				sink.transferEnergy(fountain);
+			}
+		}
+		);
+	},
+
 	runPerRoom: function (roomName, roomData)
 	{
 		var sinks = [];
 		var fountains = [];
+
 		for (const[linkId, linkData]of Object.entries(roomData))
 		{
 			var goal = linkData.goal;
+			var linkObj = Game.getObjectById(linkId);
+
 			if (goal == "sink")
 			{
-				sinks.push(linkId);
+				sinks.push(linkObj);
 			}
 			else if (goal == "fountain")
 			{
-				fountains.push(linkId);
+				fountains.push(linkObj);
 			}
 			else
 			{
 				console.log(linkId, goal, JSON.stringify(linkData));
 			}
 		}
-		console.log(JSON.stringify(sinks), JSON.stringify(fountains));
+
+		sinks.forEach(sink =>
+		{
+			this.runPerSink(sink, fountains);
+		}
+		);
 	},
+
 	run: function ()
 	{
 		for (const[roomName, roomData]of Object.entries(Memory.links))
