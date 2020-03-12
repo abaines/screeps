@@ -318,6 +318,30 @@ var roleHarvester =
 				}
 			}
 
+			if (creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[5])
+			{
+				if (creep.room.storage)
+				{
+					creep.say("🏦");
+					creep.travel(creep.room.storage);
+					_smartTransfer(creep, creep.room.storage);
+					return;
+				}
+				else
+				{
+					for (var idx in targets)
+					{
+						var structure = targets[idx];
+						if (structure.structureType == STRUCTURE_STORAGE)
+						{
+							creep.say("🚧🏦");
+							smartBuild(creep, structure);
+							return;
+						}
+					}
+				}
+			}
+
 			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
 			{
 				creep.travel(creep.room.controller);
