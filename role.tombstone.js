@@ -22,6 +22,24 @@ var tombstoneLogic =
 		}
 		return;
 	},
+	creepCollectResource: function (creep, resource)
+	{
+		var pickupResult = creep.pickup(resource);
+
+		if (ERR_NOT_IN_RANGE == pickupResult)
+		{
+			creep.travel(resource);
+		}
+		else if (OK == pickupResult)
+		{
+			console.log("WIN!", 'creepCollectResource', JSON.stringify(resource), resource.room.name);
+		}
+		else
+		{
+			console.log('pickupResult', pickupResult);
+		}
+		return;
+	},
 	findCreepToGetStore: function (store, pos)
 	{
 		var creep = pos.findClosestByPath(FIND_MY_CREEPS,
@@ -39,6 +57,23 @@ var tombstoneLogic =
 
 		return creep;
 	},
+	findCreepToGetResource: function (resource)
+	{
+		var creep = resource.pos.findClosestByPath(FIND_MY_CREEPS,
+			{
+				filter: (creep) =>
+				{
+					var freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
+					var isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
+					var isConstruction = creep.memory.construction;
+
+					return !isConstruction && (isCreepEmpty || freeCapacity >= resource.amount);
+				}
+			}
+			);
+
+		return creep;
+	},
 	perRoom: function (room)
 	{
 		if (room.find(FIND_HOSTILE_CREEPS).length)
@@ -47,7 +82,6 @@ var tombstoneLogic =
 		}
 
 		// FIND_TOMBSTONES
-		// FIND_DROPPED_RESOURCES
 		var tombstones = room.find(FIND_TOMBSTONES,
 			{
 				filter: (tombstone) =>
@@ -67,6 +101,32 @@ var tombstoneLogic =
 				if (creep)
 				{
 					this.creepCollectTombstone(creep, tombstone);
+					creep.say("♻️");
+					return;
+				}
+			}
+		}
+
+		// FIND_DROPPED_RESOURCES
+		var resources = room.find(FIND_DROPPED_RESOURCES,
+			{
+				filter: (resource) =>
+				{
+					return resource.amount >= 50;
+				}
+			}
+			);
+
+		if (resources.length)
+		{
+			for (var idx in resources)
+			{
+				var resource = resources[idx];
+				var creep = this.findCreepToGetResource(resource);
+
+				if (creep)
+				{
+					this.creepCollectResource(creep, resource);
 					creep.say("♻️");
 					return;
 				}
