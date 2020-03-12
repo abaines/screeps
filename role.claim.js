@@ -19,14 +19,7 @@ var claimCreep =
 				creep.say('c' + claimResult);
 				if (claimResult == ERR_NOT_IN_RANGE)
 				{
-					var moveResult = creep.moveTo(controller,
-						{
-							visualizePathStyle:
-							{
-								stroke: '#ffffff'
-							}
-						}
-						);
+					var moveResult = creep.travel(controller);
 					creep.say('m' + moveResult);
 				}
 			}

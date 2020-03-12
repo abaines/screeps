@@ -10,14 +10,7 @@ var tombstoneLogic =
 
 		if (ERR_NOT_IN_RANGE == withdrawResult)
 		{
-			creep.moveTo(tombstone,
-			{
-				visualizePathStyle:
-				{
-					stroke: '#ffffff'
-				}
-			}
-			);
+			creep.travel(tombstone);
 		}
 		else if (OK == withdrawResult)
 		{

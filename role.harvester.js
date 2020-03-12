@@ -13,14 +13,7 @@ function _smartTransfer(creep, target)
 	var transferResult = creep.transfer(target, RESOURCE_ENERGY);
 	if (ERR_NOT_IN_RANGE == transferResult)
 	{
-		creep.moveTo(target,
-		{
-			visualizePathStyle:
-			{
-				stroke: '#ffffff'
-			}
-		}
-		);
+		creep.travel(target);
 	}
 	else if (OK == transferResult)
 	{}
@@ -56,14 +49,7 @@ function _smartHarvest(creep, source)
 
 	if (harvestResult == ERR_NOT_IN_RANGE)
 	{
-		creep.moveTo(source,
-		{
-			visualizePathStyle:
-			{
-				stroke: '#ffaa00'
-			}
-		}
-		);
+		creep.travel(source);
 	}
 	else if (harvestResult == OK)
 	{}
@@ -107,14 +93,7 @@ function smartBuild(creep, structure)
 
 	if (buildResult == ERR_NOT_IN_RANGE)
 	{
-		creep.moveTo(structure,
-		{
-			visualizePathStyle:
-			{
-				stroke: '#ffffff'
-			}
-		}
-		);
+		creep.travel(structure);
 	}
 	else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
 	{
@@ -129,14 +108,7 @@ function gotoFlag(creep, flag)
 	var range = creep.pos.getRangeTo(flag);
 	if (range > 1)
 	{
-		var moveReturn = creep.moveTo(flag,
-			{
-				visualizePathStyle:
-				{
-					stroke: '#ffaa00'
-				}
-			}
-			);
+		var moveReturn = creep.travel(flag);
 		creep.say(creep.pos.x + '  ' + creep.pos.y + '  ' + range);
 	}
 }
@@ -348,14 +320,7 @@ var roleHarvester =
 
 			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
 			{
-				creep.moveTo(creep.room.controller,
-				{
-					visualizePathStyle:
-					{
-						stroke: '#ffffff'
-					}
-				}
-				);
+				creep.travel(creep.room.controller);
 			}
 			return;
 		}
@@ -411,14 +376,7 @@ var roleHarvester =
 		if (youngest && roomCreeps.length >= mostRoom.length && roomCreeps.length > leastRoom.length + 1)
 		{
 			var controller = leastRoom.controller;
-			var moveResult = creep.moveTo(controller,
-				{
-					visualizePathStyle:
-					{
-						stroke: '#ffaa00'
-					}
-				}
-				);
+			var moveResult = creep.travel(controller);
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
@@ -448,7 +406,7 @@ var roleHarvester =
 				nextSource = source;
 			}
 		}
-		var moveResult = creep.moveTo(nextSource);
+		var moveResult = creep.travel(nextSource);
 
 		harvesterTickData.bored = (harvesterTickData.bored || 0) + 1;
 	},

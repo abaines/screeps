@@ -37,7 +37,7 @@ Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENER
 	if (ERR_NOT_IN_RANGE == withdrawResult)
 	{
 		this.say("⚡");
-		var moveResult = this.moveAndLog(target);
+		var moveResult = this.travel(target);
 	}
 	else if (OK == withdrawResult)
 	{
@@ -52,7 +52,7 @@ Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENER
 	return withdrawResult
 }
 
-Creep.prototype.moveAndLog = function (target, opts)
+Creep.prototype.travel = function (target, opts)
 {
 	opts = opts ||
 	{
@@ -71,13 +71,13 @@ Creep.prototype.moveAndLog = function (target, opts)
 	}
 	else if (ERR_NO_PATH == moveResult)
 	{
-		creep.say('🚫');
-		console.log('Creep.prototype.moveAndLog', 'No path to the target could be found.', this.name, target);
+		this.say('🚫');
+		console.log('Creep.prototype.travel', 'No path to the target could be found.', this.room.name, this.name, target);
 	}
 	else
 	{
-		creep.say('🛑');
-		console.log('Creep.prototype.moveAndLog', this.name, target, moveResult);
+		this.say('🛑');
+		console.log('Creep.prototype.travel', this.room.name, this.name, target, moveResult);
 	}
 
 	return moveResult;
