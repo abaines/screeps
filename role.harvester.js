@@ -320,11 +320,12 @@ var roleHarvester =
 
 			if (creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[5])
 			{
-				if (creep.room.storage)
+				var storage = creep.room.storage;
+				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
 					creep.say("🏦");
-					creep.travel(creep.room.storage);
-					_smartTransfer(creep, creep.room.storage);
+					creep.travel(storage);
+					_smartTransfer(creep, storage);
 					return;
 				}
 				else
