@@ -2,14 +2,29 @@
 
 'use strict';
 
-var log = require('log').log;
-var roleHarvester = require('role.harvester');
+const log = require('log').log;
+const roleHarvester = require('role.harvester');
+
+const namingMap =
+{
+	move: "M",
+	work: "W",
+	carry: "C",
+	attack: "A",
+	ranged_attack: "R",
+	tough: "T",
+	heal: "H",
+	claim: "L",
+}
 
 function spawnCreep(spawn, role, body)
 {
-	var newName = role + '-' + (Game.time % 10_000) + '-' + spawn.room.name;
+	if (spawn.spawning)
+	{
+		return;
+	}
 
-	var bodyMap = {}
+	const bodyMap = {}
 	for (var idx in body)
 	{
 		var part = body[idx];
@@ -20,7 +35,33 @@ function spawnCreep(spawn, role, body)
 		bodyMap[part] = 1 + bodyMap[part];
 	}
 
-	var spawnReturn = spawn.spawnCreep(body, newName,
+	var newName = '';
+
+	const namer = Object.keys(bodyMap).map(function (key)
+		{
+			return [key, bodyMap[key] / body.length];
+		}
+		).sort(function (a, b)
+		{
+			return b[1] - a[1];
+		}
+		);
+
+	namer.forEach(kv =>
+	{
+		const bodyType = kv[0];
+		const percent = kv[1];
+		const bodyChar = namingMap[bodyType];
+
+		newName += namingMap[kv[0]];
+	}
+	);
+
+	newName = newName + ('-' + (Game.time % 10_000)).padStart(4, '0');
+
+	console.log(newName);
+
+	const spawnResult = spawn.spawnCreep(body, newName,
 		{
 			memory:
 			{
@@ -29,25 +70,29 @@ function spawnCreep(spawn, role, body)
 		}
 		);
 
-	if (ERR_NOT_ENOUGH_ENERGY == spawnReturn)
+	if (ERR_NOT_ENOUGH_ENERGY == spawnResult)
 	{
-		console.log("ERR_NOT_ENOUGH_ENERGY", spawnReturn);
+		console.log("ERR_NOT_ENOUGH_ENERGY", spawnResult);
 	}
-	else if (ERR_BUSY == spawnReturn && spawn.spawning)
+	else if (ERR_BUSY == spawnResult && spawn.spawning)
 	{
 		// ignore
 	}
-	else if (ERR_BUSY == spawnReturn)
+	else if (ERR_NAME_EXISTS == spawnResult)
+	{
+		// ignore: There is a creep with the same name already.
+	}
+	else if (ERR_BUSY == spawnResult)
 	{
 		console.log('The spawn is already in process of spawning another creep.', role);
 	}
-	else if (OK == spawnReturn)
+	else if (OK == spawnResult)
 	{
 		console.log('Spawning:', newName, spawn.name, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable, JSON.stringify(bodyMap));
 	}
 	else
 	{
-		console.log('spawnReturn', spawnReturn);
+		console.log('spawnResult', spawnResult);
 	}
 }
 
