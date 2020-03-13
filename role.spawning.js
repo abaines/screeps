@@ -59,8 +59,6 @@ function spawnCreep(spawn, role, body)
 
 	newName = newName + ('-' + (Game.time % 10_000)).padStart(4, '0');
 
-	console.log(newName);
-
 	const spawnResult = spawn.spawnCreep(body, newName,
 		{
 			memory:
