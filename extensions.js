@@ -72,7 +72,18 @@ Creep.prototype.travel = function (target, opts)
 	else if (ERR_NO_PATH == moveResult)
 	{
 		this.say('🚫');
-		console.log('Creep.prototype.travel', 'No path to the target could be found.', this.room.name, this.name, target);
+
+		const creepAreaCreeps = this.pos.findInRange(FIND_MY_CREEPS, 1.5);
+		const targetAreaCreeps = target.pos.findInRange(FIND_MY_CREEPS, 1.5);
+
+		if (creepAreaCreeps > 1 && targetAreaCreeps > 1)
+		{
+			// hopefully just congestion
+		}
+		else
+		{
+			console.log('Creep.prototype.travel', 'No path to the target could be found.', this.room.href(), this.name, target, creepAreaCreeps.length, targetAreaCreeps.length);
+		}
 	}
 	else
 	{
@@ -81,4 +92,10 @@ Creep.prototype.travel = function (target, opts)
 	}
 
 	return moveResult;
+}
+
+Room.prototype.href = function ()
+{
+	const roomName = this.name;
+	return '<a href="#!/room/' + roomName + '">' + roomName + '</a>'
 }
