@@ -2,6 +2,7 @@
 
 'use strict';
 
+var log = require('log').log;
 var roleHarvester = require('role.harvester');
 
 var claimCreep =

@@ -2,6 +2,8 @@
 
 'use strict';
 
+var log = require('log').log;
+
 var linkLogic =
 {
 	determineBehaviorOfLink: function (structureLink)
@@ -20,8 +22,8 @@ var linkLogic =
 		var source = structureLink.pos.findClosestByRange(FIND_SOURCES);
 		var controller = structureLink.room.controller;
 
-		var sourceDistance = structureLink.pos.distanceToStructure(source);
-		var controllerDistance = structureLink.pos.distanceToStructure(controller);
+		var sourceDistance = structureLink.pos.distance(source);
+		var controllerDistance = structureLink.pos.distance(controller);
 
 		console.log('determineBehaviorOfLink', structureLink, sourceDistance, controllerDistance);
 

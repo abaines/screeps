@@ -2,6 +2,8 @@
 
 'use strict';
 
+var log = require('log').log;
+
 function _getHarvesters()
 {
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
@@ -19,16 +21,18 @@ function _smartTransfer(creep, target)
 	{}
 	else if (ERR_INVALID_TARGET == transferResult)
 	{
-		console.log('transferResult', 'The target is not a valid object which can contain the specified resource.', target);
+		const msg = 'transferResult The target is not a valid object which can contain the specified resource. ' + target;
+		log(msg);
 	}
 	else if (ERR_NOT_ENOUGH_RESOURCES == transferResult)
 	{
 		creep.say("🥛");
-		console.log('transferResult', 'The creep does not have the given amount of resources.', target, creep.room.href());
+		const msg = 'transferResult The creep does not have the given amount of resources. ' + target + ' ' + creep.room.href();
+		log(msg);
 	}
 	else
 	{
-		console.log('transferResult', transferResult);
+		log('transferResult', transferResult);
 	}
 }
 
@@ -309,7 +313,7 @@ var roleHarvester =
 					}
 				}
 				);
-			if (nearbyLink && creep.pos.distanceToStructure(nearbyLink) < 5)
+			if (nearbyLink && creep.pos.distance(nearbyLink) < 5)
 			{
 				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
 				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)

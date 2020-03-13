@@ -2,6 +2,8 @@
 
 'use strict';
 
+var log = require('log').log;
+
 Number.prototype.toFixedNumber = function (digits, base)
 {
 	// https://stackoverflow.com/a/29494612/
@@ -9,25 +11,23 @@ Number.prototype.toFixedNumber = function (digits, base)
 	return Math.round(this * pow) / pow;
 }
 
-RoomPosition.prototype.distanceToPos = function (other)
+RoomPosition.prototype.distance = function (other)
 {
-	if (this.room != other.room)
+	const otherPos = other.pos || other;
+
+	if (this.room != otherPos.room)
 	{
-		var msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + other.room;
+		var msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + otherPos.room;
 		console.log(msg);
 		throw new Error(msg);
+		return Infinity;
 	}
 
-	var x2x = Math.abs(this.x - other.x);
-	var y2y = Math.abs(this.y - other.y);
+	var x2x = Math.abs(this.x - otherPos.x);
+	var y2y = Math.abs(this.y - otherPos.y);
 	var distance = Math.sqrt(x2x * x2x + y2y * y2y);
 
 	return distance;
-}
-
-RoomPosition.prototype.distanceToStructure = function (structure)
-{
-	return this.distanceToPos(structure.pos);
 }
 
 Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENERGY)
@@ -73,22 +73,28 @@ Creep.prototype.travel = function (target, opts)
 	{
 		this.say('🚫');
 
-		const creepAreaCreeps = this.pos.findInRange(FIND_MY_CREEPS, 1.5);
-		const targetAreaCreeps = target.pos.findInRange(FIND_MY_CREEPS, 1.5);
+		const creepAreaCreepsCount = this.pos.findInRange(FIND_MY_CREEPS, 1.9).length - 1;
+		const targetAreaCreepsCount = target.pos.findInRange(FIND_MY_CREEPS, 1.9).length;
 
-		if (creepAreaCreeps > 1 && targetAreaCreeps > 1)
+		const distance = this.pos.distance(target.pos);
+
+		if (creepAreaCreepsCount > 0 && targetAreaCreepsCount > 0 && distance < 3)
+		{
+			// hopefully just congestion
+		}
+		else if (creepAreaCreepsCount + targetAreaCreepsCount >= 1 && distance < 3)
 		{
 			// hopefully just congestion
 		}
 		else
 		{
-			console.log('Creep.prototype.travel', 'No path to the target could be found.', this.room.href(), this.name, target, creepAreaCreeps.length, targetAreaCreeps.length);
+			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.name + ' ' + target + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
 		}
 	}
 	else
 	{
 		this.say('🛑');
-		console.log('Creep.prototype.travel', this.room.href(), this.name, target, moveResult);
+		log('Creep.prototype.travel' + ' ' + this.room.href() + ' ' + this.name + ' ' + target + ' ' + moveResult);
 	}
 
 	return moveResult;

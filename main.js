@@ -2,7 +2,9 @@
 
 'use strict';
 
+var log = require('log').log;
 var extensions = require('extensions');
+
 var roleHarvester = require('role.harvester');
 var roleClaimer = require('role.claim');
 var roleTower = require('role.tower');
@@ -16,29 +18,9 @@ if (typeof script_init !== 'undefined')
 }
 else
 {
-	console.log("================================================================================");
+	log("================================================================================");
 	var script_init = true;
 	Memory.links = {};
-}
-
-function log(msgType, msg)
-{
-	msg = msg || msgType;
-	Memory.logs = Memory.logs || {}
-	if (msgType in Memory.logs)
-	{
-		var time = Memory.logs[msgType];
-		if (Game.time - time > 300) // ~1 minute
-		{
-			console.log(msg);
-			Memory.logs[msgType] = Game.time;
-		}
-	}
-	else
-	{
-		console.log(msg);
-		Memory.logs[msgType] = Game.time;
-	}
 }
 
 module.exports.loop = function ()
@@ -71,7 +53,7 @@ module.exports.loop = function ()
 		}
 		else
 		{
-			console.log("unknown_role", creep.name, creep.memory.role, creep.room.href());
+			log("unknown_role", creep.name, creep.memory.role, creep.room.href());
 			creep.say("😵");
 		}
 	}

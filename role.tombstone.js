@@ -2,6 +2,8 @@
 
 'use strict';
 
+var log = require('log').log;
+
 var tombstoneLogic =
 {
 	creepCollectTombstone: function (creep, tombstone)
