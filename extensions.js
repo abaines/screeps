@@ -88,7 +88,7 @@ Creep.prototype.travel = function (target, opts)
 	else
 	{
 		this.say('🛑');
-		console.log('Creep.prototype.travel', this.room.name, this.name, target, moveResult);
+		console.log('Creep.prototype.travel', this.room.href(), this.name, target, moveResult);
 	}
 
 	return moveResult;

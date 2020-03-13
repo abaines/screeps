@@ -24,7 +24,7 @@ function _smartTransfer(creep, target)
 	else if (ERR_NOT_ENOUGH_RESOURCES == transferResult)
 	{
 		creep.say("🥛");
-		console.log('transferResult', 'The creep does not have the given amount of resources.', target, creep.room.href);
+		console.log('transferResult', 'The creep does not have the given amount of resources.', target, creep.room.href());
 	}
 	else
 	{

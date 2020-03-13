@@ -71,7 +71,7 @@ module.exports.loop = function ()
 		}
 		else
 		{
-			console.log("unknown_role", creep.name, creep.memory.role, creep.room.name);
+			console.log("unknown_role", creep.name, creep.memory.role, creep.room.href());
 			creep.say("😵");
 		}
 	}
