@@ -91,11 +91,16 @@ module.exports.loop = function ()
 
 		var controller = room.controller;
 		var level = controller.level + controller.progress / controller.progressTotal;
-		controllerLevelsList.push(level.toFixedNumber(3));
+		level = level || controller.level;
+
+		if (level && level > 0)
+			controllerLevelsList.push(level.toFixedNumber(3));
 
 		var roomCreepCount = room.find(FIND_MY_CREEPS).length;
 		creepCountList.push(roomCreepCount);
 	}
+
+	controllerLevelsList.sort().reverse();
 
 	var vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
 	new RoomVisual().text(vis1, 0, 0,
