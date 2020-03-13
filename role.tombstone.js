@@ -114,7 +114,7 @@ var tombstoneLogic =
 			{
 				filter: (resource) =>
 				{
-					return resource.amount >= 50 && "RESOURCE_ENERGY" == resource.resourceType;
+					return resource.amount >= 50 && RESOURCE_ENERGY == resource.resourceType;
 				}
 			}
 			);
