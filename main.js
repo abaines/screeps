@@ -53,7 +53,8 @@ module.exports.loop = function ()
 		}
 		else
 		{
-			log("unknown_role", creep.name, creep.memory.role, creep.room.href());
+			const msg = "unknown_role " + creep.name + ' ' + creep.memory.role + ' ' + creep.room.href();
+			log(msg);
 			creep.say("😵");
 		}
 	}

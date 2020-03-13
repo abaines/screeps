@@ -32,7 +32,7 @@ function _smartTransfer(creep, target)
 	}
 	else
 	{
-		log('transferResult', transferResult);
+		log('transferResult ' + transferResult);
 	}
 }
 

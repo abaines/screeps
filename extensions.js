@@ -18,8 +18,7 @@ RoomPosition.prototype.distance = function (other)
 	if (this.room != otherPos.room)
 	{
 		var msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + otherPos.room;
-		console.log(msg);
-		throw new Error(msg);
+		log(msg);
 		return Infinity;
 	}
 
