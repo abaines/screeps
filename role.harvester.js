@@ -8,12 +8,6 @@ function _getHarvesters()
 	return harvesters;
 }
 
-function _roomLink(room)
-{
-	var roomName = room.name;
-	return '<a href="#!/room/' + roomName + '">' + roomName + '</a>'
-}
-
 function _smartTransfer(creep, target)
 {
 	var transferResult = creep.transfer(target, RESOURCE_ENERGY);
@@ -30,7 +24,7 @@ function _smartTransfer(creep, target)
 	else if (ERR_NOT_ENOUGH_RESOURCES == transferResult)
 	{
 		creep.say("🥛");
-		console.log('transferResult', 'The creep does not have the given amount of resources.', target, _roomLink(creep.room));
+		console.log('transferResult', 'The creep does not have the given amount of resources.', target, creep.room.href);
 	}
 	else
 	{
