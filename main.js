@@ -119,6 +119,29 @@ module.exports.loop = function ()
 		);
 	}
 
+	if (Game.time % 1500 == 0)
+	{
+		var decay =
+		{
+			ticksToDowngrade: Infinity
+		};
+
+		for (const[idx, room]of Object.entries(Game.rooms))
+		{
+			const controller = room.controller;
+			if (controller && controller.my)
+			{
+				const ticksToDowngrade = controller.ticksToDowngrade;
+				if (ticksToDowngrade && ticksToDowngrade < decay.ticksToDowngrade)
+				{
+					decay = controller;
+				}
+			}
+		}
+
+		console.log("decay", decay.href(decay.room + ' ' + decay.ticksToDowngrade));
+	}
+
 	for (const name in Memory.creeps)
 	{
 		if (!Game.creeps[name])
