@@ -198,7 +198,14 @@ const roleHarvester =
 			const structure = Game.structures[id];
 			const structureType = structure.structureType;
 			const room = structure.room;
-			const length = room.find(FIND_MY_CREEPS).length;
+			const length = room.find(FIND_MY_CREEPS,
+				{
+					filter: (creep) =>
+					{
+						return creep.body.length > 25 && 'harvester' == creep.memory.role;
+					}
+				}
+				).length;
 
 			if ("controller" == structureType)
 			{
