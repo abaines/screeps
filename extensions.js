@@ -2,12 +2,12 @@
 
 'use strict';
 
-var log = require('log').log;
+const log = require('log').log;
 
 Number.prototype.toFixedNumber = function (digits, base)
 {
 	// https://stackoverflow.com/a/29494612/
-	var pow = Math.pow(base || 10, digits);
+	const pow = Math.pow(base || 10, digits);
 	return Math.round(this * pow) / pow;
 }
 
@@ -17,26 +17,26 @@ RoomPosition.prototype.distance = function (other)
 
 	if (this.room != otherPos.room)
 	{
-		var msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + otherPos.room;
+		const msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + otherPos.room;
 		log(msg);
 		return Infinity;
 	}
 
-	var x2x = Math.abs(this.x - otherPos.x);
-	var y2y = Math.abs(this.y - otherPos.y);
-	var distance = Math.sqrt(x2x * x2x + y2y * y2y);
+	const x2x = Math.abs(this.x - otherPos.x);
+	const y2y = Math.abs(this.y - otherPos.y);
+	const distance = Math.sqrt(x2x * x2x + y2y * y2y);
 
 	return distance;
 }
 
 Creep.prototype.smartWithdraw = function (target, resourceType = RESOURCE_ENERGY, say = "⚡")
 {
-	var withdrawResult = this.withdraw(target, resourceType);
+	const withdrawResult = this.withdraw(target, resourceType);
 
 	if (ERR_NOT_IN_RANGE == withdrawResult)
 	{
 		this.say(say);
-		var moveResult = this.travel(target);
+		const moveResult = this.travel(target);
 	}
 	else if (OK == withdrawResult)
 	{
@@ -61,7 +61,7 @@ Creep.prototype.travel = function (target, opts)
 		}
 	};
 
-	var moveResult = this.moveTo(target, opts);
+	const moveResult = this.moveTo(target, opts);
 
 	if (OK == moveResult || ERR_TIRED == moveResult)
 	{
@@ -113,7 +113,7 @@ Creep.prototype.bodyScan = function (scan_type)
 
 Creep.prototype.smartTransfer = function (target, say = "🔋")
 {
-	var transferResult = this.transfer(target, RESOURCE_ENERGY);
+	const transferResult = this.transfer(target, RESOURCE_ENERGY);
 
 	if (ERR_NOT_IN_RANGE == transferResult)
 	{
@@ -145,7 +145,7 @@ Creep.prototype.smartTransfer = function (target, say = "🔋")
 
 Creep.prototype.smartBuild = function (structure, say = "🚧")
 {
-	var buildResult = this.build(structure);
+	const buildResult = this.build(structure);
 
 	if (buildResult == ERR_NOT_IN_RANGE)
 	{
@@ -170,7 +170,7 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 
 Creep.prototype.smartHarvest = function (source, say = "🌿")
 {
-	var harvestResult = this.harvest(source);
+	const harvestResult = this.harvest(source);
 
 	if (harvestResult == ERR_NOT_IN_RANGE)
 	{
