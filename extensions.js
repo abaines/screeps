@@ -111,6 +111,37 @@ Creep.prototype.bodyScan = function (scan_type)
 	return false;
 }
 
+Creep.prototype.moveAndTransfer = function (target)
+{
+	var transferResult = this.transfer(target, RESOURCE_ENERGY);
+
+	if (ERR_NOT_IN_RANGE == transferResult)
+	{
+		this.travel(target);
+	}
+	else if (OK == transferResult)
+	{
+		// acceptable
+	}
+	else if (ERR_INVALID_TARGET == transferResult)
+	{
+		this.say("🥛");
+		const msg = 'transferResult The target is not a valid object which can contain the specified resource. ' + target;
+		log(msg);
+	}
+	else if (ERR_NOT_ENOUGH_RESOURCES == transferResult)
+	{
+		this.say("🥛");
+		const msg = 'transferResult The creep does not have the given amount of resources. ' + target + ' ' + this.room.href();
+		log(msg);
+	}
+	else
+	{
+		this.say("🥛");
+		log('transferResult ' + transferResult);
+	}
+}
+
 Room.prototype.href = function ()
 {
 	const roomName = this.name;

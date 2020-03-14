@@ -10,32 +10,6 @@ function _getHarvesters()
 	return harvesters;
 }
 
-function _smartTransfer(creep, target)
-{
-	var transferResult = creep.transfer(target, RESOURCE_ENERGY);
-	if (ERR_NOT_IN_RANGE == transferResult)
-	{
-		creep.travel(target);
-	}
-	else if (OK == transferResult)
-	{}
-	else if (ERR_INVALID_TARGET == transferResult)
-	{
-		const msg = 'transferResult The target is not a valid object which can contain the specified resource. ' + target;
-		log(msg);
-	}
-	else if (ERR_NOT_ENOUGH_RESOURCES == transferResult)
-	{
-		creep.say("🥛");
-		const msg = 'transferResult The creep does not have the given amount of resources. ' + target + ' ' + creep.room.href();
-		log(msg);
-	}
-	else
-	{
-		log('transferResult ' + transferResult);
-	}
-}
-
 function findStructuresThatNeedEnergy(creep, structureType)
 {
 	var room = creep.room;
@@ -177,7 +151,6 @@ var roleHarvester =
 	getHarvesters: _getHarvesters,
 	findAndGotoFlag: _findAndGotoFlag,
 	smartHarvest: _smartHarvest,
-	smartTransfer: _smartTransfer,
 
 	/** @param {Creep} creep **/
 	run: function (creep, harvesterTickData)
@@ -263,13 +236,13 @@ var roleHarvester =
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
 			if (target != null)
 			{
-				return _smartTransfer(creep, target);
+				return creep.moveAndTransfer(target);
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
 			if (target != null)
 			{
-				return _smartTransfer(creep, target);
+				return creep.moveAndTransfer(target);
 			}
 
 			for (var idx in targets)
@@ -319,7 +292,7 @@ var roleHarvester =
 				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
 					creep.say("🔋");
-					_smartTransfer(creep, nearbyLink);
+					creep.moveAndTransfer(nearbyLink);
 				}
 				else if (linkGoal == "fountain" && nearbyLink.store[RESOURCE_ENERGY] >= 50)
 				{
@@ -334,7 +307,7 @@ var roleHarvester =
 				{
 					creep.say("🏦");
 					creep.travel(storage);
-					_smartTransfer(creep, storage);
+					creep.moveAndTransfer(storage);
 					return;
 				}
 				else

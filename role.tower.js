@@ -119,7 +119,7 @@ function getEnergyFromCreeps(tower)
 		);
 	if (creep)
 	{
-		roleHarvester.smartTransfer(creep, tower);
+		creep.moveAndTransfer(tower);
 		creep.say("🗼");
 	}
 }
