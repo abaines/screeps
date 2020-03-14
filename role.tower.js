@@ -59,15 +59,10 @@ function run_tower(tower)
 
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
-		repairRoomStructureType(tower, "road", -3 * 800); // 2600
-
-		repairRoomStructureType(tower, "constructedWall", 250_000);
-		repairRoomStructureType(tower, "rampart", 250_000);
-
-		repairRoomStructureType(tower, "road", -5 * 800); // 1000
-
-		repairRoomStructureType(tower, "constructedWall", 1_000);
-		repairRoomStructureType(tower, "rampart", 1_000);
+		tower.repairDefenses();
+		tower.repairRoads();
+		tower.repairWeakNonRoads();
+		tower.repairDefenses(15_000);
 	}
 }
 
