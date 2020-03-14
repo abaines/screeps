@@ -3,7 +3,6 @@
 'use strict';
 
 const log = require('log').log;
-const roleHarvester = require('role.harvester');
 
 function repairRoomStructureType(tower, structureType, hits)
 {
@@ -29,7 +28,6 @@ function repairRoomStructureType(tower, structureType, hits)
 
 	if (damagedStructures.length > 0)
 	{
-
 		var weakest =
 		{
 			hits: Infinity
