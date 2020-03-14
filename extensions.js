@@ -333,7 +333,7 @@ StructureTower.prototype.repairWeakNonRoads = function ()
 
 StructureTower.prototype.repairRoads = function ()
 {
-	const damagedRoad = this.room.pos.findClosestByRange(FIND_STRUCTURES,
+	const damagedRoad = this.pos.findClosestByRange(FIND_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
@@ -352,7 +352,7 @@ StructureTower.prototype.repairRoads = function ()
 	this.smartRepair(damagedRoad);
 }
 
-StructureTower.prototype.repairDefenses = function (hits)
+StructureTower.prototype.repairDefenses = function (hits = 300_000)
 {
 	const damagedStructures = this.room.find(FIND_STRUCTURES,
 		{
@@ -378,11 +378,24 @@ StructureTower.prototype.repairDefenses = function (hits)
 // if given an array, repairs the weakest
 StructureTower.prototype.smartRepair = function (input)
 {
+	if (input == null)
+	{
+		return;
+	}
+	else if (input instanceof Array && input.length == 0)
+	{
+		return;
+	}
+
 	function getStructure()
 	{
-		if (input instanceof Array)
+		if (input == null)
 		{
-			console.log('smartRepair-array');
+			console.log('smartRepair', 'input == null');
+		}
+		else if (input instanceof Array)
+		{
+			console.log('smartRepair-array', input.length);
 			var weakest =
 			{
 				hits: Infinity
@@ -424,7 +437,7 @@ StructureTower.prototype.smartRepair = function (input)
 	{}
 	else
 	{
-		console.log('smartRepair', this.href(), repairResult, target.href());
+		console.log('smartRepair', this.href(), repairResult, target, target.structureType);
 	}
 }
 
