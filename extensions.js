@@ -242,6 +242,9 @@ Creep.prototype.pickSource = function ()
 	return source;
 }
 
+// TODO: findStructuresThatNeedEnergy, but also check links (and extensions/spawns) at the same loop
+
+
 // href
 
 Room.prototype.href = function (msg = this.name)

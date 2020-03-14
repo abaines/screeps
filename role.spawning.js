@@ -156,6 +156,8 @@ function spawnLogic(spawn, harvesters)
 			]);
 	}
 
+	// TODO babyBooster
+
 	if (false)
 	{
 		var claimers = 0;
