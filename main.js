@@ -72,9 +72,7 @@ module.exports.loop = function ()
 	{
 		const room = rooms[idx];
 
-		const controller = room.controller;
-		var level = controller.level + controller.progress / controller.progressTotal;
-		level = level || controller.level;
+		const level = room.controller.getLevel();
 
 		if (level && level > 0)
 			controllerLevelsList.push(level.toFixedNumber(3));

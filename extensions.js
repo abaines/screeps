@@ -245,6 +245,15 @@ Creep.prototype.pickSource = function ()
 // TODO: findStructuresThatNeedEnergy, but also check links (and extensions/spawns) at the same loop
 
 
+
+StructureController.prototype.getLevel = function ()
+{
+	const fraction = this.progress / this.progressTotal;
+	const level = this.level + (fraction || 0);
+
+	return level;
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
