@@ -49,20 +49,13 @@ function repairRoomStructureType(tower, structureType, hits)
 	}
 }
 
-function run_tower(tower, injuredStructure)
+function run_tower(tower)
 {
 	const hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
 
 	if (hostiles.length > 0)
 	{
 		tower.attack(hostiles[0]);
-		return;
-	}
-
-	if (injuredStructure)
-	{
-		tower.repair(injuredStructure);
-		console.log('tower.repair', injuredStructure);
 		return;
 	}
 
@@ -77,24 +70,6 @@ function run_tower(tower, injuredStructure)
 
 		repairRoomStructureType(tower, "constructedWall", 1_000);
 		repairRoomStructureType(tower, "rampart", 1_000);
-	}
-}
-
-function getInjuredStructure()
-{
-	for (const name in Game.structures)
-	{
-		const structure = Game.structures[name];
-
-		const structureType = structure.structureType;
-		const hits = structure.hits;
-		const hitsMax = structure.hitsMax;
-
-		if (hits < hitsMax && structureType != "rampart")
-		{
-			console.log('getInjuredStructure', structure, structureType);
-			return structure;
-		}
 	}
 }
 
@@ -147,8 +122,6 @@ const towerLogic =
 {
 	run: function ()
 	{
-		const injuredStructure = getInjuredStructure();
-
 		for (const name in Game.structures)
 		{
 			const structure = Game.structures[name];
@@ -157,7 +130,7 @@ const towerLogic =
 
 			if ("tower" == structureType)
 			{
-				run_tower(structure, injuredStructure);
+				run_tower(structure);
 			}
 		}
 	},
