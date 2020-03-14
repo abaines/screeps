@@ -6,7 +6,7 @@ var log = require('log').log;
 
 function _getHarvesters()
 {
-	var harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role);
+	var harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length >= 50);
 	return harvesters;
 }
 
