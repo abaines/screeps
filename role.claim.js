@@ -2,44 +2,49 @@
 
 'use strict';
 
-var log = require('log').log;
-var roleHarvester = require('role.harvester');
+const log = require('log').log;
+const roleHarvester = require('role.harvester');
 
-var claimCreep =
+const claimCreep =
 {
+	gotoFlag: function (creep)
+	{
+		for (const[name, flag]of Object.entries(Game.flags))
+		{
+			if (flag.room.controller && !flag.room.controller.my && flag.room.controller.level == 0)
+			{
+				creep.say("🚩");
+				creep.travel(flag);
+				return true;
+			}
+		}
+		return false;
+	},
 	run: function (creep)
 	{
 		if (creep.room.controller)
 		{
-			creep.say("c.r.c");
-			var controller = creep.room.controller;
+			const controller = creep.room.controller;
 			if (controller.level == 0 && !controller.my)
 			{
-				creep.say("!my");
-				var claimResult = creep.claimController(controller);
-				creep.say('c' + claimResult);
+				creep.say("🏁");
+				const claimResult = creep.claimController(controller);
+
 				if (claimResult == ERR_NOT_IN_RANGE)
 				{
-					var moveResult = creep.travel(controller);
-					creep.say('m' + moveResult);
+					creep.travel(controller);
+				}
+				else
+				{
+					log("claimResult: " + claimResult + ' ' + creep.room.href());
 				}
 			}
 		}
 
-		var flags = Game.flags;
-		if (Object.keys(flags).length > 0)
+		if (!gotoFlag(creep))
 		{
-			var flag = flags[Object.keys(flags)[0]];
-			if (flag.room != creep.room)
-			{
-				creep.say("flag");
-				roleHarvester.findAndGotoFlag(creep);
-			}
-			else
-			{
-				creep.say("roleHarvester");
-				roleHarvester.run(creep);
-			}
+			creep.say("Harvester");
+			roleHarvester.run(creep);
 		}
 	},
 };

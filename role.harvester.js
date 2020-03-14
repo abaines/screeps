@@ -26,26 +26,6 @@ function findStructuresThatNeedEnergy(creep, structureType)
 	return target;
 }
 
-function gotoFlag(creep, flag)
-{
-	var range = creep.pos.getRangeTo(flag);
-	if (range > 1)
-	{
-		var moveReturn = creep.travel(flag);
-		creep.say(creep.pos.x + '  ' + creep.pos.y + '  ' + range);
-	}
-}
-
-function _findAndGotoFlag(creep)
-{
-	var flags = Game.flags;
-	if (Object.keys(flags).length > 0)
-	{
-		var flag = flags[Object.keys(flags)[0]];
-		gotoFlag(creep, flag);
-	}
-}
-
 function sourceMostEnergy(room)
 {
 	var sources = room.find(FIND_SOURCES_ACTIVE);
@@ -89,7 +69,6 @@ function pickSource(creep)
 var roleHarvester =
 {
 	getHarvesters: _getHarvesters,
-	findAndGotoFlag: _findAndGotoFlag,
 
 	/** @param {Creep} creep **/
 	run: function (creep, harvesterTickData)
