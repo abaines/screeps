@@ -147,7 +147,7 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 {
 	const buildResult = this.build(structure);
 
-	if (buildResult == ERR_NOT_IN_RANGE)
+	if (ERR_NOT_IN_RANGE == buildResult)
 	{
 		this.say(say);
 		this.travel(structure);
@@ -172,25 +172,25 @@ Creep.prototype.smartHarvest = function (source, say = "🌿")
 {
 	const harvestResult = this.harvest(source);
 
-	if (harvestResult == ERR_NOT_IN_RANGE)
+	if (ERR_NOT_IN_RANGE == harvestResult)
 	{
 		this.say(say);
 		this.travel(source);
 	}
-	else if (harvestResult == OK)
+	else if (OK == harvestResult)
 	{
 		this.say(say);
 	}
-	else if (harvestResult == ERR_BUSY)
+	else if (ERR_BUSY == harvestResult)
 	{
 		// ignore "The creep is still being spawned."
 	}
-	else if (harvestResult == ERR_NOT_ENOUGH_RESOURCES)
+	else if (ERR_NOT_ENOUGH_RESOURCES == harvestResult)
 	{
 		this.say("💢");
 		log("The target does not contain any harvestable energy or mineral. " + this.room.href());
 	}
-	else if (harvestResult == ERR_NO_BODYPART)
+	else if (ERR_NO_BODYPART == harvestResult)
 	{
 		this.say("💢🔨");
 		log("There are no WORK body parts in this creep’s body. " + this.room.href());

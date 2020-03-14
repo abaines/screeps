@@ -12,7 +12,7 @@ var roleTombstone = require('role.tombstone');
 var roleLink = require('role.link');
 var roleSpawning = require('role.spawning');
 
-if (typeof script_init !== 'undefined')
+if ('undefined' !== typeof script_init)
 {
 	// the variable is defined
 }
@@ -38,7 +38,7 @@ module.exports.loop = function ()
 	for (var name in Game.creeps)
 	{
 		var creep = Game.creeps[name];
-		if (creep.memory.role == 'harvester')
+		if ('harvester' == creep.memory.role)
 		{
 			var harvestResult = roleHarvester.run(creep, harvesterTickData);
 
@@ -47,7 +47,7 @@ module.exports.loop = function ()
 				log(harvestResult.log);
 			}
 		}
-		else if (creep.memory.role == 'claimer')
+		else if ('claimer' == creep.memory.role)
 		{
 			roleClaimer.run(creep);
 		}

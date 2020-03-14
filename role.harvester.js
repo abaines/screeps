@@ -6,7 +6,7 @@ var log = require('log').log;
 
 function _getHarvesters()
 {
-	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+	var harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role);
 	return harvesters;
 }
 
@@ -114,7 +114,7 @@ var roleHarvester =
 			for (var idx in targets)
 			{
 				var structure = targets[idx];
-				if (structure.structureType == STRUCTURE_SPAWN)
+				if (STRUCTURE_SPAWN == structure.structureType)
 				{
 					creep.smartBuild(structure);
 					return;
@@ -164,7 +164,7 @@ var roleHarvester =
 			for (var idx in targets)
 			{
 				var structure = targets[idx];
-				if (structure.structureType == STRUCTURE_RAMPART)
+				if (STRUCTURE_RAMPART == structure.structureType)
 				{
 					creep.smartBuild(structure);
 					return;
@@ -174,7 +174,7 @@ var roleHarvester =
 			for (var idx in targets)
 			{
 				var structure = targets[idx];
-				if (structure.structureType == STRUCTURE_WALL)
+				if (STRUCTURE_WALL == structure.structureType)
 				{
 					creep.smartBuild(structure);
 					return;
@@ -184,7 +184,7 @@ var roleHarvester =
 			for (var idx in targets)
 			{
 				var structure = targets[idx];
-				if (structure.structureType == STRUCTURE_EXTENSION)
+				if (STRUCTURE_EXTENSION == structure.structureType)
 				{
 					creep.smartBuild(structure);
 					return;
@@ -202,11 +202,11 @@ var roleHarvester =
 			if (nearbyLink && creep.pos.distance(nearbyLink) < 5)
 			{
 				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
-				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
+				if ("sink" == linkGoal && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
 					creep.smartTransfer(nearbyLink);
 				}
-				else if (linkGoal == "fountain" && nearbyLink.store[RESOURCE_ENERGY] >= 50)
+				else if ("fountain" == linkGoal && nearbyLink.store[RESOURCE_ENERGY] >= 50)
 				{
 					creep.smartWithdraw(nearbyLink);
 				}
@@ -226,7 +226,7 @@ var roleHarvester =
 					for (var idx in targets)
 					{
 						var structure = targets[idx];
-						if (structure.structureType == STRUCTURE_STORAGE)
+						if (STRUCTURE_STORAGE == structure.structureType)
 						{
 							creep.smartBuild(structure, "🚧🏦");
 							return;
@@ -235,7 +235,7 @@ var roleHarvester =
 				}
 			}
 
-			if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
+			if (ERR_NOT_IN_RANGE == creep.upgradeController(creep.room.controller))
 			{
 				creep.travel(creep.room.controller);
 			}

@@ -30,7 +30,7 @@ const claimCreep =
 				creep.say("🏁");
 				const claimResult = creep.claimController(controller);
 
-				if (claimResult == ERR_NOT_IN_RANGE)
+				if (ERR_NOT_IN_RANGE == claimResult)
 				{
 					creep.travel(controller);
 				}

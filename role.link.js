@@ -84,11 +84,11 @@ var linkLogic =
 			var goal = linkData.goal;
 			var linkObj = Game.getObjectById(linkId);
 
-			if (goal == "sink")
+			if ("sink" == goal)
 			{
 				sinks.push(linkObj);
 			}
-			else if (goal == "fountain")
+			else if ("fountain" == goal)
 			{
 				fountains.push(linkObj);
 			}
