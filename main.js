@@ -68,17 +68,22 @@ module.exports.loop = function ()
 	const controllerLevelsList = [];
 	const creepCountList = [];
 	const rooms = Game.rooms;
+
 	for (const idx in rooms)
 	{
 		const room = rooms[idx];
+		const controller = room.controller;
 
-		const level = room.controller.getLevel();
+		if (controller)
+		{
+			const level = room.controller.getLevel();
 
-		if (level && level > 0)
-			controllerLevelsList.push(level.toFixedNumber(3));
+			if (level && level > 0)
+				controllerLevelsList.push(level.toFixedNumber(3));
 
-		const roomCreepCount = room.find(FIND_MY_CREEPS).length;
-		creepCountList.push(roomCreepCount);
+			const roomCreepCount = room.find(FIND_MY_CREEPS).length;
+			creepCountList.push(roomCreepCount);
+		}
 	}
 
 	controllerLevelsList.sort().reverse();

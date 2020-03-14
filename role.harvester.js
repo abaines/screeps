@@ -175,7 +175,7 @@ const roleHarvester =
 				}
 			}
 
-			if (creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[6])
+			if (creep.room.controller && creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[6])
 			{
 				const storage = creep.room.storage;
 				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
