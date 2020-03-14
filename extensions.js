@@ -143,7 +143,7 @@ Creep.prototype.smartTransfer = function (target, say = "🔋")
 	}
 }
 
-Creep.prototype.smartBuild = function (target, say = "🚧")
+Creep.prototype.smartBuild = function (structure, say = "🚧")
 {
 	var buildResult = this.build(structure);
 
@@ -165,6 +165,40 @@ Creep.prototype.smartBuild = function (target, say = "🚧")
 	{
 		log('creep-build-failed ' + buildResult + ' ' + this.room.href());
 		this.say("💫" + buildResult);
+	}
+}
+
+Creep.prototype.smartHarvest = function (source, say = "🌿")
+{
+	var harvestResult = this.harvest(source);
+
+	if (harvestResult == ERR_NOT_IN_RANGE)
+	{
+		this.say(say);
+		this.travel(source);
+	}
+	else if (harvestResult == OK)
+	{
+		this.say(say);
+	}
+	else if (harvestResult == ERR_BUSY)
+	{
+		// ignore "The creep is still being spawned."
+	}
+	else if (harvestResult == ERR_NOT_ENOUGH_RESOURCES)
+	{
+		this.say("💢");
+		log("The target does not contain any harvestable energy or mineral. " + this.room.href());
+	}
+	else if (harvestResult == ERR_NO_BODYPART)
+	{
+		this.say("💢🔨");
+		log("There are no WORK body parts in this creep’s body. " + this.room.href());
+	}
+	else
+	{
+		this.say("💢🌿");
+		log("creep.harvest = " + harvestResult + ' ' + this.room.href());
 	}
 }
 
