@@ -25,9 +25,9 @@ function spawnCreep(spawn, role, body)
 	}
 
 	const bodyMap = {}
-	for (var idx in body)
+	for (const idx in body)
 	{
-		var part = body[idx];
+		const part = body[idx];
 		if (!(part in bodyMap))
 		{
 			bodyMap[part] = 0;
@@ -96,9 +96,9 @@ function spawnCreep(spawn, role, body)
 
 function spawnLogic(spawn, harvesters)
 {
-	var roomHarvesterCount = spawn.room.find(FIND_MY_CREEPS).length;
-	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
-	var energyAvailable = spawn.room.energyAvailable;
+	const roomHarvesterCount = spawn.room.find(FIND_MY_CREEPS).length;
+	const energyCapacityAvailable = spawn.room.energyCapacityAvailable;
+	const energyAvailable = spawn.room.energyAvailable;
 
 	if ((roomHarvesterCount < 3 || harvesters.length < 5 * 5) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
 	{
@@ -161,9 +161,9 @@ function spawnLogic(spawn, harvesters)
 	if (false)
 	{
 		var claimers = 0;
-		for (var name in Game.creeps)
+		for (const name in Game.creeps)
 		{
-			var creep = Game.creeps[name];
+			const creep = Game.creeps[name];
 			if (creep.bodyScan("claim"))
 			{
 				claimers = 1 + claimers
@@ -177,7 +177,7 @@ function spawnLogic(spawn, harvesters)
 
 	if (spawn.spawning)
 	{
-		var spawningCreep = Game.creeps[spawn.spawning.name];
+		const spawningCreep = Game.creeps[spawn.spawning.name];
 		spawn.room.visual.text(
 			'🛠️' + spawningCreep.memory.role,
 			spawn.pos.x + 1,
@@ -190,15 +190,15 @@ function spawnLogic(spawn, harvesters)
 	}
 }
 
-var spawnSpawning =
+const spawnSpawning =
 {
 	run: function ()
 	{
-		var harvesters = roleHarvester.getHarvesters();
+		const harvesters = roleHarvester.getHarvesters();
 
-		for (var hash in Game.spawns)
+		for (const hash in Game.spawns)
 		{
-			var spawn = Game.spawns[hash];
+			const spawn = Game.spawns[hash];
 			spawnLogic(spawn, harvesters);
 		}
 	}

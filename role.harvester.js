@@ -2,19 +2,19 @@
 
 'use strict';
 
-var log = require('log').log;
+const log = require('log').log;
 
 function _getHarvesters()
 {
-	var harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length >= 50);
+	const harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length >= 50);
 	return harvesters;
 }
 
 function findStructuresThatNeedEnergy(creep, structureType)
 {
-	var room = creep.room;
+	const room = creep.room;
 
-	var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+	const target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
@@ -26,7 +26,7 @@ function findStructuresThatNeedEnergy(creep, structureType)
 	return target;
 }
 
-var roleHarvester =
+const roleHarvester =
 {
 	getHarvesters: _getHarvesters,
 
@@ -38,12 +38,12 @@ var roleHarvester =
 			return;
 		}
 
-		var creepCount = creep.room.find(FIND_MY_CREEPS).length;
+		const creepCount = creep.room.find(FIND_MY_CREEPS).length;
 
 		// planning phase
 		if ((creep.store.getUsedCapacity() == 0 && creep.memory.mode == null) || (creep.memory.mode != null && Game.getObjectById(creep.memory.mode).energy == 0))
 		{
-			var source = creep.pickSource();
+			const source = creep.pickSource();
 
 			if (source != null)
 			{
@@ -62,7 +62,7 @@ var roleHarvester =
 		// action phase
 		if (creep.memory.mode != null)
 		{
-			var source = Game.getObjectById(creep.memory.mode);
+			const source = Game.getObjectById(creep.memory.mode);
 			if (source && source.energy > 0)
 			{
 				creep.smartHarvest(source);
@@ -72,11 +72,11 @@ var roleHarvester =
 
 		if (creep.store.getUsedCapacity() > 0)
 		{
-			var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+			const targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 
-			for (var idx in targets)
+			for (const idx in targets)
 			{
-				var structure = targets[idx];
+				const structure = targets[idx];
 				if (STRUCTURE_SPAWN == structure.structureType)
 				{
 					creep.smartBuild(structure);
@@ -86,7 +86,7 @@ var roleHarvester =
 
 			if (targets.length)
 			{
-				var constructionCreeps = creep.room.find(FIND_MY_CREEPS,
+				const constructionCreeps = creep.room.find(FIND_MY_CREEPS,
 					{
 						filter: (creepFind) =>
 						{
@@ -94,7 +94,7 @@ var roleHarvester =
 						}
 					}
 					);
-				var constructionCreepsCount = constructionCreeps.length;
+				const constructionCreepsCount = constructionCreeps.length;
 
 				if (constructionCreepsCount > 1 && constructionCreepsCount >= (creepCount / 2.0))
 				{
@@ -105,7 +105,7 @@ var roleHarvester =
 
 				if (creep.memory.construction || constructionCreepsCount == 0)
 				{
-					var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+					const target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 					creep.smartBuild(target, "👷");
 					creep.memory.construction = true;
 					return;
@@ -124,9 +124,9 @@ var roleHarvester =
 				return creep.smartTransfer(target);
 			}
 
-			for (var idx in targets)
+			for (const idx in targets)
 			{
-				var structure = targets[idx];
+				const structure = targets[idx];
 				if (STRUCTURE_RAMPART == structure.structureType)
 				{
 					creep.smartBuild(structure);
@@ -134,9 +134,9 @@ var roleHarvester =
 				}
 			}
 
-			for (var idx in targets)
+			for (const idx in targets)
 			{
-				var structure = targets[idx];
+				const structure = targets[idx];
 				if (STRUCTURE_WALL == structure.structureType)
 				{
 					creep.smartBuild(structure);
@@ -144,9 +144,9 @@ var roleHarvester =
 				}
 			}
 
-			for (var idx in targets)
+			for (const idx in targets)
 			{
-				var structure = targets[idx];
+				const structure = targets[idx];
 				if (STRUCTURE_EXTENSION == structure.structureType)
 				{
 					creep.smartBuild(structure);
@@ -164,7 +164,7 @@ var roleHarvester =
 				);
 			if (nearbyLink && creep.pos.distance(nearbyLink) < 5)
 			{
-				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
+				const linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
 				if ("sink" == linkGoal && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
 					creep.smartTransfer(nearbyLink);
@@ -177,7 +177,7 @@ var roleHarvester =
 
 			if (creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[6])
 			{
-				var storage = creep.room.storage;
+				const storage = creep.room.storage;
 				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
 					creep.travel(storage);
@@ -186,9 +186,9 @@ var roleHarvester =
 				}
 				else
 				{
-					for (var idx in targets)
+					for (const idx in targets)
 					{
-						var structure = targets[idx];
+						const structure = targets[idx];
 						if (STRUCTURE_STORAGE == structure.structureType)
 						{
 							creep.smartBuild(structure, "🚧🏦");
@@ -205,7 +205,7 @@ var roleHarvester =
 			return;
 		}
 
-		var controlRoomCreepCount = {};
+		const controlRoomCreepCount = {};
 		var leastRoom =
 		{
 			length: Infinity
@@ -217,10 +217,10 @@ var roleHarvester =
 
 		Object.keys(Game.structures).forEach(function (id)
 		{
-			var structure = Game.structures[id];
-			var structureType = structure.structureType;
-			var room = structure.room;
-			var length = room.find(FIND_MY_CREEPS).length;
+			const structure = Game.structures[id];
+			const structureType = structure.structureType;
+			const room = structure.room;
+			const length = room.find(FIND_MY_CREEPS).length;
 
 			if ("controller" == structureType)
 			{
@@ -242,11 +242,11 @@ var roleHarvester =
 		}
 		);
 
-		var roomCreeps = creep.room.find(FIND_MY_CREEPS);
+		const roomCreeps = creep.room.find(FIND_MY_CREEPS);
 		var youngest = true;
-		for (var idx in roomCreeps)
+		for (const idx in roomCreeps)
 		{
-			var otherCreep = roomCreeps[idx];
+			const otherCreep = roomCreeps[idx];
 			if (otherCreep.ticksToLive > creep.ticksToLive)
 			{
 				youngest = false;
@@ -255,8 +255,8 @@ var roleHarvester =
 
 		if (youngest && roomCreeps.length >= mostRoom.length && roomCreeps.length > leastRoom.length + 1)
 		{
-			var controller = leastRoom.controller;
-			var moveResult = creep.travel(controller);
+			const controller = leastRoom.controller;
+			const moveResult = creep.travel(controller);
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
@@ -273,20 +273,20 @@ var roleHarvester =
 			return;
 		}
 
-		var sources = creep.room.find(FIND_SOURCES);
+		const sources = creep.room.find(FIND_SOURCES);
 		var nextSource =
 		{
 			ticksToRegeneration: Infinity
 		};
-		for (var idx in sources)
+		for (const idx in sources)
 		{
-			var source = sources[idx];
+			const source = sources[idx];
 			if (source.ticksToRegeneration < nextSource.ticksToRegeneration)
 			{
 				nextSource = source;
 			}
 		}
-		var moveResult = creep.travel(nextSource);
+		const moveResult = creep.travel(nextSource);
 
 		harvesterTickData.bored = (harvesterTickData.bored || 0) + 1;
 	},

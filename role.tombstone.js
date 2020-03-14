@@ -2,13 +2,13 @@
 
 'use strict';
 
-var log = require('log').log;
+const log = require('log').log;
 
-var tombstoneLogic =
+const tombstoneLogic =
 {
 	creepCollectTombstone: function (creep, tombstone)
 	{
-		var withdrawResult = creep.withdraw(tombstone, RESOURCE_ENERGY);
+		const withdrawResult = creep.withdraw(tombstone, RESOURCE_ENERGY);
 
 		if (ERR_NOT_IN_RANGE == withdrawResult)
 		{
@@ -26,7 +26,7 @@ var tombstoneLogic =
 	},
 	creepCollectResource: function (creep, resource)
 	{
-		var pickupResult = creep.pickup(resource);
+		const pickupResult = creep.pickup(resource);
 
 		if (ERR_NOT_IN_RANGE == pickupResult)
 		{
@@ -44,13 +44,13 @@ var tombstoneLogic =
 	},
 	findCreepToGetStore: function (store, pos)
 	{
-		var creep = pos.findClosestByPath(FIND_MY_CREEPS,
+		const creep = pos.findClosestByPath(FIND_MY_CREEPS,
 			{
 				filter: (creep) =>
 				{
-					var freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
-					var isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
-					var isConstruction = creep.memory.construction;
+					const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
+					const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
+					const isConstruction = creep.memory.construction;
 
 					return !isConstruction && (isCreepEmpty || freeCapacity >= store.getUsedCapacity(RESOURCE_ENERGY));
 				}
@@ -61,13 +61,13 @@ var tombstoneLogic =
 	},
 	findCreepToGetResource: function (resource)
 	{
-		var creep = resource.pos.findClosestByPath(FIND_MY_CREEPS,
+		const creep = resource.pos.findClosestByPath(FIND_MY_CREEPS,
 			{
 				filter: (creep) =>
 				{
-					var freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
-					var isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
-					var isConstruction = creep.memory.construction;
+					const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
+					const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
+					const isConstruction = creep.memory.construction;
 
 					return !isConstruction && (isCreepEmpty || freeCapacity >= resource.amount);
 				}
@@ -84,7 +84,7 @@ var tombstoneLogic =
 		}
 
 		// FIND_TOMBSTONES
-		var tombstones = room.find(FIND_TOMBSTONES,
+		const tombstones = room.find(FIND_TOMBSTONES,
 			{
 				filter: (tombstone) =>
 				{
@@ -95,10 +95,10 @@ var tombstoneLogic =
 
 		if (tombstones.length)
 		{
-			for (var idx in tombstones)
+			for (const idx in tombstones)
 			{
-				var tombstone = tombstones[idx];
-				var creep = this.findCreepToGetStore(tombstone.store, tombstone.pos);
+				const tombstone = tombstones[idx];
+				const creep = this.findCreepToGetStore(tombstone.store, tombstone.pos);
 
 				if (creep)
 				{
@@ -110,7 +110,7 @@ var tombstoneLogic =
 		}
 
 		// FIND_DROPPED_RESOURCES
-		var resources = room.find(FIND_DROPPED_RESOURCES,
+		const resources = room.find(FIND_DROPPED_RESOURCES,
 			{
 				filter: (resource) =>
 				{
@@ -121,10 +121,10 @@ var tombstoneLogic =
 
 		if (resources.length)
 		{
-			for (var idx in resources)
+			for (const idx in resources)
 			{
-				var resource = resources[idx];
-				var creep = this.findCreepToGetResource(resource);
+				const resource = resources[idx];
+				const creep = this.findCreepToGetResource(resource);
 
 				if (creep)
 				{
@@ -139,9 +139,9 @@ var tombstoneLogic =
 	},
 	run: function ()
 	{
-		for (var idx in Game.rooms)
+		for (const idx in Game.rooms)
 		{
-			var room = Game.rooms[idx];
+			const room = Game.rooms[idx];
 			this.perRoom(room);
 		}
 	},

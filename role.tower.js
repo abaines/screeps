@@ -2,12 +2,12 @@
 
 'use strict';
 
-var log = require('log').log;
-var roleHarvester = require('role.harvester');
+const log = require('log').log;
+const roleHarvester = require('role.harvester');
 
 function repairRoomStructureType(tower, structureType, hits)
 {
-	var damagedStructures = tower.room.find(FIND_STRUCTURES,
+	const damagedStructures = tower.room.find(FIND_STRUCTURES,
 		{
 			filter: (structure) =>
 			{
@@ -35,9 +35,9 @@ function repairRoomStructureType(tower, structureType, hits)
 			hits: Infinity
 		};
 
-		for (var idx in damagedStructures)
+		for (const idx in damagedStructures)
 		{
-			var damaged = damagedStructures[idx];
+			const damaged = damagedStructures[idx];
 
 			if (damaged.hits < weakest.hits)
 			{
@@ -45,13 +45,13 @@ function repairRoomStructureType(tower, structureType, hits)
 			}
 		}
 
-		var repairResult = tower.repair(weakest);
+		const repairResult = tower.repair(weakest);
 	}
 }
 
 function run_tower(tower, injuredStructure)
 {
-	var hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
+	const hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
 
 	if (hostiles.length > 0)
 	{
@@ -82,13 +82,13 @@ function run_tower(tower, injuredStructure)
 
 function getInjuredStructure()
 {
-	for (var name in Game.structures)
+	for (const name in Game.structures)
 	{
-		var structure = Game.structures[name];
+		const structure = Game.structures[name];
 
-		var structureType = structure.structureType;
-		var hits = structure.hits;
-		var hitsMax = structure.hitsMax;
+		const structureType = structure.structureType;
+		const hits = structure.hits;
+		const hitsMax = structure.hitsMax;
 
 		if (hits < hitsMax && structureType != "rampart")
 		{
@@ -100,15 +100,15 @@ function getInjuredStructure()
 
 function getEnergyFromCreeps(tower)
 {
-	var creep = tower.pos.findClosestByPath(FIND_MY_CREEPS,
+	const creep = tower.pos.findClosestByPath(FIND_MY_CREEPS,
 		{
 			filter: (creep) =>
 			{
-				var capacity = creep.store.getCapacity(RESOURCE_ENERGY);
-				var creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
-				var isCreepFull = creep.store.getFreeCapacity(RESOURCE_ENERGY) < 50 && creepAvailable >= 50;
-				var towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
-				var isConstruction = creep.memory.construction;
+				const capacity = creep.store.getCapacity(RESOURCE_ENERGY);
+				const creepAvailable = creep.store.getUsedCapacity(RESOURCE_ENERGY);
+				const isCreepFull = creep.store.getFreeCapacity(RESOURCE_ENERGY) < 50 && creepAvailable >= 50;
+				const towerNeed = tower.store.getFreeCapacity(RESOURCE_ENERGY);
+				const isConstruction = creep.memory.construction;
 
 				if (isConstruction || capacity < 50 || creepAvailable < 50)
 				{
@@ -130,11 +130,11 @@ function getEnergyFromCreeps(tower)
 
 function perRoomEnergySteal(room)
 {
-	var structures = room.find(FIND_MY_STRUCTURES);
-	for (var idx in structures)
+	const structures = room.find(FIND_MY_STRUCTURES);
+	for (const idx in structures)
 	{
-		var structure = structures[idx];
-		var structureType = structure.structureType;
+		const structure = structures[idx];
+		const structureType = structure.structureType;
 
 		if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 500)
 		{
@@ -143,17 +143,17 @@ function perRoomEnergySteal(room)
 	}
 }
 
-var towerLogic =
+const towerLogic =
 {
 	run: function ()
 	{
-		var injuredStructure = getInjuredStructure();
+		const injuredStructure = getInjuredStructure();
 
-		for (var name in Game.structures)
+		for (const name in Game.structures)
 		{
-			var structure = Game.structures[name];
+			const structure = Game.structures[name];
 
-			var structureType = structure.structureType;
+			const structureType = structure.structureType;
 
 			if ("tower" == structureType)
 			{
@@ -163,7 +163,7 @@ var towerLogic =
 	},
 	creepTransfer: function ()
 	{
-		for (var room in Game.rooms)
+		for (const room in Game.rooms)
 		{
 			perRoomEnergySteal(Game.rooms[room]);
 		}

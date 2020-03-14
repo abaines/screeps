@@ -2,13 +2,13 @@
 
 'use strict';
 
-var log = require('log').log;
+const log = require('log').log;
 
-var linkLogic =
+const linkLogic =
 {
 	determineBehaviorOfLink: function (structureLink)
 	{
-		var roomName = structureLink.room.name;
+		const roomName = structureLink.room.name;
 		if (!(roomName in Memory.links))
 		{
 			Memory.links[roomName] = {};
@@ -19,11 +19,11 @@ var linkLogic =
 			return;
 		}
 
-		var source = structureLink.pos.findClosestByRange(FIND_SOURCES);
-		var controller = structureLink.room.controller;
+		const source = structureLink.pos.findClosestByRange(FIND_SOURCES);
+		const controller = structureLink.room.controller;
 
-		var sourceDistance = structureLink.pos.distance(source);
-		var controllerDistance = structureLink.pos.distance(controller);
+		const sourceDistance = structureLink.pos.distance(source);
+		const controllerDistance = structureLink.pos.distance(controller);
 
 		console.log('determineBehaviorOfLink', structureLink.href(), sourceDistance, controllerDistance);
 
@@ -76,13 +76,13 @@ var linkLogic =
 
 	runPerRoom: function (roomName, roomData)
 	{
-		var sinks = [];
-		var fountains = [];
+		const sinks = [];
+		const fountains = [];
 
 		for (const[linkId, linkData]of Object.entries(roomData))
 		{
-			var goal = linkData.goal;
-			var linkObj = Game.getObjectById(linkId);
+			const goal = linkData.goal;
+			const linkObj = Game.getObjectById(linkId);
 
 			if ("sink" == goal)
 			{

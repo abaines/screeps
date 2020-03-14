@@ -2,15 +2,15 @@
 
 'use strict';
 
-var log = require('log').log;
-var extensions = require('extensions');
+const log = require('log').log;
+const extensions = require('extensions');
 
-var roleHarvester = require('role.harvester');
-var roleClaimer = require('role.claim');
-var roleTower = require('role.tower');
-var roleTombstone = require('role.tombstone');
-var roleLink = require('role.link');
-var roleSpawning = require('role.spawning');
+const roleHarvester = require('role.harvester');
+const roleClaimer = require('role.claim');
+const roleTower = require('role.tower');
+const roleTombstone = require('role.tombstone');
+const roleLink = require('role.link');
+const roleSpawning = require('role.spawning');
 
 if ('undefined' !== typeof script_init)
 {
@@ -19,28 +19,28 @@ if ('undefined' !== typeof script_init)
 else
 {
 	log("================================================================================");
-	var script_init = true;
+	const script_init = true;
 	Memory.links = {};
 }
 
 module.exports.loop = function ()
 {
-	var harvesters = roleHarvester.getHarvesters();
-	var harvesterCount = harvesters.length;
+	const harvesters = roleHarvester.getHarvesters();
+	const harvesterCount = harvesters.length;
 
 	roleLink.determineBehavior();
 
 	roleTower.run();
 	roleSpawning.run(Game.spawns);
 
-	var harvesterTickData = {};
+	const harvesterTickData = {};
 
-	for (var name in Game.creeps)
+	for (const name in Game.creeps)
 	{
-		var creep = Game.creeps[name];
+		const creep = Game.creeps[name];
 		if ('harvester' == creep.memory.role)
 		{
-			var harvestResult = roleHarvester.run(creep, harvesterTickData);
+			const harvestResult = roleHarvester.run(creep, harvesterTickData);
 
 			if (harvestResult && harvestResult.log)
 			{
@@ -63,49 +63,49 @@ module.exports.loop = function ()
 	roleTombstone.run();
 	roleLink.run();
 
-	var gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
+	const gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
 
-	var controllerLevelsList = [];
-	var creepCountList = [];
-	var rooms = Game.rooms;
-	for (var idx in rooms)
+	const controllerLevelsList = [];
+	const creepCountList = [];
+	const rooms = Game.rooms;
+	for (const idx in rooms)
 	{
-		var room = rooms[idx];
+		const room = rooms[idx];
 
-		var controller = room.controller;
+		const controller = room.controller;
 		var level = controller.level + controller.progress / controller.progressTotal;
 		level = level || controller.level;
 
 		if (level && level > 0)
 			controllerLevelsList.push(level.toFixedNumber(3));
 
-		var roomCreepCount = room.find(FIND_MY_CREEPS).length;
+		const roomCreepCount = room.find(FIND_MY_CREEPS).length;
 		creepCountList.push(roomCreepCount);
 	}
 
 	controllerLevelsList.sort().reverse();
 
-	var vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
+	const vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
 	new RoomVisual().text(vis1, 0, 0,
 	{
 		align: 'left'
 	}
 	);
 
-	var vis2 = '' + harvesterCount + '  ' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
+	const vis2 = '' + harvesterCount + '  ' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
 	new RoomVisual().text(vis2, 0, 1,
 	{
 		align: 'left'
 	}
 	);
 
-	for (var idx in Game.rooms)
+	for (const idx in Game.rooms)
 	{
-		var room = Game.rooms[idx];
-		var energyAvailable = room.energyAvailable;
-		var sourceEnergyList = [];
-		var sources = room.find(FIND_SOURCES);
-		for (var idx in sources)
+		const room = Game.rooms[idx];
+		const energyAvailable = room.energyAvailable;
+		const sourceEnergyList = [];
+		const sources = room.find(FIND_SOURCES);
+		for (const idx in sources)
 		{
 			sourceEnergyList.push(sources[idx].energy);
 		}
@@ -116,7 +116,7 @@ module.exports.loop = function ()
 		);
 	}
 
-	for (var name in Memory.creeps)
+	for (const name in Memory.creeps)
 	{
 		if (!Game.creeps[name])
 		{
@@ -128,10 +128,10 @@ module.exports.loop = function ()
 function killOld()
 {
 	var old = null;
-	for (var name in Game.creeps)
+	for (const name in Game.creeps)
 	{
-		var creep = Game.creeps[name];
-		var ticksToLive = creep.ticksToLive;
+		const creep = Game.creeps[name];
+		const ticksToLive = creep.ticksToLive;
 		if (old == null || ticksToLive < old.ticksToLive)
 		{
 			old = creep;
