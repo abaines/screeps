@@ -387,15 +387,10 @@ StructureTower.prototype.smartRepair = function (input)
 		return;
 	}
 
-	function getStructure()
+	function getStructureFromInputOrArrayInput()
 	{
-		if (input == null)
+		if (input instanceof Array)
 		{
-			console.log('smartRepair', 'input == null');
-		}
-		else if (input instanceof Array)
-		{
-			console.log('smartRepair-array', input.length);
 			var weakest =
 			{
 				hits: Infinity
@@ -420,7 +415,6 @@ StructureTower.prototype.smartRepair = function (input)
 		}
 		else if (input instanceof Structure)
 		{
-			console.log('smartRepair-target');
 			return input;
 		}
 		else
@@ -429,7 +423,7 @@ StructureTower.prototype.smartRepair = function (input)
 		}
 	}
 
-	const target = getStructure();
+	const target = getStructureFromInputOrArrayInput();
 
 	const repairResult = this.repair(target);
 
@@ -443,12 +437,12 @@ StructureTower.prototype.smartRepair = function (input)
 
 RoomObject.prototype.missingHits = function ()
 {
-	return this.maxHits - this.hits;
+	return this.hitsMax - this.hits;
 }
 
 RoomObject.prototype.percentHits = function ()
 {
-	return this.hits / this.maxHits;
+	return this.hits / this.hitsMax;
 }
 
 // href
