@@ -63,8 +63,11 @@ var roleHarvester =
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
-			creep.smartHarvest(source);
-			return;
+			if (source && source.energy > 0)
+			{
+				creep.smartHarvest(source);
+				return;
+			}
 		}
 
 		if (creep.store.getUsedCapacity() > 0)
