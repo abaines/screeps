@@ -352,6 +352,29 @@ StructureTower.prototype.repairRoads = function ()
 	this.smartRepair(damagedRoad);
 }
 
+StructureTower.prototype.repairDefenses = function (hits)
+{
+	const damagedStructures = this.room.find(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+
+				if (STRUCTURE_WALL == structureType || STRUCTURE_RAMPART == structureType)
+				{
+					return structure.hits < hits && structure.missingHits() > (800 * 6);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		);
+
+	this.smartRepair(damagedStructures);
+}
+
 // if given an array, repairs the weakest
 StructureTower.prototype.smartRepair = function (input)
 {
@@ -367,18 +390,29 @@ StructureTower.prototype.smartRepair = function (input)
 
 			for (const[idx, structure]of Object.entries(input))
 			{
-				if (structure.hits < weakest.hits)
+				if (structure instanceof Structure)
 				{
-					weakest = structure;
+					if (structure.hits < weakest.hits)
+					{
+						weakest = structure;
+					}
+				}
+				else
+				{
+					console.log('smartRepair-array-unknown', structure);
 				}
 			}
 
 			return weakest;
 		}
-		else
+		else if (input instanceof Structure)
 		{
 			console.log('smartRepair-target');
 			return input;
+		}
+		else
+		{
+			console.log('smartRepair-unknown', input);
 		}
 	}
 
