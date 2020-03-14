@@ -26,50 +26,6 @@ function findStructuresThatNeedEnergy(creep, structureType)
 	return target;
 }
 
-function _smartHarvest(creep, source)
-{
-	var harvestResult = creep.harvest(source);
-
-	if (harvestResult == ERR_NOT_IN_RANGE)
-	{
-		creep.travel(source);
-	}
-	else if (harvestResult == OK)
-	{}
-	else if (harvestResult == ERR_BUSY)
-	{
-		var ret =
-		{
-			log: "The creep is still being spawned."
-		};
-		return ret;
-	}
-	else if (harvestResult == ERR_NOT_ENOUGH_RESOURCES)
-	{
-		var ret =
-		{
-			log: "The target does not contain any harvestable energy or mineral."
-		};
-		return ret;
-	}
-	else if (harvestResult == ERR_NO_BODYPART)
-	{
-		var ret =
-		{
-			log: "There are no WORK body parts in this creep’s body."
-		};
-		return ret;
-	}
-	else
-	{
-		var ret =
-		{
-			"log": ("creep.harvest = " + harvestResult)
-		};
-		return ret;
-	}
-}
-
 function gotoFlag(creep, flag)
 {
 	var range = creep.pos.getRangeTo(flag);
@@ -134,7 +90,6 @@ var roleHarvester =
 {
 	getHarvesters: _getHarvesters,
 	findAndGotoFlag: _findAndGotoFlag,
-	smartHarvest: _smartHarvest,
 
 	/** @param {Creep} creep **/
 	run: function (creep, harvesterTickData)
@@ -169,7 +124,7 @@ var roleHarvester =
 		if (creep.memory.mode != null)
 		{
 			var source = Game.getObjectById(creep.memory.mode);
-			this.smartHarvest(creep, source);
+			creep.smartHarvest(source);
 			return;
 		}
 
