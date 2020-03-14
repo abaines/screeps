@@ -202,6 +202,46 @@ Creep.prototype.smartHarvest = function (source, say = "🌿")
 	}
 }
 
+Room.prototype.getMostEnergySource = function ()
+{
+	const sources = this.find(FIND_SOURCES);
+
+	var most =
+	{
+		energy: -1
+	};
+
+	for (const[idx, source]of Object.entries(sources))
+	{
+		if (source.energy > most.energy)
+		{
+			most = source;
+		}
+	}
+
+	if (most.energy >= 0)
+	{
+		return most;
+	}
+	else
+	{
+		log("Unable to find source in " + this.href());
+		return null;
+	}
+}
+
+Creep.prototype.pickSource = function ()
+{
+	const sourceBestOptions = []
+
+	sourceBestOptions.push(this.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+	sourceBestOptions.push(this.room.getMostEnergySource());
+
+	const source = sourceBestOptions[Math.floor(Math.random() * sourceBestOptions.length)];
+
+	return source;
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
