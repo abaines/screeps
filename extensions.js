@@ -305,6 +305,105 @@ StructureController.prototype.getLevel = function ()
 	return level;
 }
 
+StructureTower.prototype.repairWeakNonRoads = function ()
+{
+	const damagedStructures = this.room.find(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+
+				if (STRUCTURE_ROAD == structureType)
+				{
+					return false;
+				}
+
+				if (structure.hits > 15_000)
+				{
+					return false;
+				}
+
+				return structure.missingHits() >= 50;
+			}
+		}
+		);
+
+	this.smartRepair(damagedStructures);
+}
+
+StructureTower.prototype.repairRoads = function ()
+{
+	const damagedRoad = this.room.pos.findClosestByRange(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+
+				if (STRUCTURE_ROAD != structureType)
+				{
+					return false;
+				}
+
+				return structure.missingHits() > 800 && structure.percentHits() <= 0.68;
+			}
+		}
+		);
+
+	this.smartRepair(damagedRoad);
+}
+
+// if given an array, repairs the weakest
+StructureTower.prototype.smartRepair = function (input)
+{
+	function getStructure()
+	{
+		if (input instanceof Array)
+		{
+			console.log('smartRepair-array');
+			var weakest =
+			{
+				hits: Infinity
+			};
+
+			for (const[idx, structure]of Object.entries(input))
+			{
+				if (structure.hits < weakest.hits)
+				{
+					weakest = structure;
+				}
+			}
+
+			return weakest;
+		}
+		else
+		{
+			console.log('smartRepair-target');
+			return input;
+		}
+	}
+
+	const target = getStructure();
+
+	const repairResult = this.repair(target);
+
+	if (OK == repairResult)
+	{}
+	else
+	{
+		console.log('smartRepair', this.href(), repairResult, target.href());
+	}
+}
+
+RoomObject.prototype.missingHits = function ()
+{
+	return this.maxHits - this.hits;
+}
+
+RoomObject.prototype.percentHits = function ()
+{
+	return this.hits / this.maxHits;
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
