@@ -29,19 +29,19 @@ RoomPosition.prototype.distance = function (other)
 	return distance;
 }
 
-Creep.prototype.moveAndWithdraw = function (target, resourceType = RESOURCE_ENERGY)
+Creep.prototype.smartWithdraw = function (target, resourceType = RESOURCE_ENERGY, say = "⚡")
 {
 	var withdrawResult = this.withdraw(target, resourceType);
 
 	if (ERR_NOT_IN_RANGE == withdrawResult)
 	{
-		this.say("⚡");
+		this.say(say);
 		var moveResult = this.travel(target);
 	}
 	else if (OK == withdrawResult)
 	{
 		// acceptable
-		this.say("⚡");
+		this.say(say);
 	}
 	else
 	{
@@ -111,17 +111,18 @@ Creep.prototype.bodyScan = function (scan_type)
 	return false;
 }
 
-Creep.prototype.moveAndTransfer = function (target)
+Creep.prototype.smartTransfer = function (target, say = "🔋")
 {
 	var transferResult = this.transfer(target, RESOURCE_ENERGY);
 
 	if (ERR_NOT_IN_RANGE == transferResult)
 	{
+		this.say(say);
 		this.travel(target);
 	}
 	else if (OK == transferResult)
 	{
-		// acceptable
+		this.say(say);
 	}
 	else if (ERR_INVALID_TARGET == transferResult)
 	{
@@ -139,6 +140,31 @@ Creep.prototype.moveAndTransfer = function (target)
 	{
 		this.say("🥛");
 		log('transferResult ' + transferResult);
+	}
+}
+
+Creep.prototype.smartBuild = function (target, say = "🚧")
+{
+	var buildResult = this.build(structure);
+
+	if (buildResult == ERR_NOT_IN_RANGE)
+	{
+		this.say(say);
+		this.travel(structure);
+	}
+	else if (OK == buildResult)
+	{
+		this.say(say);
+	}
+	else if (ERR_NOT_ENOUGH_RESOURCES == buildResult)
+	{
+		this.say("🔌");
+		log('The creep does not have any carried energy. ' + this.room.href());
+	}
+	else
+	{
+		log('creep-build-failed ' + buildResult + ' ' + this.room.href());
+		this.say("💫" + buildResult);
 	}
 }
 

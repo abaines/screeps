@@ -119,8 +119,7 @@ function getEnergyFromCreeps(tower)
 		);
 	if (creep)
 	{
-		creep.moveAndTransfer(tower);
-		creep.say("🗼");
+		creep.smartTransfer(tower, "🗼");
 	}
 }
 

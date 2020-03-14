@@ -70,22 +70,6 @@ function _smartHarvest(creep, source)
 	}
 }
 
-function smartBuild(creep, structure)
-{
-	var buildResult = creep.build(structure);
-
-	if (buildResult == ERR_NOT_IN_RANGE)
-	{
-		creep.travel(structure);
-	}
-	else if (buildResult == ERR_NOT_ENOUGH_RESOURCES)
-	{
-		console.log('The creep does not have any carried energy.');
-		return false;
-	}
-	return true;
-}
-
 function gotoFlag(creep, flag)
 {
 	var range = creep.pos.getRangeTo(flag);
@@ -198,8 +182,7 @@ var roleHarvester =
 				var structure = targets[idx];
 				if (structure.structureType == STRUCTURE_SPAWN)
 				{
-					smartBuild(creep, structure);
-					creep.say("🚧");
+					creep.smartBuild(structure);
 					return;
 				}
 			}
@@ -226,9 +209,8 @@ var roleHarvester =
 				if (creep.memory.construction || constructionCreepsCount == 0)
 				{
 					var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-					smartBuild(creep, target);
+					creep.smartBuild(target, "👷");
 					creep.memory.construction = true;
-					creep.say("👷");
 					return;
 				}
 			}
@@ -236,13 +218,13 @@ var roleHarvester =
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
 			if (target != null)
 			{
-				return creep.moveAndTransfer(target);
+				return creep.smartTransfer(target);
 			}
 
 			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
 			if (target != null)
 			{
-				return creep.moveAndTransfer(target);
+				return creep.smartTransfer(target);
 			}
 
 			for (var idx in targets)
@@ -250,8 +232,7 @@ var roleHarvester =
 				var structure = targets[idx];
 				if (structure.structureType == STRUCTURE_RAMPART)
 				{
-					smartBuild(creep, structure);
-					creep.say("🚧");
+					creep.smartBuild(structure);
 					return;
 				}
 			}
@@ -261,8 +242,7 @@ var roleHarvester =
 				var structure = targets[idx];
 				if (structure.structureType == STRUCTURE_WALL)
 				{
-					smartBuild(creep, structure);
-					creep.say("🚧");
+					creep.smartBuild(structure);
 					return;
 				}
 			}
@@ -272,8 +252,7 @@ var roleHarvester =
 				var structure = targets[idx];
 				if (structure.structureType == STRUCTURE_EXTENSION)
 				{
-					smartBuild(creep, structure);
-					creep.say("🚧");
+					creep.smartBuild(structure);
 					return;
 				}
 			}
@@ -291,12 +270,11 @@ var roleHarvester =
 				var linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
 				if (linkGoal == "sink" && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
-					creep.say("🔋");
-					creep.moveAndTransfer(nearbyLink);
+					creep.smartTransfer(nearbyLink);
 				}
 				else if (linkGoal == "fountain" && nearbyLink.store[RESOURCE_ENERGY] >= 50)
 				{
-					creep.moveAndWithdraw(nearbyLink);
+					creep.smartWithdraw(nearbyLink);
 				}
 			}
 
@@ -305,9 +283,8 @@ var roleHarvester =
 				var storage = creep.room.storage;
 				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
-					creep.say("🏦");
 					creep.travel(storage);
-					creep.moveAndTransfer(storage);
+					creep.smartTransfer(storage, "🏦");
 					return;
 				}
 				else
@@ -317,8 +294,7 @@ var roleHarvester =
 						var structure = targets[idx];
 						if (structure.structureType == STRUCTURE_STORAGE)
 						{
-							creep.say("🚧🏦");
-							smartBuild(creep, structure);
+							creep.smartBuild(structure, "🚧🏦");
 							return;
 						}
 					}
