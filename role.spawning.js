@@ -94,26 +94,13 @@ function spawnCreep(spawn, role, body)
 	}
 }
 
-function bodyScan(creep, scan_type)
-{
-	for (var part in creep.body)
-	{
-		var type = creep.body[part].type;
-		if (type == scan_type)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 function spawnLogic(spawn, harvesters)
 {
 	var roomHarvesterCount = spawn.room.find(FIND_MY_CREEPS).length;
 	var energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 	var energyAvailable = spawn.room.energyAvailable;
 
-	if ((roomHarvesterCount < 3 || harvesters.length < 4 * 4) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
+	if ((roomHarvesterCount < 3 || harvesters.length < 5 * 5) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
 	{
 		spawnCreep(spawn, 'harvester',
 			[
@@ -175,7 +162,7 @@ function spawnLogic(spawn, harvesters)
 		for (var name in Game.creeps)
 		{
 			var creep = Game.creeps[name];
-			if (bodyScan(creep, "claim"))
+			if (creep.bodyScan("claim"))
 			{
 				claimers = 1 + claimers
 			}

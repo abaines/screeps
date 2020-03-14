@@ -99,6 +99,18 @@ Creep.prototype.travel = function (target, opts)
 	return moveResult;
 }
 
+Creep.prototype.bodyScan = function (scan_type)
+{
+	for (const[part, type]of Object.entries(this.body))
+	{
+		if (type == scan_type)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 Room.prototype.href = function ()
 {
 	const roomName = this.name;
