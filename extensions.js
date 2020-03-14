@@ -242,9 +242,60 @@ Creep.prototype.pickSource = function ()
 	return source;
 }
 
-// TODO: findStructuresThatNeedEnergy, but also check links (and extensions/spawns) at the same loop
+Creep.prototype.findStructureThatNeedEnergy = function ()
+{
+	const room = this.room;
 
+	const target = this.pos.findClosestByPath(FIND_MY_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const store = structure.store;
+				if (!store)
+				{
+					return false;
+				}
 
+				const freeCap = structure.store.getFreeCapacity(RESOURCE_ENERGY);
+				if (freeCap <= 0)
+				{
+					return false;
+				}
+
+				const structureType = structure.structureType;
+
+				const isSpawn = STRUCTURE_SPAWN == structureType;
+				const isExtension = STRUCTURE_EXTENSION == structureType;
+				if (isSpawn || isExtension)
+				{
+					return true;
+				}
+
+				const isLink = STRUCTURE_LINK == structureType;
+				if (isLink)
+				{
+					const linkGoal = structure.getGoalType();
+					if ("sink" == linkGoal)
+					{
+						return freeCap >= 50;
+					}
+				}
+
+				// TODO: other buildings???
+				return false;
+			}
+		}
+		);
+
+	return target;
+}
+
+StructureLink.prototype.getGoalType = function ()
+{
+	// "sink"
+	// "fountain"
+	return Memory.links[this.room.name][this.id].goal;
+}
 
 StructureController.prototype.getLevel = function ()
 {

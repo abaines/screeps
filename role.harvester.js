@@ -10,22 +10,6 @@ function _getHarvesters()
 	return harvesters;
 }
 
-function findStructuresThatNeedEnergy(creep, structureType)
-{
-	const room = creep.room;
-
-	const target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
-		{
-			filter: (structure) =>
-			{
-				return (structure.structureType == structureType) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-			}
-		}
-		);
-
-	return target;
-}
-
 const roleHarvester =
 {
 	getHarvesters: _getHarvesters,
@@ -112,13 +96,7 @@ const roleHarvester =
 				}
 			}
 
-			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_EXTENSION);
-			if (target != null)
-			{
-				return creep.smartTransfer(target);
-			}
-
-			var target = findStructuresThatNeedEnergy(creep, STRUCTURE_SPAWN);
+			var target = creep.findStructureThatNeedEnergy();
 			if (target != null)
 			{
 				return creep.smartTransfer(target);
@@ -164,7 +142,7 @@ const roleHarvester =
 				);
 			if (nearbyLink && creep.pos.distance(nearbyLink) < 5)
 			{
-				const linkGoal = Memory.links[creep.room.name][nearbyLink.id].goal;
+				const linkGoal = nearbyLink.getGoalType();
 				if ("sink" == linkGoal && nearbyLink.store.getFreeCapacity(RESOURCE_ENERGY) >= 400)
 				{
 					creep.smartTransfer(nearbyLink);
