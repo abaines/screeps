@@ -87,13 +87,13 @@ Creep.prototype.travel = function (target, opts)
 		}
 		else
 		{
-			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.name + ' ' + target + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
+			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
 		}
 	}
 	else
 	{
 		this.say('🛑');
-		log('Creep.prototype.travel' + ' ' + this.room.href() + ' ' + this.name + ' ' + target + ' ' + moveResult);
+		log('Creep.prototype.travel ' + this.href() + ' ' + target + ' ' + moveResult);
 	}
 
 	return moveResult;
@@ -202,8 +202,22 @@ Creep.prototype.smartHarvest = function (source, say = "🌿")
 	}
 }
 
-Room.prototype.href = function ()
+// href
+
+Room.prototype.href = function (msg = this.name)
 {
 	const roomName = this.name;
-	return '<a href="#!/room/' + roomName + '">' + roomName + '</a>'
+	return '<a href="#!/room/' + roomName + '">' + msg + '</a>'
+}
+
+RoomObject.prototype.href = function (msg = this)
+{
+	const roomName = this.room.name;
+	return '<a href="#!/room/' + roomName + '">' + msg + '</a>'
+}
+
+RoomPosition.prototype.href = function (msg = this)
+{
+	const roomName = this.room.name;
+	return '<a href="#!/room/' + roomName + '">' + msg + '</a>'
 }

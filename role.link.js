@@ -25,7 +25,7 @@ var linkLogic =
 		var sourceDistance = structureLink.pos.distance(source);
 		var controllerDistance = structureLink.pos.distance(controller);
 
-		console.log('determineBehaviorOfLink', structureLink, sourceDistance, controllerDistance);
+		console.log('determineBehaviorOfLink', structureLink.href(), sourceDistance, controllerDistance);
 
 		if (sourceDistance < 5 && controllerDistance > 20)
 		{

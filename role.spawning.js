@@ -57,7 +57,7 @@ function spawnCreep(spawn, role, body)
 	}
 	);
 
-	newName = newName + ('-' + (Game.time % 10_000)).padStart(4, '0');
+	newName = newName + ('-' + (Game.time % 10_000)).padStart(5, '0');
 
 	const spawnResult = spawn.spawnCreep(body, newName,
 		{
@@ -86,7 +86,7 @@ function spawnCreep(spawn, role, body)
 	}
 	else if (OK == spawnResult)
 	{
-		console.log('Spawning:', newName, spawn.name, spawn.room.energyAvailable, spawn.room.energyCapacityAvailable, JSON.stringify(bodyMap));
+		console.log(spawn.room.href(), 'Spawning:', newName, spawn.href(), spawn.room.energyAvailable, spawn.room.energyCapacityAvailable, JSON.stringify(bodyMap));
 	}
 	else
 	{
