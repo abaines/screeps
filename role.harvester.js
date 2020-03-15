@@ -138,7 +138,6 @@ const roleHarvester =
 				const storage = creep.room.storage;
 				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
-					creep.travel(storage);
 					creep.smartTransfer(storage, "🏦");
 					return;
 				}
@@ -148,10 +147,7 @@ const roleHarvester =
 				}
 			}
 
-			if (ERR_NOT_IN_RANGE == creep.upgradeController(creep.room.controller))
-			{
-				creep.travel(creep.room.controller);
-			}
+			creep.smartUpgradeController();
 			return;
 		}
 

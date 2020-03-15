@@ -290,6 +290,26 @@ Creep.prototype.findStructureThatNeedEnergy = function ()
 	return target;
 }
 
+Creep.prototype.smartUpgradeController = function ()
+{
+	const upgradeResult = this.upgradeController(this.room.controller);
+
+	if (ERR_NOT_IN_RANGE == upgradeResult)
+	{
+		this.say("⏫");
+		this.travel(this.room.controller);
+	}
+	else if (OK == upgradeResult)
+	{
+		this.say("⏫");
+	}
+	else
+	{
+		this.say("👺");
+		console.log("upgradeResult", upgradeResult);
+	}
+}
+
 StructureLink.prototype.getGoalType = function ()
 {
 	// "sink"
