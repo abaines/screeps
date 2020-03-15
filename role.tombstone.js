@@ -34,7 +34,7 @@ const tombstoneLogic =
 		}
 		else if (OK == pickupResult)
 		{
-			console.log("WIN!", 'creepCollectResource', JSON.stringify(resource), resource.room.href());
+			console.log("WIN!", 'creepCollectResource', resource.href());
 		}
 		else
 		{
