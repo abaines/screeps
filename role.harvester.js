@@ -142,17 +142,9 @@ const roleHarvester =
 					creep.smartTransfer(storage, "🏦");
 					return;
 				}
-				else
+				else if (this.buildConstruction(creep, constructionSites, STRUCTURE_STORAGE))
 				{
-					for (const idx in constructionSites)
-					{
-						const structure = constructionSites[idx];
-						if (STRUCTURE_STORAGE == structure.structureType)
-						{
-							creep.smartBuild(structure, "🚧🏦");
-							return;
-						}
-					}
+					return;
 				}
 			}
 
