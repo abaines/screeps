@@ -40,7 +40,7 @@ module.exports.loop = function ()
 		const creep = Game.creeps[name];
 		if ('harvester' == creep.memory.role)
 		{
-			const harvestResult = roleHarvester.run(creep, harvesterTickData);
+			const harvestResult = roleHarvester.runPerCreep(creep, harvesterTickData);
 
 			if (harvestResult && harvestResult.log)
 			{
@@ -89,16 +89,20 @@ module.exports.loop = function ()
 	controllerLevelsList.sort().reverse();
 
 	const vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
-	new RoomVisual().text(vis1, 0, 0,
+	new RoomVisual().text(vis1, 0, 1,
 	{
-		align: 'left'
+		align: 'left',
+		font: '2',
+		opacity: 0.5,
 	}
 	);
 
 	const vis2 = '' + harvesterCount + '  ' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
-	new RoomVisual().text(vis2, 0, 1,
+	new RoomVisual().text(vis2, 0, 3,
 	{
-		align: 'left'
+		align: 'left',
+		font: '2',
+		opacity: 0.5,
 	}
 	);
 
@@ -114,7 +118,9 @@ module.exports.loop = function ()
 		}
 		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sourceEnergyList), 0, 49,
 		{
-			align: 'left'
+			align: 'left',
+			font: '2',
+			opacity: 0.5,
 		}
 		);
 	}

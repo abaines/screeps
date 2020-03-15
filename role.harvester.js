@@ -4,18 +4,27 @@
 
 const log = require('log').log;
 
-function _getHarvesters()
-{
-	const harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length >= 50);
-	return harvesters;
-}
-
 const roleHarvester =
 {
-	getHarvesters: _getHarvesters,
+	getHarvesters: function ()
+	{
+		const harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length > 25);
+		return harvesters;
+	},
 
-	/** @param {Creep} creep **/
-	run: function (creep, harvesterTickData)
+	buildConstruction: function (creep, constructionSites, structureType)
+	{
+		for (const[idx, structure]of Object.entries(constructionSites))
+		{
+			if (structureType == structure.structureType)
+			{
+				creep.smartBuild(structure);
+				return true;
+			}
+		}
+	},
+
+	runPerCreep: function (creep, harvesterTickData)
 	{
 		if (creep.spawning)
 		{
@@ -29,14 +38,7 @@ const roleHarvester =
 		{
 			const source = creep.pickSource();
 
-			if (source != null)
-			{
-				creep.memory.mode = source.id;
-			}
-			else
-			{
-				creep.memory.mode = null;
-			}
+			creep.memory.mode = source && source.id;
 		}
 		if (creep.store.getFreeCapacity() == 0)
 		{
@@ -56,19 +58,14 @@ const roleHarvester =
 
 		if (creep.store.getUsedCapacity() > 0)
 		{
-			const targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+			const constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
 
-			for (const idx in targets)
+			if (this.buildConstruction(creep, constructionSites, STRUCTURE_SPAWN))
 			{
-				const structure = targets[idx];
-				if (STRUCTURE_SPAWN == structure.structureType)
-				{
-					creep.smartBuild(structure);
-					return;
-				}
+				return;
 			}
 
-			if (targets.length)
+			if (constructionSites.length)
 			{
 				const constructionCreeps = creep.room.find(FIND_MY_CREEPS,
 					{
@@ -102,34 +99,17 @@ const roleHarvester =
 				return creep.smartTransfer(target);
 			}
 
-			for (const idx in targets)
+			if (this.buildConstruction(creep, constructionSites, STRUCTURE_RAMPART))
 			{
-				const structure = targets[idx];
-				if (STRUCTURE_RAMPART == structure.structureType)
-				{
-					creep.smartBuild(structure);
-					return;
-				}
+				return;
 			}
-
-			for (const idx in targets)
+			else if (this.buildConstruction(creep, constructionSites, STRUCTURE_WALL))
 			{
-				const structure = targets[idx];
-				if (STRUCTURE_WALL == structure.structureType)
-				{
-					creep.smartBuild(structure);
-					return;
-				}
+				return;
 			}
-
-			for (const idx in targets)
+			else if (this.buildConstruction(creep, constructionSites, STRUCTURE_EXTENSION))
 			{
-				const structure = targets[idx];
-				if (STRUCTURE_EXTENSION == structure.structureType)
-				{
-					creep.smartBuild(structure);
-					return;
-				}
+				return;
 			}
 
 			const nearbyLink = creep.pos.findClosestByRange(FIND_MY_STRUCTURES,
@@ -164,9 +144,9 @@ const roleHarvester =
 				}
 				else
 				{
-					for (const idx in targets)
+					for (const idx in constructionSites)
 					{
-						const structure = targets[idx];
+						const structure = constructionSites[idx];
 						if (STRUCTURE_STORAGE == structure.structureType)
 						{
 							creep.smartBuild(structure, "🚧🏦");
