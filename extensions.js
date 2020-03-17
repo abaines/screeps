@@ -573,6 +573,23 @@ StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
 	}
 }
 
+StructureSpawn.prototype.visualize = function ()
+{
+	if (this.spawning)
+	{
+		const spawningCreep = Game.creeps[this.spawning.name];
+		this.room.visual.text(
+			'🛠️' + spawningCreep.memory.role,
+			this.pos.x + 1,
+			this.pos.y,
+		{
+			align: 'left',
+			opacity: 0.8
+		}
+		);
+	}
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
