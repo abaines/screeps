@@ -465,6 +465,114 @@ RoomObject.prototype.percentHits = function ()
 	return this.hits / this.hitsMax;
 }
 
+const namingMap =
+{
+	move: "M",
+	work: "W",
+	carry: "C",
+	attack: "A",
+	ranged_attack: "R",
+	tough: "T",
+	heal: "H",
+	claim: "L",
+}
+
+StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
+{
+	if (this.spawning)
+	{
+		return;
+	}
+
+	function getBodyMap()
+	{
+		const bodyMap = {}
+
+		for (const[idx, part]of Object.entries(body))
+		{
+			if (!(part in bodyMap))
+			{
+				bodyMap[part] = 0;
+			}
+			bodyMap[part] = 1 + bodyMap[part];
+		}
+
+		return bodyMap;
+	}
+
+	function getNameFromBody(bodyMap)
+	{
+		var newName = '';
+
+		const namer = Object.keys(bodyMap).map(function (key)
+			{
+				return [key, bodyMap[key] / body.length];
+			}
+			).sort(function (a, b)
+			{
+				return b[1] - a[1];
+			}
+			);
+
+		namer.forEach(kv =>
+		{
+			const bodyType = kv[0];
+			const percent = kv[1];
+			const bodyChar = namingMap[bodyType];
+
+			newName += namingMap[kv[0]];
+		}
+		);
+
+		const tickName = ('' + (Game.time % 10_000)).padStart(4, '0');
+
+		newName = newName + '-' + tickName;
+		return newName;
+	}
+
+	const bodyMap = getBodyMap();
+
+	const name = givenName || getNameFromBody(bodyMap);
+
+	const spawnResult = this.spawnCreep(body, name,
+		{
+			memory:
+			{
+				role: role
+			}
+		}
+		);
+
+	if (ERR_NOT_ENOUGH_ENERGY == spawnResult)
+	{
+		console.log("ERR_NOT_ENOUGH_ENERGY", spawnResult);
+	}
+	else if (ERR_BUSY == spawnResult && this.spawning)
+	{
+		// ignore
+	}
+	else if (ERR_NAME_EXISTS == spawnResult)
+	{
+		if (givenName)
+		{
+			console.log('There is a creep with the same name already.', givenName);
+		}
+		// ignore: There is a creep with the same name already.
+	}
+	else if (ERR_BUSY == spawnResult)
+	{
+		console.log('The spawn is already in process of spawning another creep.', role);
+	}
+	else if (OK == spawnResult)
+	{
+		console.log(this.room.href(), 'Spawning:', name, this.href(), this.room.energyAvailable, this.room.energyCapacityAvailable, JSON.stringify(bodyMap));
+	}
+	else
+	{
+		console.log('spawnResult', spawnResult);
+	}
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
