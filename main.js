@@ -23,21 +23,12 @@ else
 	Memory.links = {};
 }
 
-module.exports.loop = function ()
+function forEachCreeps()
 {
-	const harvesters = roleHarvester.getHarvesters();
-	const harvesterCount = harvesters.length;
-
-	roleLink.determineBehavior();
-
-	roleTower.run();
-	roleSpawning.run(Game.spawns);
-
 	const harvesterTickData = {};
 
-	for (const name in Game.creeps)
+	for (const[name, creep]of Object.entries(Game.creeps))
 	{
-		const creep = Game.creeps[name];
 		if ('harvester' == creep.memory.role)
 		{
 			const harvestResult = roleHarvester.runPerCreep(creep, harvesterTickData);
@@ -59,19 +50,18 @@ module.exports.loop = function ()
 		}
 	}
 
-	roleTower.creepTransfer();
-	roleTombstone.run();
-	roleLink.run();
+	return harvesterTickData;
+}
 
+function controllerViz()
+{
 	const gclPercent = Game.gcl.level + Game.gcl.progress / Game.gcl.progressTotal;
 
 	const controllerLevelsList = [];
-	const creepCountList = [];
 	const rooms = Game.rooms;
 
-	for (const idx in rooms)
+	for (const[idx, room]of Object.entries(Game.rooms))
 	{
-		const room = rooms[idx];
 		const controller = room.controller;
 
 		if (controller)
@@ -79,16 +69,15 @@ module.exports.loop = function ()
 			const level = room.controller.getLevel();
 
 			if (level && level > 0)
+			{
 				controllerLevelsList.push(level.toFixedNumber(3));
-
-			const roomCreepCount = room.find(FIND_MY_CREEPS).length;
-			creepCountList.push(roomCreepCount);
+			}
 		}
 	}
 
 	controllerLevelsList.sort().reverse();
 
-	const vis1 = '' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
+	const vis1 = '' + controllerLevelsList.length + '/' + gclPercent.toFixed(6) + '  ' + JSON.stringify(controllerLevelsList);
 	new RoomVisual().text(vis1, 0, 1,
 	{
 		align: 'left',
@@ -96,6 +85,20 @@ module.exports.loop = function ()
 		opacity: 0.5,
 	}
 	);
+}
+
+function creepViz(harvesterTickData)
+{
+	const harvesters = roleHarvester.getHarvesters();
+	const harvesterCount = harvesters.length;
+
+	const creepCountList = [];
+
+	for (const[idx, room]of Object.entries(Game.rooms))
+	{
+		const roomCreepCount = room.find(FIND_MY_CREEPS).length;
+		creepCountList.push(roomCreepCount);
+	}
 
 	const vis2 = '' + harvesterCount + '  ' + JSON.stringify(creepCountList) + '  ' + (harvesterTickData.bored || 0);
 	new RoomVisual().text(vis2, 0, 3,
@@ -105,17 +108,20 @@ module.exports.loop = function ()
 		opacity: 0.5,
 	}
 	);
+}
 
-	for (const idx in Game.rooms)
+function roomViz()
+{
+	for (const[idx, room]of Object.entries(Game.rooms))
 	{
-		const room = Game.rooms[idx];
 		const energyAvailable = room.energyAvailable;
 		const sourceEnergyList = [];
-		const sources = room.find(FIND_SOURCES);
-		for (const idx in sources)
+
+		for (const[idx, source]of Object.entries(room.find(FIND_SOURCES)))
 		{
-			sourceEnergyList.push(sources[idx].energy);
+			sourceEnergyList.push(source.energy);
 		}
+
 		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sourceEnergyList), 0, 49,
 		{
 			align: 'left',
@@ -124,7 +130,10 @@ module.exports.loop = function ()
 		}
 		);
 	}
+}
 
+function decayReport()
+{
 	if (Game.time % 1500 == 0)
 	{
 		var decay =
@@ -147,7 +156,10 @@ module.exports.loop = function ()
 
 		console.log("decay", decay.href(decay.room + ' ' + decay.ticksToDowngrade));
 	}
+}
 
+function deadCreepMemoryClean()
+{
 	for (const name in Memory.creeps)
 	{
 		if (!Game.creeps[name])
@@ -155,6 +167,30 @@ module.exports.loop = function ()
 			delete Memory.creeps[name];
 		}
 	}
+}
+
+module.exports.loop = function ()
+{
+	roleLink.determineBehavior();
+
+	roleTower.run();
+	roleSpawning.run(Game.spawns);
+
+	const harvesterTickData = forEachCreeps();
+
+	roleTower.creepTransfer();
+	roleTombstone.run();
+	roleLink.run();
+
+	controllerViz();
+
+	creepViz(harvesterTickData);
+
+	roomViz();
+
+	decayReport();
+
+	deadCreepMemoryClean();
 }
 
 function killOld()
