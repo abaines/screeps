@@ -93,7 +93,7 @@ const roleHarvester =
 				}
 			}
 
-			var target = creep.findStructureThatNeedEnergy();
+			const target = creep.findStructureThatNeedEnergy();
 			if (target != null)
 			{
 				return creep.smartTransfer(target);
