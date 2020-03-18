@@ -25,33 +25,47 @@ const spawnSpawning =
 		else if (harvesters.length < 3 * 5 && energyAvailable >= 2300 && energyCapacityAvailable < 4300)
 		{
 			spawn.smartSpawnCreep('harvester',
-				[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
+				[
+					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
 					CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 8
-					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]// 10
-			);
+					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 10
+				]);
 		}
 		else if (harvesters.length < 3 * 4 && energyAvailable >= 2000 && energyCapacityAvailable < 2300)
 		{
 			spawn.smartSpawnCreep('harvester',
-				[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 10
+				[
+					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 10
 					CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 10
-					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]// 10
-			);
+					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 10
+				]);
 		}
 		else if (harvesters.length < 11 && energyAvailable >= 1200 && energyCapacityAvailable < 2000)
 		{
 			spawn.smartSpawnCreep('harvester',
-				[WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]);
+				[
+					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+					CARRY, CARRY, CARRY, CARRY,
+					MOVE, MOVE, MOVE, MOVE,
+				]);
 		}
 		else if (harvesters.length < 10 && energyAvailable >= 800 && energyCapacityAvailable < 1200)
 		{
 			spawn.smartSpawnCreep('harvester',
-				[WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE]);
+				[
+					WORK, WORK, WORK, WORK, WORK, WORK,
+					CARRY, CARRY,
+					MOVE, MOVE,
+				]);
 		}
 		else if (harvesters.length < 9 && energyAvailable >= 550 && energyCapacityAvailable < 800)
 		{
 			spawn.smartSpawnCreep('harvester',
-				[WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE]);
+				[
+					WORK, WORK, WORK, WORK,
+					CARRY,
+					MOVE, MOVE,
+				]);
 		}
 		else if (harvesters.length < 5 && energyAvailable >= 200 && energyCapacityAvailable < 550)
 		{
@@ -73,7 +87,7 @@ const spawnSpawning =
 
 		if (false)
 		{
-			spawnClaimer();
+			this.spawnClaimer();
 		}
 
 		spawn.visualize();
