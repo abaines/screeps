@@ -545,7 +545,7 @@ StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
 
 	if (ERR_NOT_ENOUGH_ENERGY == spawnResult)
 	{
-		console.log("ERR_NOT_ENOUGH_ENERGY", spawnResult);
+		console.log("smartSpawnCreep", "ERR_NOT_ENOUGH_ENERGY", this.href(), JSON.stringify(bodyMap));
 	}
 	else if (ERR_BUSY == spawnResult && this.spawning)
 	{
