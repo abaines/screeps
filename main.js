@@ -132,6 +132,51 @@ function roomViz()
 	}
 }
 
+function constructRamparts()
+{
+	if (Game.time % 1500 == 0)
+	{
+		const myStructureTypes = {}
+
+		for (const[hash, structure]of Object.entries(Game.structures))
+		{
+			const structureType = structure.structureType;
+			myStructureTypes[structureType] = true;
+		}
+
+		console.log(JSON.stringify(myStructureTypes));
+
+		const myRoomStructureTypes = {}
+
+		for (const[hash, room]of Object.entries(Game.rooms))
+		{
+			const structures = room.find(FIND_STRUCTURES);
+
+			for (const[idx, structure]of Object.entries(structures))
+			{
+				const structureType = structure.structureType;
+				myRoomStructureTypes[structureType] = true;
+			}
+		}
+
+		console.log(JSON.stringify(myRoomStructureTypes));
+
+		const missing = {}
+
+		for (const[structureType, value]of Object.entries(myRoomStructureTypes))
+		{
+			if (myStructureTypes[structureType])
+			{}
+			else
+			{
+				missing[structureType] = true;
+			}
+		}
+
+		console.log(JSON.stringify(missing));
+	}
+}
+
 function decayReport()
 {
 	if (Game.time % 1500 == 0)
@@ -189,6 +234,8 @@ module.exports.loop = function ()
 	roomViz();
 
 	decayReport();
+
+	constructRamparts();
 
 	deadCreepMemoryClean();
 }
