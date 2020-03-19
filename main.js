@@ -12,6 +12,7 @@ const roleTombstone = require('role.tombstone');
 const roleLink = require('role.link');
 const roleSpawning = require('role.spawning');
 const roleBuilder = require('role.builder');
+const roleExtractor = require('role.extractor');
 
 if ('undefined' !== typeof script_init)
 {
@@ -273,6 +274,7 @@ module.exports.loop = function ()
 	roleTombstone.run();
 	roleLink.run();
 	roleBuilder.run();
+	roleExtractor.run();
 
 	controllerViz();
 
