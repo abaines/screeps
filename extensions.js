@@ -194,6 +194,10 @@ Creep.prototype.smartHarvest = function (source, say = "🌿")
 	{
 		// ignore "The creep is still being spawned."
 	}
+	else if (ERR_TIRED == harvestResult && source instanceof Mineral)
+	{
+		// ignore: The extractor or the deposit is still cooling down.
+	}
 	else if (ERR_NOT_ENOUGH_RESOURCES == harvestResult)
 	{
 		this.say("💢");
@@ -208,6 +212,27 @@ Creep.prototype.smartHarvest = function (source, say = "🌿")
 	{
 		this.say("💢🌿");
 		log("creep.harvest = " + harvestResult + ' ' + this.room.href());
+	}
+}
+
+Creep.prototype.smartExtract = function ()
+{
+	this.say("⛏️");
+	const mineral = this.room.getMineral();
+	this.smartHarvest(mineral, "⛏️");
+}
+
+Room.prototype.getMineral = function ()
+{
+	const minerals = this.find(FIND_MINERALS);
+
+	if (minerals && minerals.length == 1)
+	{
+		return minerals[0];
+	}
+	else
+	{
+		console.log('cannot-find-minerals', this.href(), minerals);
 	}
 }
 
