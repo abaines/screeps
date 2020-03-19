@@ -157,6 +157,7 @@ function constructRamparts()
 {
 	if (Game.time % 1500 == 750)
 	{
+		console.log("Check Ramparts");
 		const myStructureTypes = {}
 
 		for (const[hash, structure]of Object.entries(Game.structures))
@@ -208,9 +209,12 @@ function constructRamparts()
 			}
 		}
 
-		console.log(JSON.stringify(myStructureTypes));
-		console.log(JSON.stringify(myRoomStructureTypes));
-		console.log(JSON.stringify(missing));
+		if (false)
+		{
+			console.log(JSON.stringify(myStructureTypes));
+			console.log(JSON.stringify(myRoomStructureTypes));
+			console.log(JSON.stringify(missing));
+		}
 	}
 }
 
