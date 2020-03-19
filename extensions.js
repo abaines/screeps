@@ -90,6 +90,11 @@ Creep.prototype.travel = function (target, opts)
 			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
 		}
 	}
+	else if (ERR_INVALID_TARGET == moveResult)
+	{
+		this.say('🛑');
+		log('Creep.prototype.travel ' + this.href() + ' ERR_INVALID_TARGET ' + target);
+	}
 	else
 	{
 		this.say('🛑');
