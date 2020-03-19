@@ -132,9 +132,30 @@ function roomViz()
 	}
 }
 
+function checkStructureForRampart(structure)
+{
+	const found = structure.pos.lookFor(LOOK_STRUCTURES);
+
+	const stypes = {};
+
+	for (const[idx, structure]of Object.entries(found))
+	{
+		const structureType = structure.structureType;
+		if (STRUCTURE_RAMPART == structureType)
+		{
+			return;
+		}
+		stypes[structureType] = true;
+	}
+
+	console.log(JSON.stringify(stypes));
+
+	structure.constructRampart();
+}
+
 function constructRamparts()
 {
-	if (Game.time % 1500 == 0)
+	if (Game.time % 1500 == 750)
 	{
 		const myStructureTypes = {}
 
@@ -142,9 +163,20 @@ function constructRamparts()
 		{
 			const structureType = structure.structureType;
 			myStructureTypes[structureType] = true;
-		}
 
-		console.log(JSON.stringify(myStructureTypes));
+			if (STRUCTURE_RAMPART == structureType)
+			{}
+			else if (STRUCTURE_EXTENSION == structureType)
+			{}
+			else if (STRUCTURE_EXTRACTOR == structureType)
+			{}
+			else if (STRUCTURE_CONTROLLER == structureType)
+			{}
+			else
+			{
+				checkStructureForRampart(structure);
+			}
+		}
 
 		const myRoomStructureTypes = {}
 
@@ -156,10 +188,13 @@ function constructRamparts()
 			{
 				const structureType = structure.structureType;
 				myRoomStructureTypes[structureType] = true;
+
+				if (STRUCTURE_CONTAINER == structureType)
+				{
+					checkStructureForRampart(structure);
+				}
 			}
 		}
-
-		console.log(JSON.stringify(myRoomStructureTypes));
 
 		const missing = {}
 
@@ -173,6 +208,8 @@ function constructRamparts()
 			}
 		}
 
+		console.log(JSON.stringify(myStructureTypes));
+		console.log(JSON.stringify(myRoomStructureTypes));
 		console.log(JSON.stringify(missing));
 	}
 }

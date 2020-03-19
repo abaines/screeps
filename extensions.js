@@ -590,6 +590,22 @@ StructureSpawn.prototype.visualize = function ()
 	}
 }
 
+RoomObject.prototype.constructRampart = function ()
+{
+	const createSiteResult = this.room.createConstructionSite(this.pos, STRUCTURE_RAMPART);
+
+	if (OK == createSiteResult)
+	{}
+	else if (ERR_INVALID_TARGET == createSiteResult)
+	{
+		console.log('constructRampart', 'ERR_INVALID_TARGET', this.href());
+	}
+	else
+	{
+		console.log('constructRampart', createSiteResult, this.href());
+	}
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
