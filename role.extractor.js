@@ -105,7 +105,6 @@ const core =
 							spawner.smartSpawnCreep('extractor',
 								[
 									WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 25
-									CARRY, CARRY, // 2
 									MOVE, MOVE, MOVE, MOVE, MOVE, // 5
 								]);
 						}
