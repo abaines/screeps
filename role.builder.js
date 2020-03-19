@@ -43,7 +43,7 @@ const core =
 		}
 		else
 		{
-			console.log(creep.href());
+			console.log('role.builder', creep.href());
 		}
 	},
 	run: function ()
