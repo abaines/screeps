@@ -50,7 +50,8 @@ const core =
 			}
 			else
 			{
-				log('role.builder ' + creep.href());
+				log('role.builder ' + creep.href() + ' recycling');
+				creep.recycle();
 			}
 		}
 	},
