@@ -53,8 +53,30 @@ const core =
 			console.log("bad-extractor-length", room.href());
 		}
 	},
-	runPerCreep: function (creep)
-	{},
+
+	getRoomCreepExtractor: function (room)
+	{
+		const extractors = room.find(FIND_MY_CREEPS,
+			{
+				filter: (creep) =>
+				{
+					return creep.memory.role == 'extractor';
+				}
+			}
+			);
+
+		if (extractors && extractors.length == 1)
+		{
+			return extractors[0];
+		}
+		else if (extractors && extractors.length == 0)
+		{}
+		else
+		{
+			console.log('bad-creep-role-length', room.href());
+		}
+	},
+
 	run: function ()
 	{
 		for (const[name, room]of Object.entries(Game.rooms))
@@ -62,7 +84,41 @@ const core =
 			const result = this.getExtractorAndContainer(room);
 			if (result)
 			{
-				console.log(result.extractor.href(), result.container.href());
+				const creep = this.getRoomCreepExtractor(room);
+				const containerFreeCapacity = result.container.store.getFreeCapacity();
+
+				if (!creep && containerFreeCapacity >= 1000)
+				{
+					const spawners = room.find(FIND_MY_STRUCTURES,
+						{
+							filter:
+							{
+								structureType: STRUCTURE_SPAWN
+							}
+						}
+						);
+
+					if (spawners && spawners.length > 0)
+					{
+						for (const[name, spawner]of Object.entries(spawners))
+						{
+							spawner.smartSpawnCreep('extractor',
+								[
+									WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 25
+									CARRY, CARRY, // 2
+									MOVE, MOVE, MOVE, MOVE, MOVE, // 5
+								]);
+						}
+					}
+				}
+				else if (creep)
+				{
+					if (containerFreeCapacity >= 50)
+					{
+						creep.smartExtract();
+					}
+					creep.travel(result.container);
+				}
 			}
 		}
 	},

@@ -48,6 +48,10 @@ function forEachCreeps()
 		{
 			roleBuilder.runPerCreep(creep);
 		}
+		else if ('extractor' == creep.memory.role)
+		{
+			// role.extractor run() takes care of this
+		}
 		else
 		{
 			const msg = "unknown_role " + creep.name + ' ' + creep.memory.role + ' ' + creep.room.href();
