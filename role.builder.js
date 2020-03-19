@@ -43,7 +43,15 @@ const core =
 		}
 		else
 		{
-			console.log('role.builder', creep.href());
+			const constructionSites = Game.constructionSites;
+			if (constructionSites && constructionSites.length > 0)
+			{
+				creep.travel(Game.constructionSites[0]);
+			}
+			else
+			{
+				log('role.builder ' + creep.href());
+			}
 		}
 	},
 	run: function ()
