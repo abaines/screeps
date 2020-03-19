@@ -595,7 +595,9 @@ RoomObject.prototype.constructRampart = function ()
 	const createSiteResult = this.room.createConstructionSite(this.pos, STRUCTURE_RAMPART);
 
 	if (OK == createSiteResult)
-	{}
+	{
+		console.log('Constructing-Rampart', this.href());
+	}
 	else if (ERR_INVALID_TARGET == createSiteResult)
 	{
 		console.log('constructRampart', 'ERR_INVALID_TARGET', this.href());
