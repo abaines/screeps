@@ -29,6 +29,22 @@ RoomPosition.prototype.distance = function (other)
 	return distance;
 }
 
+Creep.prototype.recycle = function ()
+{
+	this.say("💀");
+	const spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
+	this.travel(spawn);
+
+	const recycleResult = spawn.recycleCreep(this);
+
+	if (OK == recycleResult || ERR_NOT_IN_RANGE == recycleResult)
+	{}
+	else
+	{
+		console.log('recycleResult', recycleResult, this.href(), spawn.href());
+	}
+}
+
 Creep.prototype.smartWithdraw = function (target, resourceType = RESOURCE_ENERGY, say = "⚡")
 {
 	const withdrawResult = this.withdraw(target, resourceType);
