@@ -161,6 +161,10 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 		this.say("🔌");
 		log('The creep does not have any carried energy. ' + this.room.href());
 	}
+	else if (ERR_INVALID_TARGET == buildResult)
+	{
+		this.say("💫" + "ERR_INVALID_TARGET");
+	}
 	else
 	{
 		log('creep-build-failed ' + buildResult + ' ' + this.room.href());

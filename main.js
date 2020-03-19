@@ -11,6 +11,7 @@ const roleTower = require('role.tower');
 const roleTombstone = require('role.tombstone');
 const roleLink = require('role.link');
 const roleSpawning = require('role.spawning');
+const roleBuilder = require('role.builder');
 
 if ('undefined' !== typeof script_init)
 {
@@ -41,6 +42,10 @@ function forEachCreeps()
 		else if ('claimer' == creep.memory.role)
 		{
 			roleClaimer.run(creep);
+		}
+		else if ('builder' == creep.memory.role)
+		{
+			roleBuilder.runPerCreep(creep);
 		}
 		else
 		{
@@ -267,6 +272,7 @@ module.exports.loop = function ()
 	roleTower.creepTransfer();
 	roleTombstone.run();
 	roleLink.run();
+	roleBuilder.run();
 
 	controllerViz();
 
