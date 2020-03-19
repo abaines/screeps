@@ -6,6 +6,17 @@ const log = require('log').log;
 
 const tombstoneLogic =
 {
+	isTombstoneCreep: function (creep, store)
+	{
+		const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
+		const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
+		const isConstruction = creep.memory.construction;
+
+		const isHarvester = 'harvester' == creep.memory.role;
+
+		return isHarvester && !isConstruction && (isCreepEmpty || freeCapacity >= store.getUsedCapacity(RESOURCE_ENERGY));
+	},
+
 	creepCollectTombstone: function (creep, tombstone)
 	{
 		const withdrawResult = creep.withdraw(tombstone, RESOURCE_ENERGY);
@@ -48,11 +59,7 @@ const tombstoneLogic =
 			{
 				filter: (creep) =>
 				{
-					const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
-					const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
-					const isConstruction = creep.memory.construction;
-
-					return !isConstruction && (isCreepEmpty || freeCapacity >= store.getUsedCapacity(RESOURCE_ENERGY));
+					return this.isTombstoneCreep(creep, store);
 				}
 			}
 			);
@@ -65,11 +72,7 @@ const tombstoneLogic =
 			{
 				filter: (creep) =>
 				{
-					const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
-					const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
-					const isConstruction = creep.memory.construction;
-
-					return !isConstruction && (isCreepEmpty || freeCapacity >= resource.amount);
+					return this.isTombstoneCreep(creep, store);
 				}
 			}
 			);
