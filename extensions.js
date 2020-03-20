@@ -81,6 +81,11 @@ Creep.prototype.travel = function (target, opts)
 		}
 	};
 
+	if (target && target.room && this.room != target.room)
+	{
+		log("Creep-room-travel-transfer", this.href(), this.room.href(), target.room.href());
+	}
+
 	const moveResult = this.moveTo(target, opts);
 
 	if (OK == moveResult || ERR_TIRED == moveResult)
