@@ -216,7 +216,7 @@ const roleHarvester =
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
-				log(creep.href() + " > " + controller.room.href());
+				log("creep-room-transfer" + creep.href() + " > " + controller.room.href());
 			}
 			else if (ERR_NO_PATH == moveResult)
 			{
