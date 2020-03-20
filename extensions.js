@@ -667,6 +667,14 @@ RoomObject.prototype.constructRampart = function ()
 	}
 }
 
+RoomObject.prototype.percentStoreFull = function (resource = undefined)
+{
+	const capacity = this.store.getCapacity(resource);
+	const usedCapacity = this.store.getUsedCapacity(resource);
+
+	return usedCapacity / capacity;
+}
+
 // href
 
 Room.prototype.href = function (msg = this.name)
