@@ -6,7 +6,7 @@ const log = require('log').log;
 
 const tombstoneLogic =
 {
-	isTombstoneCreep: function (creep, store)
+	isTombstoneCreep: function (creep, usedCapacity)
 	{
 		const freeCapacity = creep.store.getFreeCapacity(RESOURCE_ENERGY);
 		const isCreepEmpty = creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0;
@@ -14,7 +14,7 @@ const tombstoneLogic =
 
 		const isHarvester = 'harvester' == creep.memory.role;
 
-		return isHarvester && !isConstruction && (isCreepEmpty || freeCapacity >= store.getUsedCapacity(RESOURCE_ENERGY));
+		return isHarvester && !isConstruction && (isCreepEmpty || freeCapacity >= usedCapacity);
 	},
 
 	creepCollectTombstone: function (creep, tombstone)
@@ -59,7 +59,7 @@ const tombstoneLogic =
 			{
 				filter: (creep) =>
 				{
-					return this.isTombstoneCreep(creep, store);
+					return this.isTombstoneCreep(creep, store.getUsedCapacity(RESOURCE_ENERGY));
 				}
 			}
 			);
@@ -72,7 +72,7 @@ const tombstoneLogic =
 			{
 				filter: (creep) =>
 				{
-					return this.isTombstoneCreep(creep, store);
+					return this.isTombstoneCreep(creep, resource.amount);
 				}
 			}
 			);
