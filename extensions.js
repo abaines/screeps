@@ -39,6 +39,10 @@ Creep.prototype.recycle = function ()
 
 	if (OK == recycleResult || ERR_NOT_IN_RANGE == recycleResult)
 	{}
+	else if (ERR_INVALID_TARGET == recycleResult)
+	{
+		console.log('recycleResult', 'ERR_INVALID_TARGET', this.href(), spawn.href());
+	}
 	else
 	{
 		console.log('recycleResult', recycleResult, this.href(), spawn.href());
@@ -184,7 +188,8 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 	}
 	else if (ERR_INVALID_TARGET == buildResult)
 	{
-		this.say("💫" + "ERR_INVALID_TARGET");
+		this.say("💫" + "🚧");
+		log('ERR_INVALID_TARGET ' + this.href());
 	}
 	else
 	{
@@ -356,7 +361,7 @@ Creep.prototype.smartUpgradeController = function ()
 	else
 	{
 		this.say("👺");
-		console.log("upgradeResult", upgradeResult);
+		console.log("upgradeResult", upgradeResult, this.href());
 	}
 }
 
