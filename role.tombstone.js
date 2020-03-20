@@ -27,7 +27,7 @@ const tombstoneLogic =
 		}
 		else if (OK == withdrawResult)
 		{
-			console.log("WIN!", 'creepCollectTombstone', JSON.stringify(tombstone.store), tombstone.room.href());
+			log('creepCollectTombstone', 'creepCollectTombstone ' + JSON.stringify(tombstone.store) + ' ' + tombstone.room.href());
 		}
 		else
 		{
@@ -45,7 +45,7 @@ const tombstoneLogic =
 		}
 		else if (OK == pickupResult)
 		{
-			console.log("WIN!", 'creepCollectResource', resource.href());
+			log('creepCollectResource', 'creepCollectResource ' + resource.href());
 		}
 		else
 		{
