@@ -36,66 +36,137 @@ const core =
 	},
 	runPerCreep: function (creep)
 	{
-		const site = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-
-		if (creep.store[RESOURCE_ENERGY] == 0 && creep.memory.constructionSite != null)
+		if (creep.memory.task && 'harvest' == creep.memory.task.name)
 		{
-			const storage = this.findWithdrawStorage(creep);
-			if (storage)
+			if (creep.percentStoreFull() >= 1)
 			{
-				creep.memory.constructionSite = null;
-				creep.memory.withDraw = storage.id;
-				creep.memory.source = null;
+				delete creep.memory.task;
 			}
-			else
 			{
-				const source = creep.pickSource();
-				if (source && source.energy > 50)
+				const targetID = creep.memory.task.targetID;
+				const target = Game.getObjectById(targetID);
+				if (target)
 				{
-					creep.memory.constructionSite = null;
-					creep.memory.withDraw = null;
-					creep.memory.source = source.id;
+					if (target.energy == 0)
+					{
+						delete creep.memory.task;
+					}
+				}
+				else
+				{
+					delete creep.memory.task;
 				}
 			}
 		}
 
-		if (creep.store.getFreeCapacity() == 0)
+		if (creep.memory.task && 'withdraw' == creep.memory.task.name)
 		{
-			creep.memory.constructionSite = site && site.id;
-			creep.memory.withDraw = null;
-			creep.memory.source = null;
-		}
-
-		if (creep.memory.withDraw && Game.getObjectById(creep.memory.withDraw))
-		{
-			creep.smartWithdraw(Game.getObjectById(creep.memory.withDraw));
-		}
-		else if (creep.memory.source && Game.getObjectById(creep.memory.source))
-		{
-			creep.smartHarvest(Game.getObjectById(creep.memory.source));
-		}
-		else if (creep.memory.constructionSite && Game.getObjectById(creep.memory.constructionSite))
-		{
-			creep.smartBuild(Game.getObjectById(creep.memory.constructionSite));
-		}
-		else if (site)
-		{
-			creep.memory.constructionSite = site && site.id;
-			creep.memory.withDraw = null;
-			creep.memory.source = null;
-		}
-		else
-		{
-			const constructionSites = Game.constructionSites;
-			if (constructionSites && constructionSites.length > 0)
+			if (creep.percentStoreFull() >= 1)
 			{
-				creep.travel(Game.constructionSites[0]);
+				delete creep.memory.task;
 			}
 			else
 			{
-				log('role.builder ' + creep.href() + ' recycling');
-				creep.recycle();
+				const targetID = creep.memory.task.targetID;
+				const target = Game.getObjectById(targetID);
+				if (target)
+				{
+					if (target.store[RESOURCE_ENERGY] == 0)
+					{
+						delete creep.memory.task;
+					}
+				}
+				else
+				{
+					delete creep.memory.task;
+				}
 			}
+		}
+
+		if (creep.memory.task && 'construction' == creep.memory.task.name)
+		{
+			if (creep.store[RESOURCE_ENERGY] == 0)
+			{
+				delete creep.memory.task;
+			}
+			else
+			{
+				const targetID = creep.memory.task.targetID;
+				const target = Game.getObjectById(targetID);
+				if (target)
+				{
+					// TODO: Verify
+				}
+				else
+				{
+					delete creep.memory.task;
+				}
+			}
+		}
+
+		// pick new task
+		if (!creep.memory.task)
+		{
+			console.log("new task", creep.percentStoreFull());
+			if (creep.percentStoreFull() <= 0)
+			{
+				const storage = this.findWithdrawStorage(creep);
+				if (storage && storage.id)
+				{
+					creep.memory.task =
+					{
+						name: 'withdraw',
+						targetID: storage.id,
+					};
+				}
+				else
+				{
+					const source = creep.pickSource();
+					if (source && source.id && source.energy > 50)
+					{
+						creep.memory.task =
+						{
+							name: 'harvest',
+							targetID: source.id,
+						};
+					}
+				}
+			}
+			else
+			{
+				const site = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+				if (site && site.id)
+				{
+					creep.memory.task =
+					{
+						name: 'construction',
+						targetID: site.id,
+					};
+				}
+			}
+		}
+
+		log(JSON.stringify(creep.memory.task) + " " + creep.percentStoreFull());
+
+		if (creep.memory.task && 'withdraw' == creep.memory.task.name)
+		{
+			const targetID = creep.memory.task.targetID;
+			const target = Game.getObjectById(targetID);
+			creep.smartWithdraw(target);
+		}
+
+		if (creep.memory.task && 'harvest' == creep.memory.task.name)
+		{
+			const targetID = creep.memory.task.targetID;
+			const target = Game.getObjectById(targetID);
+			creep.smartHarvest(target);
+		}
+
+		if (creep.memory.task && 'construction' == creep.memory.task.name)
+		{
+			const targetID = creep.memory.task.targetID;
+			const target = Game.getObjectById(targetID);
+			creep.smartBuild(target);
 		}
 	},
 	run: function ()
