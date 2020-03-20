@@ -220,8 +220,8 @@ const roleHarvester =
 			}
 			else if (ERR_NO_PATH == moveResult)
 			{
-				creep.say('🛑');
-				console.log('No path to the target could be found.', creep.name, creep.pos.toString().padEnd(21), controller.pos.toString().padEnd(21));
+				creep.say('🛑' + '✈️');
+				console.log('No path to the target could be found.', creep.href(), creep.room.href().padEnd(21), controller.href().padEnd(21));
 			}
 			else
 			{
