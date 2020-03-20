@@ -133,24 +133,39 @@ const roleHarvester =
 				}
 			}
 
-			if (creep.room.controller && creep.room.controller.ticksToDowngrade > CONTROLLER_DOWNGRADE[6])
+			if (creep.room.controller && creep.room.controller.my)
 			{
+				const ticksToDowngrade = creep.room.controller.ticksToDowngrade;
 				const storage = creep.room.storage;
+
+				if (this.buildConstruction(creep, constructionSites, STRUCTURE_STORAGE))
+				{
+					return;
+				}
+
+				if (ticksToDowngrade < CONTROLLER_DOWNGRADE[6])
+				{
+					creep.smartUpgradeController();
+					return;
+				}
+
 				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
 					creep.smartTransfer(storage, "🏦");
 					return;
 				}
-				else if (this.buildConstruction(creep, constructionSites, STRUCTURE_STORAGE))
+
+				if (ticksToDowngrade < CONTROLLER_DOWNGRADE[7])
 				{
+					creep.smartUpgradeController();
 					return;
 				}
-			}
 
-			if (creep.room.controller && creep.room.controller.ticksToDowngrade < CONTROLLER_DOWNGRADE[6])
-			{
-				creep.smartUpgradeController();
-				return;
+				if (storage && storage.store[RESOURCE_ENERGY] < 900_000)
+				{
+					creep.smartTransfer(storage, "🏦");
+					return;
+				}
 			}
 		}
 
@@ -228,6 +243,15 @@ const roleHarvester =
 				console.log("creep-room-transfer", 'moveResult', moveResult);
 			}
 			return;
+		}
+
+		if (creep.store.getUsedCapacity() > 0)
+		{
+			if (creep.room.controller && creep.room.controller.ticksToDowngrade < CONTROLLER_DOWNGRADE[8])
+			{
+				creep.smartUpgradeController();
+				return;
+			}
 		}
 
 		const sources = creep.room.find(FIND_SOURCES);
