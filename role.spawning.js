@@ -13,7 +13,7 @@ const spawnSpawning =
 		const energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 		const energyAvailable = spawn.room.energyAvailable;
 
-		if ((roomHarvesterCount < 4 || harvesters.length < Game.rooms.length * 4) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
+		if ((roomHarvesterCount < 4 || harvesters.length < Game.rooms.length * 4) && energyAvailable >= 3250 && energyCapacityAvailable < Infinity)
 		{
 			spawn.smartSpawnCreep('harvester',
 				[
@@ -22,7 +22,7 @@ const spawnSpawning =
 					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 20
 				]);
 		}
-		else if (harvesters.length < 3 * 5 && energyAvailable >= 2300 && energyCapacityAvailable < 4300)
+		else if (roomHarvesterCount < 4 && energyAvailable >= 2300 && energyCapacityAvailable < 3250)
 		{
 			spawn.smartSpawnCreep('harvester',
 				[

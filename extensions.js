@@ -112,13 +112,21 @@ Creep.prototype.travel = function (target, opts)
 		}
 		else
 		{
-			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target.href() + ' ' + target.room.href() + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
+			const msg = 'Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target.href() + ' ' + target.room.href() + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance;
+			if (target instanceof Source)
+			{
+				log("Creep.prototype.travel instanceof Source", msg);
+			}
+			else
+			{
+				log(msg);
+			}
 		}
 	}
 	else if (ERR_INVALID_TARGET == moveResult)
 	{
 		this.say('🛑');
-		log('Creep.prototype.travel ' + this.href() + ' ERR_INVALID_TARGET ' + target);
+		log('Creep.prototype.travel ' + this.href() + ' ERR_INVALID_TARGET ' + JSON.stringify(target));
 	}
 	else
 	{

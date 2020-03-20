@@ -216,7 +216,7 @@ const roleHarvester =
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
-				log("creep-room-transfer" + creep.href() + " > " + controller.room.href());
+				log("creep-room-transfer " + creep.href() + " > " + controller.room.href());
 			}
 			else if (ERR_NO_PATH == moveResult)
 			{
@@ -243,7 +243,10 @@ const roleHarvester =
 				nextSource = source;
 			}
 		}
-		const moveResult = creep.travel(nextSource);
+		if (nextSource.ticksToRegeneration < Infinity)
+		{
+			const moveResult = creep.travel(nextSource);
+		}
 
 		harvesterTickData.bored = (harvesterTickData.bored || 0) + 1;
 	},
