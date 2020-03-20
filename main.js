@@ -315,3 +315,5 @@ function killOld()
 	console.log('killOld', old.name, old.ticksToLive);
 	old.suicide();
 }
+
+console.log("main.js EOF");

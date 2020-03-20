@@ -311,6 +311,29 @@ Creep.prototype.pickSource = function ()
 
 	const source = sourceBestOptions[Math.floor(Math.random() * sourceBestOptions.length)];
 
+	if (!source)
+	{
+		var next =
+		{
+			ticksToRegeneration: Infinity
+		};
+
+		const sources = this.room.find(FIND_SOURCES);
+
+		for (const[idx, source]of Object.entries(sources))
+		{
+			if (source.ticksToRegeneration < next.ticksToRegeneration)
+			{
+				next = source;
+			}
+		}
+
+		if (next.ticksToRegeneration < Infinity)
+		{
+			return next;
+		}
+	}
+
 	return source;
 }
 

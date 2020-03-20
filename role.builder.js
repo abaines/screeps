@@ -122,7 +122,7 @@ const core =
 				else
 				{
 					const source = creep.pickSource();
-					if (source && source.id && source.energy > 50)
+					if (source && source.id && source.energy > 0)
 					{
 						creep.memory.task =
 						{
