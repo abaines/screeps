@@ -81,7 +81,7 @@ Creep.prototype.travel = function (target, opts)
 		}
 	};
 
-	if (target && target.room && this.room != target.room)
+	if (target.room && this.room != target.room)
 	{
 		log("Creep-room-travel-transfer", this.href(), this.room.href(), target.room.href());
 	}
@@ -112,7 +112,7 @@ Creep.prototype.travel = function (target, opts)
 		}
 		else
 		{
-			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
+			log('Creep.prototype.travel No path to the target could be found. ' + this.room.href() + ' ' + this.href() + ' ' + target.href() + ' ' + target.room.href() + ' ' + creepAreaCreepsCount + ' ' + targetAreaCreepsCount + ' ' + distance);
 		}
 	}
 	else if (ERR_INVALID_TARGET == moveResult)

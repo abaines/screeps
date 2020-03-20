@@ -147,8 +147,11 @@ const roleHarvester =
 				}
 			}
 
-			creep.smartUpgradeController();
-			return;
+			if (creep.room.controller && creep.room.controller.ticksToDowngrade < CONTROLLER_DOWNGRADE[6])
+			{
+				creep.smartUpgradeController();
+				return;
+			}
 		}
 
 		const controlRoomCreepCount = {};
@@ -213,6 +216,7 @@ const roleHarvester =
 			if (OK == moveResult || ERR_TIRED == moveResult)
 			{
 				creep.say(roomCreeps.length + " > " + leastRoom.length);
+				log(creep.href() + " > " + controller.room.href());
 			}
 			else if (ERR_NO_PATH == moveResult)
 			{

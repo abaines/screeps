@@ -13,7 +13,7 @@ const spawnSpawning =
 		const energyCapacityAvailable = spawn.room.energyCapacityAvailable;
 		const energyAvailable = spawn.room.energyAvailable;
 
-		if ((roomHarvesterCount < 3 || harvesters.length < 5 * 5) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
+		if ((roomHarvesterCount < 4 || harvesters.length < Game.rooms.length * 4) && energyAvailable >= 3200 && energyCapacityAvailable < Infinity)
 		{
 			spawn.smartSpawnCreep('harvester',
 				[

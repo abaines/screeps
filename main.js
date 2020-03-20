@@ -106,7 +106,14 @@ function creepViz(harvesterTickData)
 
 	for (const[idx, room]of Object.entries(Game.rooms))
 	{
-		const roomCreepCount = room.find(FIND_MY_CREEPS).length;
+		const roomCreepCount = room.find(FIND_MY_CREEPS,
+			{
+				filter: (creep) =>
+				{
+					return 'harvester' == creep.memory.role && creep.body.length > 25;
+				}
+			}
+			).length;
 		creepCountList.push(roomCreepCount);
 	}
 
