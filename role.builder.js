@@ -42,6 +42,7 @@ const core =
 			{
 				delete creep.memory.task;
 			}
+			else
 			{
 				const targetID = creep.memory.task.targetID;
 				const target = Game.getObjectById(targetID);
@@ -107,7 +108,6 @@ const core =
 		// pick new task
 		if (!creep.memory.task)
 		{
-			console.log("new task", creep.percentStoreFull());
 			if (creep.percentStoreFull() <= 0)
 			{
 				const storage = this.findWithdrawStorage(creep);
@@ -146,7 +146,7 @@ const core =
 			}
 		}
 
-		log(JSON.stringify(creep.memory.task) + " " + creep.percentStoreFull());
+		log(creep.href() + '  ' + JSON.stringify(creep.memory.task));
 
 		if (creep.memory.task && 'withdraw' == creep.memory.task.name)
 		{
@@ -167,6 +167,16 @@ const core =
 			const targetID = creep.memory.task.targetID;
 			const target = Game.getObjectById(targetID);
 			creep.smartBuild(target);
+		}
+
+		if (!creep.memory.task && !creep.spawning && creep.ticksToLive < CREEP_LIFE_TIME - 100)
+		{
+			const site = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+			if (!site)
+			{
+				log('creep.recycle()', 'creep.ticksToLive: ' + creep.ticksToLive);
+				creep.recycle();
+			}
 		}
 	},
 	run: function ()
