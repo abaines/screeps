@@ -169,7 +169,7 @@ const core =
 			creep.smartBuild(target);
 		}
 
-		if (!creep.memory.task && !creep.spawning && creep.ticksToLive < CREEP_LIFE_TIME - 100)
+		if (!creep.memory.task && !creep.spawning)
 		{
 			const site = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
 			if (!site)
