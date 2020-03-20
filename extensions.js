@@ -181,6 +181,10 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 	{
 		this.say(say);
 	}
+	else if (ERR_BUSY == buildResult)
+	{
+		this.say("🐣");
+	}
 	else if (ERR_NOT_ENOUGH_RESOURCES == buildResult)
 	{
 		this.say("🔌");
