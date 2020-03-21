@@ -31,12 +31,12 @@ const core =
 						const structureType = structure.structureType;
 						if (STRUCTURE_CONTAINER == structureType)
 						{
-							log(JSON.stringify(structure.store));
-							log(JSON.stringify(Object.keys(structure.store)));
+							const store = structure.store;
+							const keys = Object.keys(store);
 
-							for (const s in Object.keys(structure.store))
+							for (const v of Object.values(keys))
 							{
-								log(s);
+								log("### "  + v + "  " + store[v]);
 							}
 
 							return true;
