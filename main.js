@@ -106,7 +106,7 @@ function creepViz(harvesterTickData)
 			{
 				filter: (creep) =>
 				{
-					return 'harvester' == creep.memory.role && creep.body.length > 1;
+					return 'harvester' == creep.memory.role && creep.body.length > 25;
 				}
 			}
 			).length;
