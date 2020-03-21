@@ -15,6 +15,8 @@ const roleBuilder = require('role.builder');
 const roleExtractor = require('role.extractor');
 const roleLab = require('role.lab');
 
+const JSS = JSON.stringify;
+
 if ('undefined' !== typeof script_init)
 {
 	// the variable is defined
@@ -147,11 +149,11 @@ function roomViz()
 
 function checkStructureForRampart(structure)
 {
-	const found = structure.pos.lookFor(LOOK_STRUCTURES);
+	const lookResults = structure.pos.lookFor(LOOK_STRUCTURES);
 
 	const stypes = {};
 
-	for (const[idx, structure]of Object.entries(found))
+	for (const[idx, structure]of Object.entries(lookResults))
 	{
 		const structureType = structure.structureType;
 		if (STRUCTURE_RAMPART == structureType)
@@ -161,16 +163,37 @@ function checkStructureForRampart(structure)
 		stypes[structureType] = true;
 	}
 
-	console.log(JSON.stringify(stypes));
+	console.log("checkStructureForRampart-stypes " + JSON.stringify(stypes));
 
 	structure.constructRampart();
 }
 
+var rampCheck = true;
+
 function constructRamparts()
 {
-	if (Game.time % 1500 == 750)
+	if (Game.time % 1500 == 750 || rampCheck)
 	{
+		rampCheck = false;
 		console.log("Check Ramparts");
+
+		const roomsWithTowers = {};
+
+		for (const room of Object.values(Game.rooms))
+		{
+			const found = room.find(FIND_MY_STRUCTURES,
+				{
+					filter: (structure) =>
+					{
+						return STRUCTURE_TOWER == structure.structureType;
+					}
+				}
+				);
+
+			roomsWithTowers[room] = found.length;
+		}
+
+		log("constructRamparts-roomsWithTowers " + JSS(roomsWithTowers));
 
 		for (const[hash, structure]of Object.entries(Game.structures))
 		{
