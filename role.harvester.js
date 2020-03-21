@@ -135,8 +135,16 @@ const roleHarvester =
 
 			if (creep.room.controller && creep.room.controller.my)
 			{
-				const ticksToDowngrade = creep.room.controller.ticksToDowngrade;
+				const controller = creep.room.controller;
+				const distance = creep.pos.distance(controller);
+				const ticksToDowngrade = controller.ticksToDowngrade;
 				const storage = creep.room.storage;
+
+				if (distance <= 3)
+				{
+					creep.smartUpgradeController();
+					return;
+				}
 
 				if (this.buildConstruction(creep, constructionSites, STRUCTURE_STORAGE))
 				{
