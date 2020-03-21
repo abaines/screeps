@@ -3,6 +3,7 @@
 'use strict';
 
 const log = require('log').log;
+const JSS = JSON.stringify;
 
 Number.prototype.toFixedNumber = function (digits, base)
 {
@@ -157,9 +158,9 @@ Creep.prototype.travel = function (target, opts)
 
 Creep.prototype.bodyScan = function (scan_type)
 {
-	for (const[part, type]of Object.entries(this.body))
+	for (const part of this.body)
 	{
-		if (type == scan_type)
+		if (part.type == scan_type)
 		{
 			return true;
 		}
