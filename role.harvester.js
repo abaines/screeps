@@ -157,7 +157,7 @@ const roleHarvester =
 					return;
 				}
 
-				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
+				if (storage && storage.store[RESOURCE_ENERGY] < 250_000)
 				{
 					creep.smartTransfer(storage, "🏦");
 					return;
@@ -169,7 +169,7 @@ const roleHarvester =
 					return;
 				}
 
-				if (storage && storage.store[RESOURCE_ENERGY] < 900_000)
+				if (storage && storage.store[RESOURCE_ENERGY] < 500_000)
 				{
 					creep.smartTransfer(storage, "🏦");
 					return;
