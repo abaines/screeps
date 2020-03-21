@@ -11,7 +11,7 @@ Number.prototype.toFixedNumber = function (digits, base)
 	return Math.round(this * pow) / pow;
 }
 
-RoomPosition.prototype.distance = function (other)
+RoomPosition.prototype.distanceC = function (other)
 {
 	const otherPos = other.pos || other;
 
@@ -25,6 +25,24 @@ RoomPosition.prototype.distance = function (other)
 	const x2x = Math.abs(this.x - otherPos.x);
 	const y2y = Math.abs(this.y - otherPos.y);
 	const distance = Math.sqrt(x2x * x2x + y2y * y2y);
+
+	return distance;
+}
+
+RoomPosition.prototype.distance = function (other)
+{
+	const otherPos = other.pos || other;
+
+	if (this.room != otherPos.room)
+	{
+		const msg = "Rooms must be the same for RoomPosition::distanceToPos\n" + this.room + '\n' + otherPos.room;
+		log(msg);
+		return Infinity;
+	}
+
+	const x2x = Math.abs(this.x - otherPos.x);
+	const y2y = Math.abs(this.y - otherPos.y);
+	const distance = x2x + y2y;
 
 	return distance;
 }
