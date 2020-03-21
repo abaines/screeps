@@ -34,16 +34,11 @@ function forEachCreeps()
 	{
 		if ('harvester' == creep.memory.role)
 		{
-			const harvestResult = roleHarvester.runPerCreep(creep, harvesterTickData);
-
-			if (harvestResult && harvestResult.log)
-			{
-				log(harvestResult.log);
-			}
+			roleHarvester.runPerCreep(creep, harvesterTickData);
 		}
 		else if ('claimer' == creep.memory.role)
 		{
-			roleClaimer.run(creep);
+			roleClaimer.runPerCreep(creep);
 		}
 		else if ('builder' == creep.memory.role)
 		{
@@ -111,7 +106,7 @@ function creepViz(harvesterTickData)
 			{
 				filter: (creep) =>
 				{
-					return 'harvester' == creep.memory.role && creep.body.length > 25;
+					return 'harvester' == creep.memory.role && creep.body.length > 1;
 				}
 			}
 			).length;

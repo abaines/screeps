@@ -4,6 +4,7 @@
 
 const log = require('log').log;
 const roleHarvester = require('role.harvester');
+const JSS = JSON.stringify;
 
 const claimCreep =
 {
@@ -11,7 +12,16 @@ const claimCreep =
 	{
 		for (const[name, flag]of Object.entries(Game.flags))
 		{
-			if (flag.room.controller && !flag.room.controller.my && flag.room.controller.level == 0)
+			const flagRoomName = flag.pos.roomName;
+			const flagRoom = Game.rooms[flagRoomName];
+
+			if (!flagRoom)
+			{
+				creep.say("🥇🚩");
+				creep.travel(flag);
+				return true;
+			}
+			else if (flagRoom != creep.room)
 			{
 				creep.say("🚩");
 				creep.travel(flag);
@@ -20,8 +30,13 @@ const claimCreep =
 		}
 		return false;
 	},
-	run: function (creep)
+	runPerCreep: function (creep)
 	{
+		if (this.gotoFlag(creep))
+		{
+			return;
+		}
+
 		if (creep.room.controller)
 		{
 			const controller = creep.room.controller;
@@ -38,14 +53,13 @@ const claimCreep =
 				{
 					log("claimResult: " + claimResult + ' ' + creep.room.href());
 				}
+
+				return;
 			}
 		}
 
-		if (!gotoFlag(creep))
-		{
-			creep.say("Harvester");
-			roleHarvester.run(creep);
-		}
+		roleHarvester.runPerCreep(creep);
+		creep.say("Harvester");
 	},
 };
 

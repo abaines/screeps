@@ -4,6 +4,7 @@
 
 const log = require('log').log;
 const roleHarvester = require('role.harvester');
+const JSS = JSON.stringify;
 
 const spawnSpawning =
 {
@@ -71,7 +72,7 @@ const spawnSpawning =
 		{
 			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
 		}
-		else if (harvesters.length < 3 && energyAvailable >= 200)
+		else if ((harvesters.length < 3 ||roomHarvesterCount < 3) && energyAvailable >= 200)
 		{
 			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
 		}
@@ -85,15 +86,15 @@ const spawnSpawning =
 
 		// TODO babyBooster
 
-		if (false)
+		if (true)
 		{
-			this.spawnClaimer();
+			this.spawnClaimer(spawn, energyAvailable);
 		}
 
 		spawn.visualize();
 	},
 
-	spawnClaimer: function ()
+	spawnClaimer: function (spawn, energyAvailable)
 	{
 		var claimers = 0;
 
@@ -101,13 +102,14 @@ const spawnSpawning =
 		{
 			if (creep.bodyScan("claim"))
 			{
-				claimers = 1 + claimers
+				claimers = 1 + claimers;
 			}
 		}
 
-		if (claimers == 0 && energyAvailable >= 900 && energyCapacityAvailable < Infinity)
+		if (claimers == 0 && energyAvailable >= 900)
 		{
 			spawn.smartSpawnCreep('claimer', [CLAIM, WORK, CARRY, MOVE, MOVE, MOVE]);
+			console.log("spawnClaimer!");
 		}
 	},
 
