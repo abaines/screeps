@@ -171,12 +171,10 @@ function constructRamparts()
 	if (Game.time % 1500 == 750)
 	{
 		console.log("Check Ramparts");
-		const myStructureTypes = {}
 
 		for (const[hash, structure]of Object.entries(Game.structures))
 		{
 			const structureType = structure.structureType;
-			myStructureTypes[structureType] = true;
 
 			if (STRUCTURE_RAMPART == structureType)
 			{}
@@ -192,42 +190,6 @@ function constructRamparts()
 			}
 		}
 
-		const myRoomStructureTypes = {}
-
-		for (const[hash, room]of Object.entries(Game.rooms))
-		{
-			const structures = room.find(FIND_STRUCTURES);
-
-			for (const[idx, structure]of Object.entries(structures))
-			{
-				const structureType = structure.structureType;
-				myRoomStructureTypes[structureType] = true;
-
-				if (STRUCTURE_CONTAINER == structureType)
-				{
-					checkStructureForRampart(structure);
-				}
-			}
-		}
-
-		const missing = {}
-
-		for (const[structureType, value]of Object.entries(myRoomStructureTypes))
-		{
-			if (myStructureTypes[structureType])
-			{}
-			else
-			{
-				missing[structureType] = true;
-			}
-		}
-
-		if (false)
-		{
-			console.log(JSON.stringify(myStructureTypes));
-			console.log(JSON.stringify(myRoomStructureTypes));
-			console.log(JSON.stringify(missing));
-		}
 	}
 }
 
