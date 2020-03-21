@@ -59,7 +59,10 @@ const claimCreep =
 		}
 
 		roleHarvester.runPerCreep(creep);
-		creep.say("Harvester");
+		if (Game.time % 6 == 0)
+		{
+			creep.say("👩‍🌾");
+		}
 	},
 };
 
