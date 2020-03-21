@@ -73,7 +73,7 @@ const core =
 			}
 		}
 
-		log(JSS(mineralCreeps));
+		log("mineralCreeps: "+JSS(mineralCreeps));
 
 		for (const[mineralType, containers]of Object.entries(mineralContainers))
 		{
