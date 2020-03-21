@@ -4,24 +4,24 @@
 
 const log = require('log').log;
 
-const rawMinerals =
-{
-	RESOURCE_HYDROGEN,
-	RESOURCE_OXYGEN,
-	RESOURCE_UTRIUM,
-	RESOURCE_LEMERGIUM,
-	RESOURCE_KEANIUM,
-	RESOURCE_ZYNTHIUM,
-	RESOURCE_CATALYST,
-	RESOURCE_GHODIUM,
-};
-
-console.log(JSON.stringify(rawMinerals));
+const rawMineralTypes = new Set(
+		[
+			RESOURCE_HYDROGEN,
+			RESOURCE_OXYGEN,
+			RESOURCE_UTRIUM,
+			RESOURCE_LEMERGIUM,
+			RESOURCE_KEANIUM,
+			RESOURCE_ZYNTHIUM,
+			RESOURCE_CATALYST,
+			RESOURCE_GHODIUM,
+		]);
 
 const core =
 {
-	findMineralStorage: function ()
+	findMineralContainers: function ()
 	{
+		const mineralContainers = {};
+
 		for (const[name, room]of Object.entries(Game.rooms))
 		{
 			const containers = room.find(FIND_STRUCTURES,
@@ -31,30 +31,42 @@ const core =
 						const structureType = structure.structureType;
 						if (STRUCTURE_CONTAINER == structureType)
 						{
-							const store = structure.store;
-							const keys = Object.keys(store);
+							return structure.store.getUsedCapacity() > 0;
 
-							for (const v of Object.values(keys))
-							{
-								log("### "  + v + "  " + store[v]);
-							}
-
-							return true;
 						}
 					}
 				}
 				);
 
-			if (containers.length)
+			for (const container of containers)
 			{
-				log("!" + containers);
+				const store = container.store;
+				const keys = Object.keys(store);
+
+				for (const mineralType of Object.values(keys))
+				{
+					if (rawMineralTypes.has(mineralType))
+					{
+						if (!(mineralType in mineralContainers))
+						{
+							mineralContainers[mineralType] = [];
+						}
+						mineralContainers[mineralType].push(container);
+					}
+				}
 			}
 		}
+
+		return mineralContainers;
 	},
 
 	run: function ()
 	{
-		this.findMineralStorage();
+		const fms = this.findMineralContainers();
+		for (const[mineralType, containers]of Object.entries(fms))
+		{
+			log(mineralType + containers.length);
+		}
 	}
 }
 
