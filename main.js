@@ -193,7 +193,7 @@ function constructRamparts()
 			roomsWithTowers[room] = found.length;
 		}
 
-		log("constructRamparts-roomsWithTowers " + JSS(roomsWithTowers));
+		//log("constructRamparts-roomsWithTowers " + JSS(roomsWithTowers));
 
 		for (const[hash, structure]of Object.entries(Game.structures))
 		{

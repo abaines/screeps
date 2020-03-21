@@ -73,7 +73,7 @@ const core =
 			}
 		}
 
-		log("mineralCreeps: "+JSS(mineralCreeps));
+		log("mineralCreeps: " + JSS(mineralCreeps));
 
 		for (const[mineralType, containers]of Object.entries(mineralContainers))
 		{
@@ -84,7 +84,7 @@ const core =
 			else
 			{
 				// TODO: spawn creep with role and creep.memory.mineralType
-				log(mineralType + containers.length);
+				log('extractable-mineral-types: ' + mineralType + containers.length);
 			}
 		}
 

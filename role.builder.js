@@ -146,7 +146,7 @@ const core =
 			}
 		}
 
-		log(creep.href() + '  ' + JSON.stringify(creep.memory.task));
+		log(creep.href() + (creep.memory.task && creep.memory.task.name), 'builder: ' + creep.href() + '  ' + JSON.stringify(creep.memory.task));
 
 		if (creep.memory.task && 'withdraw' == creep.memory.task.name)
 		{
