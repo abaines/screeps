@@ -13,6 +13,7 @@ const roleLink = require('role.link');
 const roleSpawning = require('role.spawning');
 const roleBuilder = require('role.builder');
 const roleExtractor = require('role.extractor');
+const roleLab = require('role.lab');
 
 if ('undefined' !== typeof script_init)
 {
@@ -286,6 +287,7 @@ module.exports.loop = function ()
 	roleLink.run();
 	roleBuilder.run();
 	roleExtractor.run();
+	roleLab.run();
 
 	controllerViz();
 
