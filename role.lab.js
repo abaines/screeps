@@ -3,6 +3,7 @@
 'use strict';
 
 const log = require('log').log;
+const JSS = JSON.stringify;
 
 const rawMineralTypes = new Set(
 		[
@@ -60,13 +61,45 @@ const core =
 		return mineralContainers;
 	},
 
+	spawnCreepPerAvailableMineralType: function (mineralContainers)
+	{
+		const mineralCreeps = {};
+
+		for (const[name, creep]of Object.entries(Game.creeps))
+		{
+			if ('mineral' == creep.memory.role && creep.memory.mineralType)
+			{
+				mineralCreeps[creep.memory.mineralType] = creep;
+			}
+		}
+
+		log(JSS(mineralCreeps));
+
+		for (const[mineralType, containers]of Object.entries(mineralContainers))
+		{
+			if (mineralType in mineralCreeps)
+			{
+				console.log("WE HAVE A CREEP FOR MINERAL: " + mineralType);
+			}
+			else
+			{
+				// TODO: spawn creep with role and creep.memory.mineralType
+				log(mineralType + containers.length);
+			}
+		}
+
+	},
+
 	run: function ()
 	{
 		const fms = this.findMineralContainers();
-		for (const[mineralType, containers]of Object.entries(fms))
-		{
-			log(mineralType + containers.length);
-		}
+
+		//for (const[mineralType, containers]of Object.entries(fms))
+		//{
+		//	log(mineralType + containers.length);
+		//}
+
+		this.spawnCreepPerAvailableMineralType(fms);
 	}
 }
 
