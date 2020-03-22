@@ -797,6 +797,10 @@ StructureSpawn.prototype.smartSpawnCreep = function (data, body, givenName)
 	{
 		console.log(this.room.href(), 'Spawning:', name, this.href(), this.room.energyAvailable, this.room.energyCapacityAvailable, JSON.stringify(memory), JSON.stringify(bodyMap));
 	}
+	else if (ERR_INVALID_ARGS == spawnResult)
+	{
+		log('spawnResult ERR_INVALID_ARGS ' + JSS(body) + JSS(name) + JSS(memory));
+	}
 	else
 	{
 		console.log('spawnResult', spawnResult);
