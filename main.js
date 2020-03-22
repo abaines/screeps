@@ -137,6 +137,7 @@ function roomViz()
 	for (const[idx, room]of Object.entries(Game.rooms))
 	{
 		const energyAvailable = room.energyAvailable;
+		const energyCapacityAvailable = room.energyCapacityAvailable;
 		const sourceEnergyList = [];
 
 		for (const[idx, source]of Object.entries(room.find(FIND_SOURCES)))
@@ -144,7 +145,7 @@ function roomViz()
 			sourceEnergyList.push(source.energy);
 		}
 
-		room.visual.text("" + energyAvailable + "  " + JSON.stringify(sourceEnergyList), 0, 49,
+		room.visual.text("" + energyAvailable + '/' + energyCapacityAvailable + "  " + JSON.stringify(sourceEnergyList), 0, 49,
 		{
 			align: 'left',
 			font: '2',
