@@ -10,7 +10,7 @@ const core =
 
 	getGoalFlag: function ()
 	{
-		if (this.goalFlag)
+		if (this.goalFlag && Game.getObjectById(this.goalFlag.id))
 		{
 			return this.goalFlag;
 		}
@@ -33,11 +33,15 @@ const core =
 
 		creep.gotoFlag(flag);
 
+		creep.recycle();
+
 		creep.melee();
 	},
 
 	getMeleeBody: function (copies)
 	{
+		copies = Math.min(copies, 25);
+
 		// each copy cost 130
 		const body = new Array(copies).fill([ATTACK, MOVE]).flat();
 
@@ -46,13 +50,22 @@ const core =
 
 	run: function ()
 	{
+		const meleeCreeps = _.filter(Game.creeps, (creep) => 'melee' == creep.memory.role);
+
+		log("number of meleeCreeps " + meleeCreeps.length);
+
+		if (meleeCreeps.length > 8)
+		{
+			return;
+		}
+
 		for (const room of Object.values(Game.rooms))
 		{
 			const copies = room.idealEnergyRatio(130);
 
-			if (room.controller >= 6 && copies)
+			if (room.controller.level >= 6 && copies)
 			{
-				const body = getMeleeBody(copies);
+				const body = this.getMeleeBody(copies);
 
 				room.smartSpawnCreep(
 				{
