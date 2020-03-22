@@ -16,13 +16,13 @@ const claimCreep =
 
 		if (flag)
 		{
-			creep.gotoFlag(flag);
-			return;
+			return creep.gotoFlag(flag);
 		}
 	},
 
 	runPerCreep: function (creep)
 	{
+		log("claimer " + creep.href());
 		if (this.gotoFlag(creep))
 		{
 			return;
@@ -49,7 +49,9 @@ const claimCreep =
 			}
 		}
 
-		roleHarvester.runPerCreep(creep);
+		roleHarvester.runPerCreep(creep,
+		{}
+		);
 		if (Game.time % 6 == 0)
 		{
 			creep.say("👩‍🌾");

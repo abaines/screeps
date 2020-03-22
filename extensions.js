@@ -194,7 +194,7 @@ Creep.prototype.gotoFlag = function (flag)
 	else
 	{
 		this.say("⛳");
-		this.travel(flag);
+		// this.travel(flag);
 		return false;
 	}
 }

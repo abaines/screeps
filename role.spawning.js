@@ -89,7 +89,7 @@ const spawnSpawning =
 
 		// TODO babyBooster
 
-		if (empire.findFlag('claim'))
+		if (empire.findFlag('claim') && spawn.room.controller.level >= 8)
 		{
 			this.spawnClaimer(spawn, energyAvailable);
 		}
@@ -112,7 +112,7 @@ const spawnSpawning =
 		if (claimers == 0 && energyAvailable >= 900)
 		{
 			spawn.smartSpawnCreep('claimer', [CLAIM, WORK, CARRY, MOVE, MOVE, MOVE]);
-			console.log("spawnClaimer!");
+			log("spawnClaimer", "spawnClaimer " + spawn.href(), 50);
 		}
 	},
 
