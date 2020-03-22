@@ -14,6 +14,7 @@ const roleSpawning = require('role.spawning');
 const roleBuilder = require('role.builder');
 const roleExtractor = require('role.extractor');
 const roleLab = require('role.lab');
+const roleAttack = require('role.attack');
 
 const JSS = JSON.stringify;
 
@@ -49,6 +50,10 @@ function forEachCreeps()
 		else if ('extractor' == creep.memory.role)
 		{
 			// role.extractor run() takes care of this
+		}
+		else if ('melee' == creep.memory.role)
+		{
+			roleAttack.runPerCreep(creep);
 		}
 		else
 		{
@@ -275,6 +280,7 @@ module.exports.loop = function ()
 	roleBuilder.run();
 	roleExtractor.run();
 	roleLab.run();
+	roleAttack.run();
 
 	controllerViz();
 
