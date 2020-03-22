@@ -15,6 +15,7 @@ const roleBuilder = require('role.builder');
 const roleExtractor = require('role.extractor');
 const roleLab = require('role.lab');
 const roleAttack = require('role.attack');
+const empire = require('empire');
 
 const JSS = JSON.stringify;
 
