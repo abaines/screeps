@@ -382,6 +382,39 @@ Room.prototype.smartSpawnCreep = function (data, body, givenName)
 	}
 }
 
+Room.prototype.smartSpawnRole = function (data, baseBody, givenName)
+{
+	function bodyCost(body)
+	{
+		// https://stackoverflow.com/a/41194993
+		return body.reduce(function (cost, part)
+		{
+			return cost + BODYPART_COST[part];
+		}, 0);
+	}
+
+	function getBody(desiredCopies)
+	{
+		const min = Math.floor(50 / baseBody.length);
+		const copies = Math.min(desiredCopies, min);
+
+		const body = new Array(copies).fill(baseBody).flat();
+
+		return body;
+	}
+
+	const cost = bodyCost(baseBody);
+
+	const copies = this.idealEnergyRatio(cost);
+
+	if (copies)
+	{
+		const body = getBody(copies);
+
+		return this.smartSpawnCreep(data, body, givenName);
+	}
+}
+
 Room.prototype.idealEnergyRatio = function (value)
 {
 	const energyAvailableRatio = Math.floor(this.energyAvailable / value);
