@@ -4,7 +4,6 @@
 
 const log = require('log').log;
 const empire = require('empire');
-const roleHarvester = require('role.harvester');
 
 const JSS = JSON.stringify;
 
@@ -118,7 +117,7 @@ const spawnSpawning =
 
 	run: function ()
 	{
-		const harvesters = roleHarvester.getHarvesters();
+		const harvesters = empire.findCreepsByRole('harvester', 25);
 
 		for (const[hash, spawn]of Object.entries(Game.spawns))
 		{

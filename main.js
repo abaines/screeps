@@ -2,8 +2,8 @@
 
 'use strict';
 
-const log = require('log').log;
 const extensions = require('extensions');
+const log = require('log').log;
 const empire = require('empire');
 
 const roleHarvester = require('role.harvester');

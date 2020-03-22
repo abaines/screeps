@@ -17,6 +17,16 @@ const empire =
 		}
 	},
 
+	findCreepsByRole: function (role, size = 0)
+	{
+		const creeps = _.filter(Game.creeps, (creep) =>
+			{
+				return role == creep.memory.role && creep.body.length > size;
+			}
+			);
+		return creeps;
+	},
+
 	run: function ()
 	{
 		console.log("run()");

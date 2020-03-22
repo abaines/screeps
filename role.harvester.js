@@ -3,13 +3,13 @@
 'use strict';
 
 const log = require('log').log;
+const empire = require('empire');
 
 const roleHarvester =
 {
 	getHarvesters: function ()
 	{
-		const harvesters = _.filter(Game.creeps, (creep) => 'harvester' == creep.memory.role && creep.body.length > 25);
-		return harvesters;
+		return empire.findCreepsByRole('harvester', 25);
 	},
 
 	buildConstruction: function (creep, constructionSites, structureType)
