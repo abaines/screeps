@@ -9,7 +9,7 @@ const core =
 	run: function ()
 	{
 		console.log("run()");
-	}
+	},
 }
 
 module.exports = core;
