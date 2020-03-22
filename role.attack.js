@@ -6,9 +6,9 @@ const log = require('log').log;
 
 const core =
 {
-	var goalFlag,
+	//goalFlag: null,
 
-	getGoalFlag = function ()
+	getGoalFlag: function ()
 	{
 		if (this.goalFlag)
 		{
@@ -25,7 +25,7 @@ const core =
 				}
 			}
 		}
-	}
+	},
 
 	runPerCreep: function (creep)
 	{
@@ -50,16 +50,16 @@ const core =
 
 		for (const room in Game.rooms)
 		{
-			const copies = room.idealRoomEnergyRatio(130)
-				if (room.controller >= 6 && copies)
-				{
-					const body = getMeleeBody(copies);
+			const copies = room.idealRoomEnergyRatio(130);
+			if (room.controller >= 6 && copies)
+			{
+				const body = getMeleeBody(copies);
 
-					room.smartSpawnCreep(
-					{
-						role: 'melee',
-					}, body);
-				}
+				room.smartSpawnCreep(
+				{
+					role: 'melee',
+				}, body);
+			}
 		}
 	},
 }
