@@ -55,6 +55,7 @@ function forEachCreeps()
 			const msg = "unknown_role " + creep.name + ' ' + creep.memory.role + ' ' + creep.room.href();
 			log(msg);
 			creep.say("😵");
+			creep.recycle();
 		}
 	}
 
@@ -255,6 +256,12 @@ function deadCreepMemoryClean()
 
 module.exports.loop = function ()
 {
+	if (Game.cpu.bucket < 250 || Game.cpu.tickLimit < 400)
+	{
+		console.log(JSS(Game.cpu));
+		return;
+	}
+
 	roleLink.determineBehavior();
 
 	roleTower.run();

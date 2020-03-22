@@ -57,7 +57,9 @@ Creep.prototype.recycle = function ()
 	const recycleResult = spawn.recycleCreep(this);
 
 	if (OK == recycleResult || ERR_NOT_IN_RANGE == recycleResult)
-	{}
+	{
+		console.log("Creep.recycle", this.href(), JSS(this));
+	}
 	else if (ERR_INVALID_TARGET == recycleResult)
 	{
 		console.log('recycleResult', 'ERR_INVALID_TARGET', this.href(), spawn.href());
@@ -591,7 +593,7 @@ const namingMap =
 	claim: "L",
 }
 
-StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
+StructureSpawn.prototype.smartSpawnCreep = function (data, body, givenName)
 {
 	if (this.spawning)
 	{
@@ -648,12 +650,29 @@ StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
 
 	const name = givenName || getNameFromBody(bodyMap);
 
+	function getCreepMemory()
+	{
+		if (typeof data === 'string' || data instanceof String)
+		{
+			var m =
+			{
+				role: data,
+			};
+			return m;
+		}
+		else
+		{
+			return data;
+		}
+	}
+
+	const memory = getCreepMemory();
+
+	//console.log(JSS(memory));
+
 	const spawnResult = this.spawnCreep(body, name,
 		{
-			memory:
-			{
-				role: role
-			}
+			memory: memory,
 		}
 		);
 
@@ -675,11 +694,11 @@ StructureSpawn.prototype.smartSpawnCreep = function (role, body, givenName)
 	}
 	else if (ERR_BUSY == spawnResult)
 	{
-		console.log('The spawn is already in process of spawning another creep.', role);
+		console.log('The spawn is already in process of spawning another creep.', JSS(memory));
 	}
 	else if (OK == spawnResult)
 	{
-		console.log(this.room.href(), 'Spawning:', name, this.href(), this.room.energyAvailable, this.room.energyCapacityAvailable, JSON.stringify(bodyMap));
+		console.log(this.room.href(), 'Spawning:', name, this.href(), this.room.energyAvailable, this.room.energyCapacityAvailable, JSON.stringify(memory), JSON.stringify(bodyMap));
 	}
 	else
 	{
