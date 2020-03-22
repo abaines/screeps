@@ -366,7 +366,7 @@ Room.prototype.smartSpawnCreep = function (data, body, givenName)
 	}
 }
 
-Room.prototype.ideaEnergyRatio = function (value)
+Room.prototype.idealEnergyRatio = function (value)
 {
 	const energyAvailableRatio = Math.floor(this.energyAvailable / value);
 	const energyCapacityAvailableRatio = Math.floor(this.energyCapacityAvailable / value);

@@ -46,11 +46,10 @@ const core =
 
 	run: function ()
 	{
-		console.log("run()");
-
-		for (const room in Game.rooms)
+		for (const room of Object.values(Game.rooms))
 		{
-			const copies = room.idealRoomEnergyRatio(130);
+			const copies = room.idealEnergyRatio(130);
+
 			if (room.controller >= 6 && copies)
 			{
 				const body = getMeleeBody(copies);
