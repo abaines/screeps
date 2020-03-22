@@ -160,6 +160,31 @@ Creep.prototype.travel = function (target, opts)
 	return moveResult;
 }
 
+Creep.prototype.gotoFlag = function (flag)
+{
+	const flagRoomName = flag.pos.roomName;
+	const flagRoom = Game.rooms[flagRoomName];
+
+	if (!flagRoom)
+	{
+		this.say("🥇🚩");
+		this.travel(flag);
+		return true;
+	}
+	else if (flagRoom != this.room)
+	{
+		this.say("🚩");
+		this.travel(flag);
+		return true;
+	}
+	else
+	{
+		this.say("⛳");
+		this.travel(flag);
+		return false;
+	}
+}
+
 Creep.prototype.bodyScan = function (scan_type)
 {
 	for (const part of this.body)
