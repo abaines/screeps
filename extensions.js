@@ -56,10 +56,12 @@ Creep.prototype.recycle = function ()
 
 	const recycleResult = spawn.recycleCreep(this);
 
-	if (OK == recycleResult || ERR_NOT_IN_RANGE == recycleResult)
+	if (OK == recycleResult)
 	{
 		console.log("Creep.recycle", this.href(), JSS(this));
 	}
+	else if (ERR_NOT_IN_RANGE == recycleResult)
+	{}
 	else if (ERR_INVALID_TARGET == recycleResult)
 	{
 		console.log('recycleResult', 'ERR_INVALID_TARGET', this.href(), spawn.href());
