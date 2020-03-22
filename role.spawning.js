@@ -23,82 +23,25 @@ const spawnSpawning =
 
 		const harvesterBaseBody = [WORK, CARRY, MOVE];
 
-		if (roomHarvesterCount >= 4 && harvesters.length >= Game.rooms.length * 4)
-		{
-			// gg
-		}
-		else if (roomHarvesterCount < 4 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
+		if (harvesters.length < Game.rooms.length * 4 && energyAvailable >= 3200 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
 			// yay!
 		}
-		else if ((roomBigHarvesterCount < 4 || harvesters.length < Game.rooms.length * 4) && energyAvailable >= 3250 && energyCapacityAvailable < Infinity)
+		else if (roomHarvesterCount < 4 && energyAvailable >= 3200 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 15
-					CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 15
-					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 20
-				]);
+			// yay!
 		}
-		else if (roomBigHarvesterCount < 4 && energyAvailable >= 2300 && energyCapacityAvailable < 3250)
+		else if (roomHarvesterCount < 3 && energyAvailable >= 1600 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 14
-					CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 8
-					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 10
-				]);
+			// yay!
 		}
-		else if (harvesters.length < 3 * 4 && energyAvailable >= 2000 && energyCapacityAvailable < 2300)
+		else if (roomHarvesterCount < 2 && energyAvailable >= 800 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 10
-					CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 10
-					MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 10
-				]);
+			// yay!
 		}
-		else if (harvesters.length < 11 && energyAvailable >= 1200 && energyCapacityAvailable < 2000)
+		else if (roomHarvesterCount < 1 && energyAvailable >= 0 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
-					CARRY, CARRY, CARRY, CARRY,
-					MOVE, MOVE, MOVE, MOVE,
-				]);
-		}
-		else if (harvesters.length < 10 && energyAvailable >= 800 && energyCapacityAvailable < 1200)
-		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK, WORK, WORK,
-					CARRY, CARRY,
-					MOVE, MOVE,
-				]);
-		}
-		else if (harvesters.length < 9 && energyAvailable >= 550 && energyCapacityAvailable < 800)
-		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, WORK, WORK,
-					CARRY,
-					MOVE, MOVE,
-				]);
-		}
-		else if (harvesters.length < 5 && energyAvailable >= 200 && energyCapacityAvailable < 550 && roomHarvesterCount < 6)
-		{
-			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
-		}
-		else if ((harvesters.length < 3 || roomHarvesterCount < 3) && energyAvailable >= 200 && roomHarvesterCount < 6)
-		{
-			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
-		}
-		else if (roomHarvesterCount < 4 && energyAvailable >= 300 && energyCapacityAvailable <= 300)
-		{
-			spawn.smartSpawnCreep('harvester',
-				[
-					WORK, WORK, CARRY, MOVE,
-				]);
+			// yay!
 		}
 
 		// TODO babyBooster
