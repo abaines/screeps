@@ -308,6 +308,30 @@ Creep.prototype.smartExtract = function ()
 	this.smartHarvest(mineral, "⛏️");
 }
 
+Creep.prototype.melee = function ()
+{
+	const enemyCreep = this.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+
+	// TODO: target towers first?
+	const enemyBuilding = this.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+
+	if (enemyBuilding)
+	{
+		this.say("⚔️");
+		this.travel(enemyBuilding);
+		this.attack(enemyBuilding);
+	}
+
+	if (enemyCreep)
+	{
+		if (this.distance(enemyCreep) <= 1)
+		{
+			this.say("🗡️");
+		}
+		this.attack(enemyBuilding);
+	}
+}
+
 Room.prototype.getMineral = function ()
 {
 	const minerals = this.find(FIND_MINERALS);
@@ -319,6 +343,37 @@ Room.prototype.getMineral = function ()
 	else
 	{
 		console.log('cannot-find-minerals', this.href(), minerals);
+	}
+}
+
+// TODO: Room.smartSpawnCreepNear(pos)
+Room.prototype.smartSpawnCreep = function (data, body, givenName)
+{
+	const spawns = this.find(FIND_MY_SPAWNS,
+		{
+			filter: (spawn) =>
+			{
+				const spawning = spawn.spawning;
+				return !spawning;
+			}
+		}
+		);
+
+	if (spawns.length > 0)
+	{
+		// TODO: Random?
+		return spawns[0].smartSpawnCreep(data, body, givenName);
+	}
+}
+
+Room.prototype.ideaEnergyRatio = function (value)
+{
+	const energyAvailableRatio = Math.floor(this.energyAvailable / value);
+	const energyCapacityAvailableRatio = Math.floor(this.energyCapacityAvailable / value);
+
+	if (energyAvailableRatio == energyCapacityAvailableRatio)
+	{
+		return energyAvailableRatio;
 	}
 }
 
