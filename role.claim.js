@@ -12,21 +12,8 @@ const claimCreep =
 	{
 		for (const[name, flag]of Object.entries(Game.flags))
 		{
-			const flagRoomName = flag.pos.roomName;
-			const flagRoom = Game.rooms[flagRoomName];
-
-			if (!flagRoom)
-			{
-				creep.say("🥇🚩");
-				creep.travel(flag);
-				return true;
-			}
-			else if (flagRoom != creep.room)
-			{
-				creep.say("🚩");
-				creep.travel(flag);
-				return true;
-			}
+			// TODO: find a claim-type flag
+			creep.gotoFlag(flag);
 		}
 		return false;
 	},
