@@ -51,7 +51,21 @@ RoomPosition.prototype.distance = function (other)
 Creep.prototype.recycle = function ()
 {
 	this.say("💀");
+
+	if (this.spawning)
+	{
+		log("trying to recycle spawning creep " + this.href());
+		return;
+	}
+
 	const spawn = this.pos.findClosestByPath(FIND_MY_SPAWNS);
+
+	if (!spawn)
+	{
+		log("trying to recycle creep without spawner " + this.href());
+		return;
+	}
+
 	this.travel(spawn);
 
 	const recycleResult = spawn.recycleCreep(this);
@@ -799,7 +813,9 @@ StructureSpawn.prototype.smartSpawnCreep = function (data, body, givenName)
 	}
 	else if (ERR_INVALID_ARGS == spawnResult)
 	{
-		log('spawnResult ERR_INVALID_ARGS ' + JSS(body) + JSS(name) + JSS(memory));
+		var key = 'spawnResult ERR_INVALID_ARGS ' + body.length + '  ' + JSS(memory) + '  ' + JSS(body);
+		var msg = 'spawnResult ERR_INVALID_ARGS ' + body.length + '  ' + JSS(memory) + '  ' + JSS(body) + JSS(name);
+		log(key, msg);
 	}
 	else
 	{
