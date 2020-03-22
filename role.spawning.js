@@ -27,7 +27,7 @@ const spawnSpawning =
 		{
 			// gg
 		}
-		else if (spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
+		else if (roomHarvesterCount < 4 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
 		{
 			// yay!
 		}
