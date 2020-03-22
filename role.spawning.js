@@ -68,11 +68,11 @@ const spawnSpawning =
 					MOVE, MOVE,
 				]);
 		}
-		else if (harvesters.length < 5 && energyAvailable >= 200 && energyCapacityAvailable < 550)
+		else if (harvesters.length < 5 && energyAvailable >= 200 && energyCapacityAvailable < 550 && roomHarvesterCount < 6)
 		{
 			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
 		}
-		else if ((harvesters.length < 3 ||roomHarvesterCount < 3) && energyAvailable >= 200)
+		else if ((harvesters.length < 3 || roomHarvesterCount < 3) && energyAvailable >= 200 && roomHarvesterCount < 6)
 		{
 			spawn.smartSpawnCreep('harvester', [WORK, CARRY, MOVE]);
 		}
@@ -86,7 +86,7 @@ const spawnSpawning =
 
 		// TODO babyBooster
 
-		if (true)
+		if (false)
 		{
 			this.spawnClaimer(spawn, energyAvailable);
 		}
