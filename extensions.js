@@ -428,6 +428,21 @@ Creep.prototype.smartUpgradeController = function ()
 	}
 }
 
+Room.prototype.getCreeps = function (role, size = 0)
+{
+	return this.find(FIND_MY_CREEPS,
+	{
+		filter: (creep) =>
+		{
+			const creepRole = creep.memory.role;
+			const creepSize = creep.body.length;
+
+			return role == creepRole && creepSize >= size;
+		}
+	}
+	);
+}
+
 StructureLink.prototype.getGoalType = function ()
 {
 	// "sink"
