@@ -344,6 +344,8 @@ Creep.prototype.melee = function ()
 		}
 		this.attack(enemyBuilding);
 	}
+
+	return enemyBuilding || enemyCreep;
 }
 
 Room.prototype.getMineral = function ()

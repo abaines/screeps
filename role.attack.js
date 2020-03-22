@@ -6,10 +6,9 @@ const log = require('log').log;
 
 const core =
 {
-	//goalFlag: null,
-
 	getGoalFlag: function ()
 	{
+		// GLOBAL: this.goalFlag
 		if (this.goalFlag && Game.getObjectById(this.goalFlag.id))
 		{
 			return this.goalFlag;
@@ -31,11 +30,17 @@ const core =
 	{
 		const flag = this.getGoalFlag();
 
-		creep.gotoFlag(flag);
+		if (flag)
+		{
+			creep.gotoFlag(flag);
+		}
 
-		creep.recycle();
-
-		creep.melee();
+		if (creep.melee())
+		{}
+		else
+		{
+			creep.recycle();
+		}
 	},
 
 	getMeleeBody: function (copies)
@@ -52,7 +57,16 @@ const core =
 	{
 		const meleeCreeps = _.filter(Game.creeps, (creep) => 'melee' == creep.memory.role);
 
-		log("number of meleeCreeps " + meleeCreeps.length);
+		if (meleeCreeps.length)
+		{
+			log("number of meleeCreeps: " + meleeCreeps.length);
+		}
+
+		const flag = this.getGoalFlag();
+		if (!flag)
+		{
+			return;
+		}
 
 		if (meleeCreeps.length > 8)
 		{
