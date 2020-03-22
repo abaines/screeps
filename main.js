@@ -4,6 +4,7 @@
 
 const log = require('log').log;
 const extensions = require('extensions');
+const empire = require('empire');
 
 const roleHarvester = require('role.harvester');
 const roleClaimer = require('role.claim');
@@ -15,7 +16,6 @@ const roleBuilder = require('role.builder');
 const roleExtractor = require('role.extractor');
 const roleLab = require('role.lab');
 const roleAttack = require('role.attack');
-const empire = require('empire');
 
 const JSS = JSON.stringify;
 

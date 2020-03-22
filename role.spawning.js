@@ -3,7 +3,9 @@
 'use strict';
 
 const log = require('log').log;
+const empire = require('empire');
 const roleHarvester = require('role.harvester');
+
 const JSS = JSON.stringify;
 
 const spawnSpawning =
@@ -87,7 +89,7 @@ const spawnSpawning =
 
 		// TODO babyBooster
 
-		if (false)
+		if (empire.findFlag('claim'))
 		{
 			this.spawnClaimer(spawn, energyAvailable);
 		}

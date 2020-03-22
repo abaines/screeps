@@ -4,13 +4,13 @@
 
 const log = require('log').log;
 
-const core =
+const empire =
 {
 	findFlag: function (nameContains)
 	{
 		for (const flag of Object.values(Game.flags))
 		{
-			if (flag.name.includes('invade'))
+			if (flag.name.includes(nameContains))
 			{
 				return flag;
 			}
@@ -23,4 +23,4 @@ const core =
 	},
 }
 
-module.exports = core;
+module.exports = empire;
