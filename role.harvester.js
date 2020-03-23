@@ -64,7 +64,7 @@ const roleHarvester =
 				const distance = creep.pos.distance(controller);
 				const ticksToDowngrade = controller.ticksToDowngrade;
 
-				if (distance <= 3)
+				if (distance <= 3 && creep.percentStoreFull() < 1)
 				{
 					creep.smartUpgradeController();
 					return;
@@ -165,7 +165,7 @@ const roleHarvester =
 				const ticksToDowngrade = controller.ticksToDowngrade;
 				const storage = creep.room.storage;
 
-				if (distance <= 3)
+				if (distance <= 3 && creep.percentStoreFull() < 1)
 				{
 					creep.smartUpgradeController();
 					return;
