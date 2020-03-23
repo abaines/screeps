@@ -56,6 +56,8 @@ const roleHarvester =
 			}
 		}
 
+		const constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
+
 		if (creep.store.getUsedCapacity() > 0)
 		{
 			if (creep.room.controller && creep.room.controller.my)
@@ -76,8 +78,6 @@ const roleHarvester =
 					return;
 				}
 			}
-
-			const constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
 
 			if (this.buildConstruction(creep, constructionSites, STRUCTURE_SPAWN))
 			{
@@ -280,6 +280,15 @@ const roleHarvester =
 
 		if (creep.store.getUsedCapacity() > 0)
 		{
+			if (this.buildConstruction(creep, constructionSites, STRUCTURE_LAB))
+			{
+				return;
+			}
+			if (this.buildConstruction(creep, constructionSites, STRUCTURE_CONTAINER))
+			{
+				return;
+			}
+
 			if (creep.room.controller && creep.room.controller.ticksToDowngrade < CONTROLLER_DOWNGRADE[8])
 			{
 				creep.smartUpgradeController();
