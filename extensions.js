@@ -211,9 +211,9 @@ Creep.prototype.bodyScan = function (scan_type)
 	return false;
 }
 
-Creep.prototype.smartTransfer = function (target, say = "🔋")
+Creep.prototype.smartTransfer = function (target, say = "🔋", resource = RESOURCE_ENERGY)
 {
-	const transferResult = this.transfer(target, RESOURCE_ENERGY);
+	const transferResult = this.transfer(target, resource);
 
 	if (ERR_NOT_IN_RANGE == transferResult)
 	{

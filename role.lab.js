@@ -83,17 +83,25 @@ const core =
 		log(JSS(creep.memory));
 		log(containers);
 
-		const freeCapacity = creep.store.getFreeCapacity(mineralType);
+		const percentFull = creep.percentStoreFull(mineralType);
 
 		const myContainer = Game.getObjectById(creep.memory.container);
 
-		if (myContainer && freeCapacity > 0)
+		if (percentFull == 0)
+		{
+			// TODO: pick better container!!
+			const container = containers[0];
+			creep.memory.container = container;
+			creep.smartWithdraw(container, mineralType);
+			return;
+		}
+		else if (myContainer && percentFull < 1)
 		{
 			creep.smartWithdraw(myContainer, mineralType);
 			return;
 		}
 
-		if (freeCapacity <= 0)
+		if (percentFull > 0)
 		{
 			delete creep.memory.container;
 
@@ -103,7 +111,7 @@ const core =
 
 			if (myLab)
 			{
-				creep.smartTransfer(myLab);
+				creep.smartTransfer(myLab, "🧂", mineralType);
 				return;
 			}
 			else
@@ -111,7 +119,6 @@ const core =
 				log("NO LAB! " + creep.href());
 			}
 		}
-
 	},
 
 	handleCreepsAndContainers: function (mineralContainers, mineralCreeps)
