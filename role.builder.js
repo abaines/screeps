@@ -189,16 +189,20 @@ const core =
 				const energyAvailable = spawn.room.energyAvailable;
 				const constructionSites = spawn.room.find(FIND_CONSTRUCTION_SITES);
 
-				if (energyAvailable >= 3250 && constructionSites.length > 0)
+				const builderData =
 				{
-					spawn.smartSpawnCreep('builder',
-						[
-							WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 15
-							CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, // 20
-							MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, // 15
-						],
-						'builder');
-					return;
+					role: 'builder'
+				};
+
+				const builderBaseBody = [WORK, CARRY, MOVE];
+
+				if (constructionSites.length > 0)
+				{
+					if (energyAvailable >= 3200 && spawn.room.smartSpawnRole(builderData, builderBaseBody, 'builder'))
+					{
+						console.log("Spawning Builder @ " + spawn.href());
+						return;
+					}
 				}
 			}
 		}
