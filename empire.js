@@ -4,6 +4,8 @@
 
 const log = require('log').log;
 
+const JSS = JSON.stringify;
+
 const empire =
 {
 	findFlag: function (nameContains)
@@ -15,6 +17,30 @@ const empire =
 				return flag;
 			}
 		}
+	},
+
+	getLabsByMineral: function ()
+	{
+		const labs = _.filter(Game.structures, (structure) =>
+			{
+				return STRUCTURE_LAB == structure.structureType;
+			}
+			);
+
+		const labMap = {};
+
+		for (const lab of Object.values(labs))
+		{
+			const mineralType = lab.mineralType;
+
+			if (!(labMap[mineralType]))
+			{
+				labMap[mineralType] = [];
+			}
+			labMap[mineralType].push(lab);
+		}
+
+		return labMap;
 	},
 
 	findCreepsByRole: function (role, size = 0)

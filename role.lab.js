@@ -3,6 +3,7 @@
 'use strict';
 
 const log = require('log').log;
+const empire = require('empire');
 const JSS = JSON.stringify;
 
 const rawMineralTypes = new Set(
@@ -65,6 +66,7 @@ const core =
 	{
 		log("@" + JSS(Object.keys(mineralContainers)));
 		log("#" + JSS(Object.keys(mineralCreeps)));
+		log("$" + JSS(Object.keys(empire.getLabsByMineral())));
 	},
 
 	spawnCreepForMineral: function (mineralType, containers)
