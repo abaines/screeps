@@ -79,35 +79,36 @@ const core =
 	{
 		const mineralType = creep.memory.mineralType;
 
-		log(creep);
-		log(JSS(creep.memory));
-		log(containers);
-
 		const percentFull = creep.percentStoreFull(mineralType);
 
 		const myContainer = Game.getObjectById(creep.memory.container);
 
-		if (percentFull == 0)
+		const myLabs = this.getMyLab(mineralType, labMap);
+		// TODO: pick better lab!
+		const myLab = myLabs[0];
+
+		const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
+
+		if (labFree >= 1250)
 		{
-			// TODO: pick better container!!
-			const container = containers[0];
-			creep.memory.container = container;
-			creep.smartWithdraw(container, mineralType);
-			return;
-		}
-		else if (myContainer && percentFull < 1)
-		{
-			creep.smartWithdraw(myContainer, mineralType);
-			return;
+			if (percentFull == 0)
+			{
+				// TODO: pick better container!!
+				const container = containers[0];
+				creep.memory.container = container;
+				creep.smartWithdraw(container, mineralType);
+				return;
+			}
+			else if (myContainer && percentFull < 1)
+			{
+				creep.smartWithdraw(myContainer, mineralType);
+				return;
+			}
 		}
 
-		if (percentFull > 0)
+		if (percentFull > 0 && labFree > 0)
 		{
 			delete creep.memory.container;
-
-			const myLabs = this.getMyLab(mineralType, labMap);
-
-			const myLab = myLabs[0];
 
 			if (myLab)
 			{
@@ -119,13 +120,21 @@ const core =
 				log("NO LAB! " + creep.href());
 			}
 		}
+
+		if (percentFull > 0 && labFree <= 0)
+		{
+			creep.say("🌶️");
+			creep.smartTransfer(creep.room.storage, "🌶️", mineralType);
+			return;
+		}
+
+		creep.recycle();
 	},
 
-	handleCreepsAndContainers: function (mineralContainers, mineralCreeps)
+	handleCreepsAndContainers: function (mineralContainers, mineralCreeps, labMap)
 	{
 		log("@" + JSS(Object.keys(mineralContainers)));
 		log("#" + JSS(Object.keys(mineralCreeps)));
-		const labMap = empire.getLabsByMineral();
 		log("$" + JSS(Object.keys(labMap)));
 
 		for (const[mineralType, creep]of Object.entries(mineralCreeps))
@@ -169,6 +178,8 @@ const core =
 
 	spawnCreepPerAvailableMineralType: function (mineralContainers)
 	{
+		const labMap = empire.getLabsByMineral();
+
 		const mineralCreeps = {};
 
 		for (const[name, creep]of Object.entries(Game.creeps))
@@ -189,11 +200,20 @@ const core =
 			}
 			else
 			{
-				this.spawnCreepForMineral(mineralType, containers);
+				const myLabs = this.getMyLab(mineralType, labMap);
+				// TODO: pick better lab!
+				const myLab = myLabs[0];
+
+				const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
+
+				if (labFree > 1250)
+				{
+					this.spawnCreepForMineral(mineralType, containers);
+				}
 			}
 		}
 
-		this.handleCreepsAndContainers(mineralContainers, mineralCreeps);
+		this.handleCreepsAndContainers(mineralContainers, mineralCreeps, labMap);
 	},
 
 	run: function ()
