@@ -61,6 +61,43 @@ const core =
 		return mineralContainers;
 	},
 
+	handleCreepsAndContainers: function (mineralContainers, mineralCreeps)
+	{
+		log("@" + JSS(Object.keys(mineralContainers)));
+		log("#" + JSS(Object.keys(mineralCreeps)));
+	},
+
+	spawnCreepForMineral: function (mineralType, containers)
+	{
+		log('extractable-mineral-types: ' + mineralType + containers.length);
+
+		if (containers.length != 1)
+		{
+			// TODO: only count containers near extractors? or select the one with most materials?
+			log("TODO mineral containers.length != 1");
+		}
+
+		for (const container of containers)
+		{
+			const room = container.room;
+
+			const data =
+			{
+				role: 'mineral',
+				mineralType: mineralType,
+			};
+
+			const body = [CARRY, MOVE];
+
+			const name = 'mineral ' + mineralType;
+
+			if (room.smartSpawnRole(data, body, name))
+			{
+				return;
+			}
+		}
+	},
+
 	spawnCreepPerAvailableMineralType: function (mineralContainers)
 	{
 		const mineralCreeps = {};
@@ -73,21 +110,21 @@ const core =
 			}
 		}
 
-		log("mineralCreeps: " + JSS(mineralCreeps));
+		log("mineralCreeps: " + JSS(Object.keys(mineralCreeps)));
 
 		for (const[mineralType, containers]of Object.entries(mineralContainers))
 		{
 			if (mineralType in mineralCreeps)
 			{
-				console.log("WE HAVE A CREEP FOR MINERAL: " + mineralType);
+				// We have creeps for this mineral. Do not need to spawn another.
 			}
 			else
 			{
-				// TODO: spawn creep with role and creep.memory.mineralType
-				log('extractable-mineral-types: ' + mineralType + containers.length);
+				this.spawnCreepForMineral(mineralType, containers);
 			}
 		}
 
+		this.handleCreepsAndContainers(mineralContainers, mineralCreeps);
 	},
 
 	run: function ()

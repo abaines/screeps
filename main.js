@@ -52,6 +52,10 @@ function forEachCreeps()
 		{
 			// role.extractor run() takes care of this
 		}
+		else if ('mineral' == creep.memory.role)
+		{
+			// role.lab.run() takes care of this
+		}
 		else if ('melee' == creep.memory.role)
 		{
 			roleAttack.runPerCreep(creep);
