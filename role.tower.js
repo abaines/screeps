@@ -4,49 +4,6 @@
 
 const log = require('log').log;
 
-function repairRoomStructureType(tower, structureType, hits)
-{
-	const damagedStructures = tower.room.find(FIND_STRUCTURES,
-		{
-			filter: (structure) =>
-			{
-				if (structureType != structure.structureType)
-				{
-					return false;
-				}
-				else if (hits < 0)
-				{
-					return structure.hits < structure.hitsMax + hits;
-				}
-				else
-				{
-					return (structure.hits < hits);
-				}
-			}
-		}
-		);
-
-	if (damagedStructures.length > 0)
-	{
-		var weakest =
-		{
-			hits: Infinity
-		};
-
-		for (const idx in damagedStructures)
-		{
-			const damaged = damagedStructures[idx];
-
-			if (damaged.hits < weakest.hits)
-			{
-				weakest = damaged;
-			}
-		}
-
-		const repairResult = tower.repair(weakest);
-	}
-}
-
 function run_tower(tower)
 {
 	const hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
@@ -59,6 +16,7 @@ function run_tower(tower)
 
 	if (tower.store.getUsedCapacity(RESOURCE_ENERGY) / tower.store.getCapacity(RESOURCE_ENERGY) > 0.25)
 	{
+		tower.repairNonDefense();
 		tower.repairDefenses();
 		tower.repairRoads();
 		tower.repairWeakNonRoads();

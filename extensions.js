@@ -587,6 +587,27 @@ StructureController.prototype.getLevel = function ()
 	return level;
 }
 
+StructureTower.prototype.repairNonDefense = function ()
+{
+	const damagedStructures = this.room.find(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+
+				if (STRUCTURE_WALL == structureType || STRUCTURE_RAMPART == structureType)
+				{
+					return false;
+				}
+
+				return structure.missingHits() > 800 * 6 && structure.percentHits() < 0.60;
+			}
+		}
+		);
+
+	this.smartRepair(damagedStructures);
+}
+
 StructureTower.prototype.repairWeakNonRoads = function ()
 {
 	const damagedStructures = this.room.find(FIND_STRUCTURES,
