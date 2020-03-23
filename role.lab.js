@@ -65,6 +65,7 @@ const core =
 	getMyLab: function (mineralType, labMap)
 	{
 		const myLabs = labMap[mineralType];
+		// TODO: pick better lab!
 		if (myLabs)
 		{
 			return myLabs;
@@ -176,10 +177,8 @@ const core =
 		}
 	},
 
-	spawnCreepPerAvailableMineralType: function (mineralContainers)
+	spawnCreepPerAvailableMineralType: function (mineralContainers, labMap)
 	{
-		const labMap = empire.getLabsByMineral();
-
 		const mineralCreeps = {};
 
 		for (const[name, creep]of Object.entries(Game.creeps))
@@ -218,6 +217,8 @@ const core =
 
 	run: function ()
 	{
+		const labMap = empire.getLabsByMineral();
+
 		const fms = this.findMineralContainers();
 
 		//for (const[mineralType, containers]of Object.entries(fms))
@@ -225,7 +226,7 @@ const core =
 		//	log(mineralType + containers.length);
 		//}
 
-		this.spawnCreepPerAvailableMineralType(fms);
+		this.spawnCreepPerAvailableMineralType(fms, labMap);
 	}
 }
 
