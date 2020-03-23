@@ -268,7 +268,7 @@ Creep.prototype.smartBuild = function (structure, say = "🚧")
 	else if (ERR_INVALID_TARGET == buildResult)
 	{
 		this.say("💫" + "🚧");
-		log('smartBuild ERR_INVALID_TARGET ' + this.href() + '  ' + JSS(structure));
+		console.log('smartBuild ERR_INVALID_TARGET ' + this.href() + '  ' + JSS(structure));
 	}
 	else
 	{
