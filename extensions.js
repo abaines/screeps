@@ -902,6 +902,11 @@ StructureSpawn.prototype.visualize = function ()
 	}
 }
 
+StructureLab.prototype.isLow = function ()
+{
+	return this.store[this.mineralType] < 300;
+}
+
 RoomObject.prototype.constructRampart = function ()
 {
 	const createSiteResult = this.room.createConstructionSite(this.pos, STRUCTURE_RAMPART);

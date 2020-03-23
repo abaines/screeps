@@ -221,6 +221,11 @@ const core =
 
 		log('' + lab_O.href() + lab_Z.href() + lab_ZO.href());
 
+		if (lab_O.isLow() || lab_Z.isLow())
+		{
+			return;
+		}
+
 		lab_ZO.runReaction(lab_O, lab_Z);
 	},
 
