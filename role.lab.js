@@ -62,11 +62,71 @@ const core =
 		return mineralContainers;
 	},
 
+	getMyLab: function (mineralType, labMap)
+	{
+		const myLabs = labMap[mineralType];
+		if (myLabs)
+		{
+			return myLabs;
+		}
+		else
+		{
+			return labMap[undefined];
+		}
+	},
+
+	perCreep: function (creep, containers, labMap)
+	{
+		const mineralType = creep.memory.mineralType;
+
+		log(creep);
+		log(JSS(creep.memory));
+		log(containers);
+
+		const freeCapacity = creep.store.getFreeCapacity(mineralType);
+
+		const myContainer = Game.getObjectById(creep.memory.container);
+
+		if (myContainer && freeCapacity > 0)
+		{
+			creep.smartWithdraw(myContainer, mineralType);
+			return;
+		}
+
+		if (freeCapacity <= 0)
+		{
+			delete creep.memory.container;
+
+			const myLabs = this.getMyLab(mineralType, labMap);
+
+			const myLab = myLabs[0];
+
+			if (myLab)
+			{
+				creep.smartTransfer(myLab);
+				return;
+			}
+			else
+			{
+				log("NO LAB! " + creep.href());
+			}
+		}
+
+	},
+
 	handleCreepsAndContainers: function (mineralContainers, mineralCreeps)
 	{
 		log("@" + JSS(Object.keys(mineralContainers)));
 		log("#" + JSS(Object.keys(mineralCreeps)));
-		log("$" + JSS(Object.keys(empire.getLabsByMineral())));
+		const labMap = empire.getLabsByMineral();
+		log("$" + JSS(Object.keys(labMap)));
+
+		for (const[mineralType, creep]of Object.entries(mineralCreeps))
+		{
+			const containers = mineralContainers[mineralType];
+
+			this.perCreep(creep, containers, labMap);
+		}
 	},
 
 	spawnCreepForMineral: function (mineralType, containers)
