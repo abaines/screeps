@@ -543,19 +543,18 @@ Creep.prototype.findStructureThatNeedEnergy = function ()
 	return target;
 }
 
-Creep.prototype.smartUpgradeController = function ()
+Creep.prototype.smartUpgradeController = function (say = "⏫")
 {
+	this.say(say);
+
 	const upgradeResult = this.upgradeController(this.room.controller);
 
 	if (ERR_NOT_IN_RANGE == upgradeResult)
 	{
-		this.say("⏫");
 		this.travel(this.room.controller);
 	}
 	else if (OK == upgradeResult)
-	{
-		this.say("⏫");
-	}
+	{}
 	else
 	{
 		this.say("👺");

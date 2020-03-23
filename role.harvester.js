@@ -66,15 +66,15 @@ const roleHarvester =
 				const distance = creep.pos.distance(controller);
 				const ticksToDowngrade = controller.ticksToDowngrade;
 
-				if (distance <= 3 && creep.percentStoreFull() < 1)
+				if (distance <= 4 && creep.percentStoreFull() < 1)
 				{
-					creep.smartUpgradeController();
+					creep.smartUpgradeController("⏫1");
 					return;
 				}
 
 				if (ticksToDowngrade < (CONTROLLER_DOWNGRADE[2] / 2))
 				{
-					creep.smartUpgradeController();
+					creep.smartUpgradeController("⏫2");
 					return;
 				}
 			}
@@ -165,9 +165,9 @@ const roleHarvester =
 				const ticksToDowngrade = controller.ticksToDowngrade;
 				const storage = creep.room.storage;
 
-				if (distance <= 3 && creep.percentStoreFull() < 1)
+				if (distance <= 4 && creep.percentStoreFull() < 1)
 				{
-					creep.smartUpgradeController();
+					creep.smartUpgradeController("⏫3");
 					return;
 				}
 
@@ -178,7 +178,7 @@ const roleHarvester =
 
 				if (ticksToDowngrade < CONTROLLER_DOWNGRADE[6])
 				{
-					creep.smartUpgradeController();
+					creep.smartUpgradeController("⏫4");
 					return;
 				}
 
@@ -190,7 +190,7 @@ const roleHarvester =
 
 				if (ticksToDowngrade < CONTROLLER_DOWNGRADE[7])
 				{
-					creep.smartUpgradeController();
+					creep.smartUpgradeController("⏫5");
 					return;
 				}
 
@@ -291,7 +291,7 @@ const roleHarvester =
 
 			if (creep.room.controller && creep.room.controller.ticksToDowngrade < CONTROLLER_DOWNGRADE[8])
 			{
-				creep.smartUpgradeController();
+				creep.smartUpgradeController("⏫6");
 				return;
 			}
 		}
