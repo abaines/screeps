@@ -236,6 +236,12 @@ Creep.prototype.smartTransfer = function (target, say = "🔋", resource = RESOU
 		const msg = 'transferResult The creep does not have the given amount of resources. ' + target + ' ' + this.room.href();
 		log(msg);
 	}
+	else if (ERR_FULL == transferResult)
+	{
+		this.say("🥛");
+		const msg = 'transferResult The target cannot receive any more resources. ' + this.href() + ' ' + target.href();
+		log(msg);
+	}
 	else
 	{
 		this.say("🥛");
