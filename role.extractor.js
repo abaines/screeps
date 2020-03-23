@@ -3,6 +3,7 @@
 'use strict';
 
 const log = require('log').log;
+const JSS = JSON.stringify;
 
 const core =
 {
@@ -56,7 +57,7 @@ const core =
 
 	getRoomCreepExtractor: function (room)
 	{
-		const extractors = room.find(FIND_MY_CREEPS,
+		const extractorCreeps = room.find(FIND_MY_CREEPS,
 			{
 				filter: (creep) =>
 				{
@@ -65,15 +66,20 @@ const core =
 			}
 			);
 
-		if (extractors && extractors.length == 1)
+		if (extractorCreeps && extractorCreeps.length == 1)
 		{
-			return extractors[0];
+			return extractorCreeps[0];
 		}
-		else if (extractors && extractors.length == 0)
+		else if (extractorCreeps && extractorCreeps.length == 0)
 		{}
 		else
 		{
-			console.log('bad-creep-role-length', room.href());
+			console.log('bad-creep-role-length', room.href(), extractorCreeps.length);
+			for (const creep of extractorCreeps)
+			{
+				creep.recycle();
+			}
+			return extractorCreeps[0];
 		}
 	},
 
@@ -89,26 +95,17 @@ const core =
 
 				if (!creep && containerFreeCapacity >= 1000)
 				{
-					const spawners = room.find(FIND_MY_STRUCTURES,
-						{
-							filter:
-							{
-								structureType: STRUCTURE_SPAWN
-							}
-						}
-						);
-
-					if (spawners && spawners.length > 0)
+					const data =
 					{
-						for (const[name, spawner]of Object.entries(spawners))
-						{
-							spawner.smartSpawnCreep('extractor',
-								[
-									WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 25
-									MOVE, MOVE, MOVE, MOVE, MOVE, // 5
-								]);
-						}
-					}
+						role: 'extractor',
+					};
+
+					const body = [
+						WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, // 25
+						MOVE, MOVE, MOVE, MOVE, MOVE, // 5
+					];
+
+					room.smartSpawnRole(data, body);
 				}
 				else if (creep)
 				{
