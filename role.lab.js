@@ -65,14 +65,16 @@ const core =
 	getMyLab: function (mineralType, labMap)
 	{
 		const myLabs = labMap[mineralType];
-		// TODO: pick better lab!
+
 		if (myLabs)
 		{
-			return myLabs;
+			// TODO: pick better lab!
+			return myLabs[0];
 		}
 		else
 		{
-			return labMap[undefined];
+			// TODO: pick better lab!
+			return labMap[undefined][0];
 		}
 	},
 
@@ -84,9 +86,7 @@ const core =
 
 		const myContainer = Game.getObjectById(creep.memory.container);
 
-		const myLabs = this.getMyLab(mineralType, labMap);
-		// TODO: pick better lab!
-		const myLab = myLabs[0];
+		const myLab = this.getMyLab(mineralType, labMap);
 
 		const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
 
@@ -199,9 +199,7 @@ const core =
 			}
 			else
 			{
-				const myLabs = this.getMyLab(mineralType, labMap);
-				// TODO: pick better lab!
-				const myLab = myLabs[0];
+				const myLab = this.getMyLab(mineralType, labMap);
 
 				const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
 
@@ -213,6 +211,17 @@ const core =
 		}
 
 		this.handleCreepsAndContainers(mineralContainers, mineralCreeps, labMap);
+	},
+
+	chemicalReactions: function (labMap)
+	{
+		const lab_O = this.getMyLab(RESOURCE_OXYGEN, labMap);
+		const lab_Z = this.getMyLab(RESOURCE_ZYNTHIUM, labMap);
+		const lab_ZO = this.getMyLab(RESOURCE_ZYNTHIUM_OXIDE, labMap);
+
+		log('' + lab_O.href() + lab_Z.href() + lab_ZO.href());
+
+		lab_ZO.runReaction(lab_O, lab_Z);
 	},
 
 	run: function ()
@@ -227,6 +236,8 @@ const core =
 		//}
 
 		this.spawnCreepPerAvailableMineralType(fms, labMap);
+
+		this.chemicalReactions(labMap);
 	}
 }
 
