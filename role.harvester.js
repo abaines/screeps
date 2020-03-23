@@ -106,6 +106,12 @@ const roleHarvester =
 				if (creep.memory.construction || constructionCreepsCount == 0)
 				{
 					const target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+					if (!target)
+					{
+						creep.say("🌫️");
+						console.log("unreachable-construction-site", creep.href(), JSS(constructionSites));
+						return;
+					}
 					creep.smartBuild(target, "👷");
 					creep.memory.construction = true;
 					return;
