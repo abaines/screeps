@@ -901,9 +901,23 @@ StructureSpawn.prototype.visualize = function ()
 	}
 }
 
+StructureLab.prototype.isFull = function ()
+{
+	return this.store.getFreeCapacity() <= 0;
+}
+
 StructureLab.prototype.isLow = function ()
 {
 	return this.store[this.mineralType] < 300;
+}
+
+StructureLab.prototype.isFree = function ()
+{
+	if (!this.mineralType)
+	{
+		return true;
+	}
+	return this.store.getFreeCapacity(this.mineralType) >= 1250;
 }
 
 RoomObject.prototype.constructRampart = function ()

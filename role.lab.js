@@ -88,11 +88,9 @@ const core =
 
 		const myLab = this.getMyLab(mineralType, labMap);
 
-		const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
-
-		if (labFree >= 1250)
+		if (myLab.isFree())
 		{
-			if (percentFull == 0)
+			if (percentFull == 0 && containers)
 			{
 				// TODO: pick better container!!
 				const container = containers[0];
@@ -107,7 +105,7 @@ const core =
 			}
 		}
 
-		if (percentFull > 0 && labFree > 0)
+		if (percentFull > 0 && myLab.isFree())
 		{
 			delete creep.memory.container;
 
@@ -122,7 +120,7 @@ const core =
 			}
 		}
 
-		if (percentFull > 0 && labFree <= 0)
+		if (percentFull > 0 && myLab.isFull())
 		{
 			creep.say("🌶️");
 			creep.smartTransfer(creep.room.storage, "🌶️", mineralType);
@@ -201,9 +199,7 @@ const core =
 			{
 				const myLab = this.getMyLab(mineralType, labMap);
 
-				const labFree = myLab.store.getFreeCapacity(myLab.mineralType);
-
-				if (labFree > 1250)
+				if (myLab.isFree())
 				{
 					this.spawnCreepForMineral(mineralType, containers);
 				}
