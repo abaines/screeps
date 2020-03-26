@@ -19,16 +19,9 @@ const roleAttack = require('role.attack');
 
 const JSS = JSON.stringify;
 
-if ('undefined' !== typeof script_init)
-{
-	// the variable is defined
-}
-else
-{
-	log("================================================================================");
-	const script_init = true;
-	Memory.links = {};
-}
+log("================================================================================");
+
+Memory.links = {};
 
 function forEachCreeps()
 {
@@ -159,27 +152,6 @@ function roomViz()
 	}
 }
 
-function checkStructureForRampart(structure)
-{
-	const lookResults = structure.pos.lookFor(LOOK_STRUCTURES);
-
-	const stypes = {};
-
-	for (const[idx, structure]of Object.entries(lookResults))
-	{
-		const structureType = structure.structureType;
-		if (STRUCTURE_RAMPART == structureType)
-		{
-			return;
-		}
-		stypes[structureType] = true;
-	}
-
-	console.log("checkStructureForRampart-stypes " + JSON.stringify(stypes));
-
-	structure.constructRampart();
-}
-
 var rampCheck = true;
 
 function constructRamparts()
@@ -189,101 +161,22 @@ function constructRamparts()
 		rampCheck = false;
 		console.log("Check Ramparts");
 
-		const roomsWithTowers = new Set();
-
-		for (const room of Object.values(Game.rooms))
-		{
-			const found = room.find(FIND_MY_STRUCTURES,
-				{
-					filter: (structure) =>
-					{
-						return STRUCTURE_TOWER == structure.structureType;
-					}
-				}
-				);
-
-			roomsWithTowers.add(room);
-		}
+		const roomsWithTowers = empire.roomsWithTowers();
 
 		roomsWithTowers.forEach(function (room)
 		{
-			const structures = room.find(FIND_STRUCTURES,
-				{
-					filter: (structure) =>
-					{
-						const structureType = structure.structureType;
-						if (STRUCTURE_ROAD == structureType)
-						{
-							return false;
-						}
-						if (STRUCTURE_RAMPART == structureType)
-						{
-							return false;
-						}
-						if (STRUCTURE_EXTENSION == structureType)
-						{
-							return false;
-						}
-						if (STRUCTURE_WALL == structureType)
-						{
-							return false;
-						}
-						if (STRUCTURE_CONTROLLER == structureType)
-						{
-							return false;
-						}
-						if (STRUCTURE_EXTRACTOR == structureType)
-						{
-							return false;
-						}
-						return true;
-					}
-				}
-				);
-
-			for (const structure of Object.values(structures))
-			{
-				checkStructureForRampart(structure);
-			}
+			room.constructRamparts();
 		}
 		);
 
-		if (true)
+		if (false)
 		{
-			// skip removing ramparts from wall checks
-			return;
-		}
-
-		for (const room of Object.values(Game.rooms))
-		{
-			const walls = room.find(FIND_STRUCTURES,
-				{
-					filter: (structure) =>
-					{
-						const structureType = structure.structureType;
-						if (STRUCTURE_WALL == structureType)
-						{
-							return true;
-						}
-					}
-				}
-				);
-
-			for (const wall of Object.values(walls))
+			console.log("Checking for deconstruct wall ramparts");
+			for (const room of Object.values(Game.rooms))
 			{
-				const lookResults = wall.pos.lookFor(LOOK_STRUCTURES);
-				for (const structure of Object.values(lookResults))
-				{
-					const structureType = structure.structureType;
-					if (STRUCTURE_RAMPART == structureType)
-					{
-						console.log("WALL-RAMPART", structure);
-						//structure.destroy();
-					}
-				}
+				room.deconstructWallRamparts();
 			}
 		}
-
 	}
 }
 

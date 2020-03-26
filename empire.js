@@ -53,6 +53,27 @@ const empire =
 		return creeps;
 	},
 
+	roomsWithTowers: function ()
+	{
+		const roomsWithTowers = new Set();
+
+		for (const room of Object.values(Game.rooms))
+		{
+			const found = room.find(FIND_MY_STRUCTURES,
+				{
+					filter: (structure) =>
+					{
+						return STRUCTURE_TOWER == structure.structureType;
+					}
+				}
+				);
+
+			roomsWithTowers.add(room);
+		}
+
+		return roomsWithTowers;
+	},
+
 	run: function ()
 	{
 		console.log("run()");

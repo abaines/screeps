@@ -421,6 +421,36 @@ Room.prototype.smartSpawnRole = function (data, baseBody, givenName)
 	}
 }
 
+Room.prototype.deconstructWallRamparts = function ()
+{
+	const walls = this.find(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+				if (STRUCTURE_WALL == structureType)
+				{
+					return true;
+				}
+			}
+		}
+		);
+
+	for (const wall of Object.values(walls))
+	{
+		const lookResults = wall.pos.lookFor(LOOK_STRUCTURES);
+		for (const structure of Object.values(lookResults))
+		{
+			const structureType = structure.structureType;
+			if (STRUCTURE_RAMPART == structureType)
+			{
+				console.log("WALL-RAMPART-DESTROY", structure);
+				structure.destroy();
+			}
+		}
+	}
+}
+
 Room.prototype.idealEnergyRatio = function (value)
 {
 	const energyAvailableRatio = Math.floor(this.energyAvailable / value);
@@ -918,6 +948,64 @@ StructureLab.prototype.isFree = function ()
 		return true;
 	}
 	return this.store.getFreeCapacity(this.mineralType) >= 1250;
+}
+
+Room.prototype.constructRamparts = function ()
+{
+	const structures = this.find(FIND_STRUCTURES,
+		{
+			filter: (structure) =>
+			{
+				const structureType = structure.structureType;
+				if (STRUCTURE_ROAD == structureType)
+				{
+					return false;
+				}
+				if (STRUCTURE_RAMPART == structureType)
+				{
+					return false;
+				}
+				if (STRUCTURE_EXTENSION == structureType)
+				{
+					return false;
+				}
+				if (STRUCTURE_WALL == structureType)
+				{
+					return false;
+				}
+				if (STRUCTURE_CONTROLLER == structureType)
+				{
+					return false;
+				}
+				if (STRUCTURE_EXTRACTOR == structureType)
+				{
+					return false;
+				}
+				return true;
+			}
+		}
+		);
+
+	for (const structure of Object.values(structures))
+	{
+		structure.checkConstructRampart();
+	}
+}
+
+RoomObject.prototype.checkConstructRampart = function ()
+{
+	const structures = this.pos.lookFor(LOOK_STRUCTURES);
+
+	for (const structure of Object.values(structures))
+	{
+		const structureType = structure.structureType;
+		if (STRUCTURE_RAMPART == structureType)
+		{
+			return;
+		}
+	}
+
+	this.constructRampart();
 }
 
 RoomObject.prototype.constructRampart = function ()
