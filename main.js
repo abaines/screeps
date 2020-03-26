@@ -189,7 +189,7 @@ function constructRamparts()
 		rampCheck = false;
 		console.log("Check Ramparts");
 
-		const roomsWithTowers = {};
+		const roomsWithTowers = new Set();
 
 		for (const room of Object.values(Game.rooms))
 		{
@@ -202,36 +202,99 @@ function constructRamparts()
 				}
 				);
 
-			roomsWithTowers[room] = found.length;
+			roomsWithTowers.add(room);
 		}
 
-		//log("constructRamparts-roomsWithTowers " + JSS(roomsWithTowers));
-
-		for (const[hash, structure]of Object.entries(Game.structures))
+		roomsWithTowers.forEach(function (room)
 		{
-			const structureType = structure.structureType;
+			const structures = room.find(FIND_STRUCTURES,
+				{
+					filter: (structure) =>
+					{
+						const structureType = structure.structureType;
+						if (STRUCTURE_ROAD == structureType)
+						{
+							return false;
+						}
+						if (STRUCTURE_RAMPART == structureType)
+						{
+							return false;
+						}
+						if (STRUCTURE_EXTENSION == structureType)
+						{
+							return false;
+						}
+						if (STRUCTURE_WALL == structureType)
+						{
+							return false;
+						}
+						if (STRUCTURE_CONTROLLER == structureType)
+						{
+							return false;
+						}
+						if (STRUCTURE_EXTRACTOR == structureType)
+						{
+							return false;
+						}
+						return true;
+					}
+				}
+				);
 
-			if (STRUCTURE_RAMPART == structureType)
-			{}
-			else if (STRUCTURE_EXTENSION == structureType)
-			{}
-			else if (STRUCTURE_EXTRACTOR == structureType)
-			{}
-			else if (STRUCTURE_CONTROLLER == structureType)
-			{}
-			else
+			for (const structure of Object.values(structures))
 			{
 				checkStructureForRampart(structure);
+			}
+		}
+		);
+
+		if (true)
+		{
+			// skip removing ramparts from wall checks
+			return;
+		}
+
+		for (const room of Object.values(Game.rooms))
+		{
+			const walls = room.find(FIND_STRUCTURES,
+				{
+					filter: (structure) =>
+					{
+						const structureType = structure.structureType;
+						if (STRUCTURE_WALL == structureType)
+						{
+							return true;
+						}
+					}
+				}
+				);
+
+			for (const wall of Object.values(walls))
+			{
+				const lookResults = wall.pos.lookFor(LOOK_STRUCTURES);
+				for (const structure of Object.values(lookResults))
+				{
+					const structureType = structure.structureType;
+					if (STRUCTURE_RAMPART == structureType)
+					{
+						console.log("WALL-RAMPART", structure);
+						//structure.destroy();
+					}
+				}
 			}
 		}
 
 	}
 }
 
+var decayCheck = true;
+
 function decayReport()
 {
-	if (Game.time % 1500 == 0)
+	if (Game.time % 1500 == 0 || decayCheck)
 	{
+		decayCheck = false;
+
 		var decay =
 		{
 			ticksToDowngrade: Infinity

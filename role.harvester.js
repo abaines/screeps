@@ -4,6 +4,7 @@
 
 const log = require('log').log;
 const empire = require('empire');
+const JSS = JSON.stringify;
 
 const roleHarvester =
 {
