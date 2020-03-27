@@ -212,17 +212,20 @@ const core =
 	chemicalReactions: function (labMap)
 	{
 		const lab_O = this.getMyLab(RESOURCE_OXYGEN, labMap);
+		const lab_H = this.getMyLab(RESOURCE_HYDROGEN, labMap);
+		const lab_HO = this.getMyLab(RESOURCE_HYDROXIDE, labMap);
+
 		const lab_Z = this.getMyLab(RESOURCE_ZYNTHIUM, labMap);
 		const lab_ZO = this.getMyLab(RESOURCE_ZYNTHIUM_OXIDE, labMap);
+		const lab_ZHO2 = this.getMyLab(RESOURCE_ZYNTHIUM_ALKALIDE, labMap);
 
 		log('' + lab_O.href() + lab_Z.href() + lab_ZO.href());
 
-		if (lab_O.isLow() || lab_Z.isLow())
-		{
-			return;
-		}
+		lab_ZO.smartRunReaction(lab_O, lab_Z);
 
-		lab_ZO.runReaction(lab_O, lab_Z);
+		lab_HO.smartRunReaction(lab_O, lab_H);
+
+		lab_ZHO2.smartRunReaction(lab_HO, lab_ZO);
 	},
 
 	run: function ()

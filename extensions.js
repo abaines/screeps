@@ -933,7 +933,7 @@ StructureSpawn.prototype.visualize = function ()
 
 StructureLab.prototype.isFull = function ()
 {
-	return this.store.getFreeCapacity() <= 0;
+	return this.store.getFreeCapacity(this.mineralType) <= 5;
 }
 
 StructureLab.prototype.isLow = function ()
@@ -948,6 +948,29 @@ StructureLab.prototype.isFree = function ()
 		return true;
 	}
 	return this.store.getFreeCapacity(this.mineralType) >= 1250;
+}
+
+StructureLab.prototype.smartRunReaction = function (lab1, lab2)
+{
+	if (lab1.isLow() || lab2.isLow())
+	{}
+	else if (this.isFull())
+	{}
+	else if (this.cooldown > 0)
+	{}
+	else
+	{
+		const reactionResult = this.runReaction(lab1, lab2);
+
+		if (OK == reactionResult)
+		{
+			// OK	0	The operation has been scheduled successfully.
+		}
+		else
+		{
+			console.log('smartRunReaction', this.href(), reactionResult);
+		}
+	}
 }
 
 Room.prototype.constructRamparts = function ()
