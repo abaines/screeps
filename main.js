@@ -177,6 +177,11 @@ function constructRamparts()
 				room.deconstructWallRamparts();
 			}
 		}
+
+		for (const room of Object.values(Game.rooms))
+		{
+			room.checkConstructables();
+		}
 	}
 }
 

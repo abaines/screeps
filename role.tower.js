@@ -62,7 +62,7 @@ function perRoomEnergySteal(room)
 		const structure = structures[idx];
 		const structureType = structure.structureType;
 
-		if ("tower" == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 500)
+		if (STRUCTURE_TOWER == structureType && structure.store.getFreeCapacity(RESOURCE_ENERGY) >= 500)
 		{
 			getEnergyFromCreeps(structure);
 		}

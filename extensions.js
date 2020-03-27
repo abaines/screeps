@@ -773,6 +773,42 @@ StructureTower.prototype.smartRepair = function (input)
 	}
 }
 
+Room.prototype.findStructures = function (structureType)
+{
+	const structures = this.find(FIND_STRUCTURES,
+		{
+			filter:
+			{
+				structureType: structureType
+			}
+		}
+		);
+	return structures;
+}
+
+Room.prototype.checkConstructables = function ()
+{
+	const controller = this.controller;
+
+	const level = controller.level;
+
+	console.log(controller.href(), level);
+
+	for (const[structure, limits]of Object.entries(CONTROLLER_STRUCTURES))
+	{
+		if (
+			STRUCTURE_WALL == structure ||
+			STRUCTURE_ROAD == structure ||
+			STRUCTURE_RAMPART == structure ||
+			STRUCTURE_WALL == structure)
+		{}
+		else
+		{
+			console.log(structure, JSS(limits));
+		}
+	}
+}
+
 RoomObject.prototype.missingHits = function ()
 {
 	return this.hitsMax - this.hits;
