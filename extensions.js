@@ -1011,6 +1011,23 @@ StructureLab.prototype.smartRunReaction = function (lab1, lab2)
 	}
 }
 
+Room.prototype.getAdjacentVisibleRooms = function ()
+{
+	const exits = Game.map.describeExits(this.name);
+	const rooms = [];
+
+	for (const roomName of Object.values(exits))
+	{
+		const room = Game.rooms[roomName];
+		if (room)
+		{
+			rooms.push(room);
+		}
+	}
+
+	return rooms;
+}
+
 Room.prototype.constructRamparts = function ()
 {
 	const structures = this.find(FIND_STRUCTURES,

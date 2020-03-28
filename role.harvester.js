@@ -32,6 +32,29 @@ const roleHarvester =
 			return;
 		}
 
+		if (!creep.room.controller.my)
+		{
+			const adjacent = creep.room.getAdjacentVisibleRooms();
+
+			var lowestLevel =
+			{
+				level: Infinity
+			};
+
+			for (const room of Object.values(adjacent))
+			{
+				const controller = room.controller;
+				if (controller.my && controller.level < lowestLevel.level)
+				{
+					lowestLevel = controller;
+				}
+			}
+
+			console.log('out of my room', creep.href(), lowestLevel.room.href());
+			creep.travel(lowestLevel);
+			return;
+		}
+
 		const creepCount = creep.room.find(FIND_MY_CREEPS).length;
 
 		// planning phase
