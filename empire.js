@@ -59,16 +59,12 @@ const empire =
 
 		for (const room of Object.values(Game.rooms))
 		{
-			const found = room.find(FIND_MY_STRUCTURES,
-				{
-					filter: (structure) =>
-					{
-						return STRUCTURE_TOWER == structure.structureType;
-					}
-				}
-				);
+			const towers = room.findStructuresByType(STRUCTURE_TOWER);
 
-			roomsWithTowers.add(room);
+			if (towers && towers.length > 0)
+			{
+				roomsWithTowers.add(room);
+			}
 		}
 
 		return roomsWithTowers;

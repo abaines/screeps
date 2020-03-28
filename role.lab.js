@@ -26,19 +26,7 @@ const core =
 
 		for (const[name, room]of Object.entries(Game.rooms))
 		{
-			const containers = room.find(FIND_STRUCTURES,
-				{
-					filter: (structure) =>
-					{
-						const structureType = structure.structureType;
-						if (STRUCTURE_CONTAINER == structureType)
-						{
-							return structure.store.getUsedCapacity() > 0;
-
-						}
-					}
-				}
-				);
+			const containers = room.findStructuresByType(STRUCTURE_CONTAINER);
 
 			for (const container of containers)
 			{

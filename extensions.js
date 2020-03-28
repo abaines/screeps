@@ -423,18 +423,7 @@ Room.prototype.smartSpawnRole = function (data, baseBody, givenName)
 
 Room.prototype.deconstructWallRamparts = function ()
 {
-	const walls = this.find(FIND_STRUCTURES,
-		{
-			filter: (structure) =>
-			{
-				const structureType = structure.structureType;
-				if (STRUCTURE_WALL == structureType)
-				{
-					return true;
-				}
-			}
-		}
-		);
+	const walls = this.findStructuresByType(STRUCTURE_WALL);
 
 	for (const wall of Object.values(walls))
 	{
@@ -773,9 +762,22 @@ StructureTower.prototype.smartRepair = function (input)
 	}
 }
 
-Room.prototype.findStructures = function (structureType)
+Room.prototype.findStructuresByType = function (structureType)
 {
 	const structures = this.find(FIND_STRUCTURES,
+		{
+			filter:
+			{
+				structureType: structureType
+			}
+		}
+		);
+	return structures;
+}
+
+Room.prototype.findMyStructuresByType = function (structureType)
+{
+	const structures = this.find(FIND_MY_STRUCTURES,
 		{
 			filter:
 			{

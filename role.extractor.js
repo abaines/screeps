@@ -9,14 +9,7 @@ const core =
 {
 	getExtractorAndContainer: function (room)
 	{
-		const extractors = room.find(FIND_MY_STRUCTURES,
-			{
-				filter:
-				{
-					structureType: STRUCTURE_EXTRACTOR
-				}
-			}
-			);
+		const extractors = room.findMyStructuresByType(STRUCTURE_EXTRACTOR);
 
 		if (extractors && extractors.length == 1)
 		{
