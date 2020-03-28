@@ -231,13 +231,14 @@ module.exports.loop = function ()
 		return;
 	}
 
+	const cpuPrintFrequency = 150;
 	const cpuMap = new Map();
 	cpuMap.set('total', 0);
 	cpuMap.set('start', Game.cpu.getUsed());
 
 	function updateCpuMap(tag)
 	{
-		if (Game.time % 15 != 0)
+		if (Game.time % cpuPrintFrequency != 0)
 		{
 			return;
 		}
@@ -298,7 +299,7 @@ module.exports.loop = function ()
 	deadCreepMemoryClean();
 	updateCpuMap('deadCreepMemoryClean');
 
-	if (Game.time % 15 == 0)
+	if (Game.time % cpuPrintFrequency == 0)
 	{
 		function f(value, key, map)
 		{
