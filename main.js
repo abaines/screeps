@@ -303,7 +303,10 @@ module.exports.loop = function ()
 	{
 		function f(value, key, map)
 		{
-			console.log('\t', key, value);
+			if (value > 1)
+			{
+				console.log('\t', key, value);
+			}
 		}
 		const mapSort = new Map([...cpuMap.entries()].sort((a, b) => a[1] - b[1]));
 		mapSort.forEach(f);
