@@ -97,6 +97,18 @@ const empire =
 
 		for (const[structureType, limits]of Object.entries(CONTROLLER_STRUCTURES))
 		{
+			if (
+				STRUCTURE_NUKER == structureType ||
+				STRUCTURE_OBSERVER == structureType ||
+				STRUCTURE_POWER_SPAWN == structureType ||
+				STRUCTURE_CONTAINER == structureType ||
+				STRUCTURE_LAB == structureType ||
+				STRUCTURE_TERMINAL == structureType ||
+				STRUCTURE_FACTORY == structureType)
+			{
+				continue;
+			}
+
 			var anyMissing = false;
 
 			for (const roomName of Object.keys(map))
@@ -109,20 +121,22 @@ const empire =
 				}
 			}
 
-			if (anyMissing)
+			if (!anyMissing)
 			{
-				var printRow = structureType.padStart(20);
-
-				for (const roomName of Object.keys(map))
-				{
-					const availableMap = map[roomName];
-					const available = availableMap[structureType];
-					const availableText = available > 0 ? "" + available : "";
-					printRow += availableText.padStart(20);
-				}
-
-				console.log(printRow);
+				continue;
 			}
+
+			var printRow = structureType.padStart(20);
+
+			for (const roomName of Object.keys(map))
+			{
+				const availableMap = map[roomName];
+				const available = availableMap[structureType];
+				const availableText = available > 0 ? "" + available : "";
+				printRow += availableText.padStart(20);
+			}
+
+			console.log(printRow);
 		}
 	},
 
