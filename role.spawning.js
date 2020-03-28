@@ -39,7 +39,7 @@ const spawnSpawning =
 		{
 			// yay!
 		}
-		else if (roomHarvesterCount < 1 && energyAvailable >= 0 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody))
+		else if (roomHarvesterCount < 1 && energyAvailable >= 0 && spawn.room.smartSpawnRole(harvesterData, harvesterBaseBody, undefined, true))
 		{
 			// yay!
 		}

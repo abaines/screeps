@@ -388,7 +388,7 @@ Room.prototype.smartSpawnCreep = function (data, body, givenName)
 	}
 }
 
-Room.prototype.smartSpawnRole = function (data, baseBody, givenName)
+Room.prototype.smartSpawnRole = function (data, baseBody, givenName, emergency = false)
 {
 	function bodyCost(body)
 	{
@@ -411,7 +411,7 @@ Room.prototype.smartSpawnRole = function (data, baseBody, givenName)
 
 	const cost = bodyCost(baseBody);
 
-	const copies = this.idealEnergyRatio(cost);
+	const copies = this.idealEnergyRatio(cost, emergency);
 
 	if (copies)
 	{
@@ -440,10 +440,15 @@ Room.prototype.deconstructWallRamparts = function ()
 	}
 }
 
-Room.prototype.idealEnergyRatio = function (value)
+Room.prototype.idealEnergyRatio = function (value, emergency = false)
 {
 	const energyAvailableRatio = Math.floor(this.energyAvailable / value);
 	const energyCapacityAvailableRatio = Math.floor(this.energyCapacityAvailable / value);
+
+	if (emergency)
+	{
+		return energyAvailableRatio;
+	}
 
 	if (energyAvailableRatio == energyCapacityAvailableRatio)
 	{
