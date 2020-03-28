@@ -27,7 +27,7 @@ const linkLogic =
 
 		console.log('determineBehaviorOfLink', structureLink.href(), sourceDistance, controllerDistance);
 
-		if (sourceDistance < 5 && controllerDistance > 20)
+		if (sourceDistance < 5 && sourceDistance < controllerDistance)
 		{
 			Memory.links[roomName][structureLink.id] =
 			{
@@ -36,7 +36,7 @@ const linkLogic =
 			}
 			return;
 		}
-		else if (controllerDistance < 5 && sourceDistance > 20)
+		else if (controllerDistance < 5 && controllerDistance < sourceDistance)
 		{
 			Memory.links[roomName][structureLink.id] =
 			{
@@ -47,7 +47,7 @@ const linkLogic =
 		}
 		else
 		{
-			console.log("Unable to classify link:", structureLink);
+			console.log("Unable to classify link:", structureLink.href());
 		}
 	},
 
