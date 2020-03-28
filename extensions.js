@@ -762,6 +762,19 @@ StructureTower.prototype.smartRepair = function (input)
 	}
 }
 
+Room.prototype.findConstructionByType = function (structureType)
+{
+	const structures = this.find(FIND_CONSTRUCTION_SITES,
+		{
+			filter:
+			{
+				structureType: structureType
+			}
+		}
+		);
+	return structures;
+}
+
 Room.prototype.findStructuresByType = function (structureType)
 {
 	const structures = this.find(FIND_STRUCTURES,
@@ -788,25 +801,32 @@ Room.prototype.findMyStructuresByType = function (structureType)
 	return structures;
 }
 
-Room.prototype.checkConstructables = function ()
+Room.prototype.checkConstructablesAvailable = function ()
 {
 	const controller = this.controller;
 
 	const level = controller.level;
 
-	console.log(controller.href(), level);
+	console.log(controller.href((this + "-" + level).padStart(20)));
 
-	for (const[structure, limits]of Object.entries(CONTROLLER_STRUCTURES))
+	for (const[structureType, limits]of Object.entries(CONTROLLER_STRUCTURES))
 	{
 		if (
-			STRUCTURE_WALL == structure ||
-			STRUCTURE_ROAD == structure ||
-			STRUCTURE_RAMPART == structure ||
-			STRUCTURE_WALL == structure)
+			STRUCTURE_WALL == structureType ||
+			STRUCTURE_ROAD == structureType ||
+			STRUCTURE_RAMPART == structureType ||
+			STRUCTURE_WALL == structureType)
 		{}
 		else
 		{
-			console.log(structure, JSS(limits));
+			const limit = limits[level];
+			const built = this.findStructuresByType(structureType).length;
+			const building = this.findConstructionByType(structureType).length;
+			const available = limit - (built + building);
+			if (available > 0)
+			{
+				console.log(structureType.padStart(20), available);
+			}
 		}
 	}
 }
