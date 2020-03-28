@@ -32,7 +32,7 @@ const roleHarvester =
 			return;
 		}
 
-		if (!creep.room.controller.my)
+		if (!creep.room.controller || !creep.room.controller.my)
 		{
 			const adjacent = creep.room.getAdjacentVisibleRooms();
 
@@ -50,7 +50,7 @@ const roleHarvester =
 				}
 			}
 
-			console.log('out of my room', creep.href(), lowestLevel.room.href());
+			log('out of my room', creep.href(), lowestLevel.room.href());
 			creep.travel(lowestLevel);
 			return;
 		}
