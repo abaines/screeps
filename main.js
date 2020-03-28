@@ -231,32 +231,82 @@ module.exports.loop = function ()
 		return;
 	}
 
+	const cpuMap = new Map();
+	cpuMap.set('total', 0);
+	cpuMap.set('start', Game.cpu.getUsed());
+
+	function updateCpuMap(tag)
+	{
+		if (Game.time % 15 != 0)
+		{
+			return;
+		}
+		const used = Game.cpu.getUsed();
+		const previous = cpuMap.get('total');
+		cpuMap.set(tag, used - previous);
+		cpuMap.set('total', used);
+	}
+
 	roleLink.determineBehavior();
+	updateCpuMap('roleLink.determineBehavior');
 
 	roleTower.run();
+	updateCpuMap('roleTower.run');
+
 	roleSpawning.run(Game.spawns);
+	updateCpuMap('roleSpawning.run');
 
 	const harvesterTickData = forEachCreeps();
+	updateCpuMap('forEachCreeps');
 
 	roleTower.creepTransfer();
+	updateCpuMap('roleTower.creepTransfer');
+
 	roleTombstone.run();
+	updateCpuMap('roleTombstone.run');
+
 	roleLink.run();
+	updateCpuMap('roleLink.run');
+
 	roleBuilder.run();
+	updateCpuMap('roleBuilder.run');
+
 	roleExtractor.run();
+	updateCpuMap('roleExtractor.run');
+
 	roleLab.run();
+	updateCpuMap('roleLab.run');
+
 	roleAttack.run();
+	updateCpuMap('roleAttack.run');
 
 	controllerViz();
+	updateCpuMap('controllerViz');
 
 	creepViz(harvesterTickData);
+	updateCpuMap('creepViz');
 
 	roomViz();
+	updateCpuMap('roomViz');
 
 	decayReport();
+	updateCpuMap('decayReport');
 
 	constructRamparts();
+	updateCpuMap('constructRamparts');
 
 	deadCreepMemoryClean();
+	updateCpuMap('deadCreepMemoryClean');
+
+	if (Game.time % 15 == 0)
+	{
+		function f(value, key, map)
+		{
+			console.log('\t', key, value);
+		}
+		const mapSort = new Map([...cpuMap.entries()].sort((a, b) => a[1] - b[1]));
+		mapSort.forEach(f);
+	}
 }
 
 function killOld()
