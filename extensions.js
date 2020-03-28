@@ -801,13 +801,11 @@ Room.prototype.findMyStructuresByType = function (structureType)
 	return structures;
 }
 
-Room.prototype.checkConstructablesAvailable = function ()
+Room.prototype.getConstructablesAvailable = function ()
 {
-	const controller = this.controller;
+	const level = this.controller.level;
 
-	const level = controller.level;
-
-	console.log(controller.href((this + "-" + level).padStart(20)));
+	const returnMap = {};
 
 	for (const[structureType, limits]of Object.entries(CONTROLLER_STRUCTURES))
 	{
@@ -823,12 +821,12 @@ Room.prototype.checkConstructablesAvailable = function ()
 			const built = this.findStructuresByType(structureType).length;
 			const building = this.findConstructionByType(structureType).length;
 			const available = limit - (built + building);
-			if (available > 0)
-			{
-				console.log(structureType.padStart(20), available);
-			}
+
+			returnMap[structureType] = available;
 		}
 	}
+
+	return returnMap;
 }
 
 RoomObject.prototype.missingHits = function ()

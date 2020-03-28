@@ -70,6 +70,62 @@ const empire =
 		return roomsWithTowers;
 	},
 
+	printConstructablesAvailable: function ()
+	{
+		const map = {};
+
+		for (const room of Object.values(Game.rooms))
+		{
+			const available = room.getConstructablesAvailable();
+
+			if (room.controller && room.controller.my)
+			{
+				map[room.name] = available;
+			}
+		}
+
+		var printHeader = "".padStart(20);
+
+		for (const roomName of Object.keys(map))
+		{
+			const room = Game.rooms[roomName];
+			const t = (room + "-" + room.controller.level).padStart(20);
+			printHeader += room.href(t);
+		}
+
+		console.log(printHeader);
+
+		for (const[structureType, limits]of Object.entries(CONTROLLER_STRUCTURES))
+		{
+			var anyMissing = false;
+
+			for (const roomName of Object.keys(map))
+			{
+				const availableMap = map[roomName];
+				const available = availableMap[structureType];
+				if (available > 0)
+				{
+					anyMissing = true;
+				}
+			}
+
+			if (anyMissing)
+			{
+				var printRow = structureType.padStart(20);
+
+				for (const roomName of Object.keys(map))
+				{
+					const availableMap = map[roomName];
+					const available = availableMap[structureType];
+					const availableText = available > 0 ? "" + available : "";
+					printRow += availableText.padStart(20);
+				}
+
+				console.log(printRow);
+			}
+		}
+	},
+
 	run: function ()
 	{
 		console.log("run()");

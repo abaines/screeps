@@ -178,10 +178,7 @@ function constructRamparts()
 			}
 		}
 
-		for (const room of Object.values(Game.rooms))
-		{
-			room.checkConstructablesAvailable();
-		}
+		empire.printConstructablesAvailable();
 	}
 }
 
