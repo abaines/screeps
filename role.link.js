@@ -3,6 +3,7 @@
 'use strict';
 
 const log = require('log').log;
+const performance = require('performance');
 
 const linkLogic =
 {
@@ -53,6 +54,9 @@ const linkLogic =
 
 	determineBehavior: function ()
 	{
+		// calling Memory.links the first time per tick is expensive
+		const links = Memory.links;
+
 		for (const[key, structure]of Object.entries(Game.structures))
 		{
 			if (STRUCTURE_LINK == structure.structureType)
