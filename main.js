@@ -4,6 +4,7 @@
 
 const extensions = require('extensions');
 const log = require('log').log;
+const performance = require('performance');
 const empire = require('empire');
 
 const roleHarvester = require('role.harvester');
