@@ -18,8 +18,8 @@ const core =
 
 		if ((enabled || enabled == 0) && duration > enabled)
 		{
-			const t = '' + duration;
-			console.log(t.padEnd(22), label);
+			const fixed = duration.toFixed(6);
+			console.log('[' + fixed.padStart(9) + ']', label);
 		}
 
 		return result;
