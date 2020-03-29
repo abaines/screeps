@@ -198,7 +198,7 @@ const core =
 
 				if (constructionSites.length > 0)
 				{
-					if (energyAvailable >= 3200 && spawn.room.smartSpawnRole(builderData, builderBaseBody, 'builder'))
+					if (energyAvailable >= 1800 && spawn.room.smartSpawnRole(builderData, builderBaseBody, 'builder'))
 					{
 						console.log("Spawning Builder @ " + spawn.href());
 						return;
