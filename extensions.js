@@ -335,19 +335,18 @@ Creep.prototype.melee = function ()
 	// TODO: target towers first?
 	const enemyBuilding = this.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
 
-	if (enemyBuilding)
-	{
-		this.say("⚔️");
-		this.travel(enemyBuilding);
-		this.attack(enemyBuilding);
-	}
-
 	if (enemyCreep)
 	{
-		if (this.distance(enemyCreep) <= 1)
-		{
-			this.say("🗡️");
-		}
+		this.say("🗡️");
+		this.travel(enemyCreep);
+		this.attack(enemyCreep);
+	}
+
+	if (enemyBuilding)
+	{
+		// TODO: dismantle
+		this.say("⚔️");
+		this.travel(enemyBuilding);
 		this.attack(enemyBuilding);
 	}
 
