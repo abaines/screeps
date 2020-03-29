@@ -6,7 +6,7 @@ const log = require('log').log;
 
 const core =
 {
-	measure: function (label, method)
+	measure: function (label, method, enabled = 0)
 	{
 		const starting = Game.cpu.getUsed();
 
@@ -14,7 +14,13 @@ const core =
 
 		const ending = Game.cpu.getUsed();
 
-		console.log(ending - starting, label);
+		const duration = ending - starting;
+
+		if ((enabled || enabled == 0) && duration > enabled)
+		{
+			const t = '' + duration;
+			console.log(t.padEnd(20), label);
+		}
 
 		return result;
 	},
