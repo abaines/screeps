@@ -19,7 +19,7 @@ const core =
 		if ((enabled || enabled == 0) && duration > enabled)
 		{
 			const t = '' + duration;
-			console.log(t.padEnd(20), label);
+			console.log(t.padEnd(22), label);
 		}
 
 		return result;
