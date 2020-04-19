@@ -32,7 +32,10 @@ function forEachCreeps()
 	{
 		if ('harvester' == creep.memory.role)
 		{
-			roleHarvester.runPerCreep(creep, harvesterTickData);
+			performance.measure('main/roleHarvester.runPerCreep ' + creep.href() + ' ' + creep.room.href(), () =>
+			{
+				roleHarvester.runPerCreep(creep, harvesterTickData);
+			}, 10);
 		}
 		else if ('claimer' == creep.memory.role)
 		{
@@ -249,7 +252,11 @@ module.exports.loop = function ()
 		cpuMap.set('total', used);
 	}
 
-	roleLink.determineBehavior();
+	performance.measure('main/roleLink.determineBehavior', () =>
+	{
+		roleLink.determineBehavior();
+	}, 5);
+
 	updateCpuMap('roleLink.determineBehavior');
 
 	roleTower.run();
